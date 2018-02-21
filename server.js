@@ -9,7 +9,7 @@ app.use(
 );
 
 
-restService.post("/check", function(req, res) {
+app.post("/check", function(req, res) {
   return res.json({
     speech:
       '<speak>  check </speak>',
@@ -22,6 +22,6 @@ restService.post("/check", function(req, res) {
 
 app.use(bodyParser.json());
 
-restService.listen(process.env.PORT || 8000, function() {
+app.listen(process.env.PORT || 8000, function() {
   console.log("Server up and listening");
 });
