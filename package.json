@@ -1,10 +1,10 @@
 {
-  "name": "server",
+  "name": "dialog flow server",
   "version": "1.0.0",
-  "description": "",
+  "description": "dialog flow server",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
