@@ -1,5 +1,5 @@
 {
-  "name": "dialog flow server",
+  "name": "dialog-flow-server",
   "version": "1.0.0",
   "description": "dialog flow server",
   "main": "index.js",

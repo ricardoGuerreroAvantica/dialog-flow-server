@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 8000;
 
@@ -16,6 +17,14 @@ app.post("/check", function(req, res) {
     displayText:
       '<speak>  check </speak>',
     source: "dialog-flow-server"
+  });
+});
+
+
+app.get("/echo", function(req, res) {
+  return res.json({
+    hi:
+      '<hi>  hi </hi>'
   });
 });
 
