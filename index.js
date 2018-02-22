@@ -12,13 +12,13 @@ app.use(
 
 app.post("/action", function(req, res) {
 
-  console.log(req.body.result);
+  console.log(req.body);
 
   return res.json({
     speech:
-      '<speak>  '+ req.body.result +' </speak>',
+      '<speak>  '+ req.body +' </speak>',
     displayText:
-      '<speak>  '+ req.body.result +' </speak>',
+      '<speak>  '+ req.body +' </speak>',
     source: "dialog-flow-server"
   });
 });
