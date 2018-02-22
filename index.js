@@ -10,23 +10,19 @@ app.use(
 );
 
 
-app.post("/check", function(req, res) {
+app.post("/action", function(req, res) {
+
+  console.log(req.body.result);
+
   return res.json({
     speech:
-      '<speak>  check </speak>',
+      '<speak>  '+ req.body.result +' </speak>',
     displayText:
-      '<speak>  check </speak>',
+      '<speak>  '+ req.body.result +' </speak>',
     source: "dialog-flow-server"
   });
 });
 
-
-app.get("/echo", function(req, res) {
-  return res.json({
-    hi:
-      '<hi>  hi </hi>'
-  });
-});
 
 
 app.use(bodyParser.json());
