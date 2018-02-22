@@ -1,13 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const json_body_parser = body_parser.json();
 const app = express();
 
 app.use(
   bodyParser.urlencoded({
-    extended: false
+    extended: true
   })
 );
 
+app.use(bodyParser.json());
 
 app.post("/action", function(req, res) {
   var speech = '<speak>  '+ JSON.stringify(req.body) + ' </speak>';
@@ -30,7 +32,6 @@ app.get("/check", function(req, res) {
   });
 });
 
-app.use(bodyParser.json());
 
 app.listen(process.env.PORT || 8000, function() {
   console.log("Server up and listening");
