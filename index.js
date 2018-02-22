@@ -11,13 +11,14 @@ app.use(
 
 
 app.post("/action", function(req, res) {
-  JSON.stringify(req.body);
+  var parameter = req.body.result.parameters.date;
+  var speech = '<speak>  '+ JSON.stringify(req.body) + " : " + parameter + ' </speak>';
 
   return res.json({
     speech:
-      '<speak>  '+ JSON.stringify(req.body) +' </speak>',
+      '<speak>  '+ JSON.stringify(req.body) + " : " + parameter + ' </speak>',
     displayText:
-      '<speak>  '+ JSON.stringify(req.body) +' </speak>',
+      speech,
     source: "dialog-flow-server"
   });
 });
