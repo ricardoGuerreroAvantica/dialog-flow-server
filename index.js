@@ -11,19 +11,25 @@ app.use(
 
 
 app.post("/action", function(req, res) {
-
-  console.log(req.body);
+  JSON.stringify(req.body);
 
   return res.json({
     speech:
-      '<speak>  '+ req.body +' </speak>',
+      '<speak>  '+ JSON.stringify(req.body) +' </speak>',
     displayText:
-      '<speak>  '+ req.body +' </speak>',
+      '<speak>  '+ JSON.stringify(req.body) +' </speak>',
     source: "dialog-flow-server"
   });
 });
 
-
+app.get("/check", function(req, res) {
+  var obj = { "name":"John", "age":function () {return 30;}, "city":"New York"};
+  console.log(JSON.stringify(obj));
+  console.log(obj);
+  return res.json({
+    speech: obj
+  });
+});
 
 app.use(bodyParser.json());
 
