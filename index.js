@@ -11,12 +11,11 @@ app.use(
 
 
 app.post("/action", function(req, res) {
-  var parameter = req.body.result.parameters.date;
-  var speech = '<speak>  '+ JSON.stringify(req.body) + " : " + parameter + ' </speak>';
+  var speech = '<speak>  '+ JSON.stringify(req.body) + ' </speak>';
 
   return res.json({
     speech:
-      '<speak>  '+ JSON.stringify(req.body) + " : " + parameter + ' </speak>',
+      speech,
     displayText:
       speech,
     source: "dialog-flow-server"
