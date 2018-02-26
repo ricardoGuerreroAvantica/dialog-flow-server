@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+var authHelper = require('./authHelper');
+
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -10,28 +12,33 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.post("/action", function(req, res) {
-  var speech = '<speak>  '+ JSON.stringify(req.body) + ' </speak>';
 
-  return res.json({
-    speech:
-      speech,
-    displayText:
-      speech,
-    source: "dialog-flow-server"
-  });
+
+app.post("/action", (req, res) => {
+  var action =
+    req.body.result &&
+    req.body.result.action
+      ? req.body.result.action
+      : "Seems like some problem. Speak again.";
+
+  switch (action) {
+    case 'login':
+      var username = req.body.result.parameters.username;
+      var password = req.body.result.parameters.password;
+      var token = authHelper.getTokenFromCode(username, password, (result) => {
+        return res.json({
+          speech: token,
+          displayText: token,
+          source: "dialog-flow-server"
+        });
+      });
+      break;
+    default:
+
+  }
+
 });
 
-app.get("/check", function(req, res) {
-  var obj = { "name":"John", "age":function () {return 30;}, "city":"New York"};
-  console.log(JSON.stringify(obj));
-  console.log(obj);
-  return res.json({
-    speech: obj
-  });
-});
-
-
-app.listen(process.env.PORT || 8000, function() {
+app.listen(process.env.PORT || 8000, () => {
   console.log("Server up and listening");
-});
+})
