@@ -1,54 +1,90 @@
-var clientId = '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0';
-var clientSecret = 'vzqWUXQ0625%:zfeuHYJ4%:';
-var redirectUri = 'http://localhost:3000/authorize';
+var OAuth = require('oauth');
 
-var scopes = [
-  'openid',
-  'profile',
-  'offline_access',
-  'https://outlook.office.com/calendars.readwrite'
-];
-
-// var credentials = {
-//   clientID: clientId,
-//   clientSecret: clientSecret,
-//   site: 'https://login.microsoftonline.com/common',
-//   authorizationPath: '/oauth2/v2.0/authorize',
-//   tokenPath: '/oauth2/v2.0/token'
-// }
-
-//var oauth2 = require('simple-oauth2')(credentials)
-
-const oauth2 = require('simple-oauth2').create({
-  client: {
-    id: clientId,
-    secret: clientSecret,
-  },
-  auth: {
-    tokenHost: 'https://login.microsoftonline.com/common',
-    tokenPath: '/oauth2/v2.0/token',
-    authorizePath: '/login/oauth/authorize',
-  },
-});
-
-
-const tokenConfig = {
-  username: 'juan.guerrero@avantica.net',
-  password: 'JjGg135#'
+var credentials = {
+  authority: 'https://login.microsoftonline.com/common',
+  authorize_endpoint: '/oauth2/authorize',
+  token_endpoint: '/oauth2/token',
+  logout_endpoint: '/oauth2/logout',
+  client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
+  client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
+  redirect_uri: 'http://localhost:8000/login',
+  resouce: 'https://graph.microsoft.com/'
 };
 
+/**
+ * Generate a fully formed uri to use for authentication based on the supplied resource argument
+ * @return {string} a fully formed uri with which authentication can be completed
+ */
+function getAuthUrl() {
+  return credentials.authority + credentials.authorize_endpoint +
+    '?client_id=' + credentials.client_id +
+    '&response_type=code' +
+    '&redirect_uri=' + credentials.redirect_uri;
+}
 
-module.exports = {
+/**
+ * Gets a token for a given resource.
+ * @param {string} code An authorization code returned from a client.
+ * @param {AcquireTokenCallback} callback The callback function.
+ */
+function getTokenFromCode(code, callback) {
+  var OAuth2 = OAuth.OAuth2;
+  var oauth2 = new OAuth2(
+    credentials.client_id,
+    credentials.client_secret,
+    credentials.authority,
+    credentials.authorize_endpoint,
+    credentials.token_endpoint
+  );
 
-  getTokenFromCode: (request, response, callback) => {
-    oauth2.ownerPassword
-      .getToken(tokenConfig)
-      .then((result) => {
-        const accessToken = oauth2.accessToken.create(result);
+  oauth2.getOAuthAccessToken(
+    code,
+    {
+      grant_type: 'authorization_code',
+      redirect_uri: credentials.redirect_uri,
+      resource: credentials.resouce
+    },
+    function(e, access_token, refresh_token, results){
+      callback(e, access_token, refresh_token);
+    }
+  );
+}
 
-        return accessToken;
-      });
-  }
 
+/**
+ * Gets a new access token via a previously issued refresh token.
+ * @param {string} res The OAuth resource for which a token is being request.
+ *                     This parameter is optional and can be set to null.
+ * @param {string} refreshToken A refresh token returned in a token response
+ *                       from a previous result of an authentication flow.
+ * @param {AcquireTokenCallback} callback The callback function.
+ */
+function getTokenFromRefreshToken(refreshToken, callback) {
+  var OAuth2 = OAuth.OAuth2;
+  var oauth2 = new OAuth2(
+    credentials.client_id,
+    credentials.client_secret,
+    credentials.authority,
+    credentials.authorize_endpoint,
+    credentials.token_endpoint
+  );
 
-};
+  oauth2.getOAuthAccessToken(
+    refreshToken,
+    {
+      grant_type: 'refresh_token',
+      redirect_uri: credentials.redirect_uri,
+      resource: credentials.resouce
+    },
+    function(e, access_token, refresh_token, results){
+      callback(e, results);
+    }
+  );
+}
+
+exports.credentials = credentials;
+exports.getAuthUrl = getAuthUrl;
+exports.getTokenFromCode = getTokenFromCode;
+exports.getTokenFromRefreshToken = getTokenFromRefreshToken;
+exports.ACCESS_TOKEN_CACHE_KEY = 'ACCESS_TOKEN_CACHE_KEY';
+exports.REFRESH_TOKEN_CACHE_KEY = 'REFRESH_TOKEN_CACHE_KEY';

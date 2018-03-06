@@ -2,9 +2,9 @@
   "name": "dialog-flow-server",
   "version": "1.0.0",
   "description": "dialog flow server",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,9 +12,16 @@
     "@microsoft/microsoft-graph-client": "^1.0.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.0",
     "oauth": "^0.9.15",
-    "simple-oauth2": "^1.5.0"
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^3.0.12",
+    "path": "^0.12.7",
+    "simple-oauth2": "^1.5.0",
+    "superagent": "^3.8.2"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
