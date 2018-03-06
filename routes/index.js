@@ -28,17 +28,17 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
-router.get('/', (req, res) => {
-  // check if user is authenticated
-  if (!req.isAuthenticated()) {
-    res.redirect('login');
-  } else {
-    return res.json({
-      displayName: req.user.profile.displayName,
-      emailAddress: req.user.profile.emails[0].address
-    });
-  }
-});
+// router.get('/', (req, res) => {
+//   // check if user is authenticated
+//   if (!req.isAuthenticated()) {
+//     res.redirect('login');
+//   } else {
+//     return res.json({
+//       displayName: req.user.profile.displayName,
+//       emailAddress: req.user.profile.emails[0].address
+//     });
+//   }
+// });
 
 router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
     (req, res) => {
