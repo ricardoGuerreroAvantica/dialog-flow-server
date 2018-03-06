@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const graphHelper = require('../utils/graphHelper.js');
+const eventHelper = require('../utils/eventHelper.js');
 const passport = require('passport');
 
 
@@ -18,6 +19,9 @@ router.post("/botSpeak", (req, res) => {
     case 'checkUserAvailable':
       checkUserAvailable(req, res);
       break;
+    case 'createEventInvite':
+      inviteUser(req, res);
+      break;
     default:
       return res.json({
         speech: 'Could you repeat that?',
@@ -28,17 +32,17 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
-// router.get('/', (req, res) => {
-//   // check if user is authenticated
-//   if (!req.isAuthenticated()) {
-//     res.redirect('login');
-//   } else {
-//     return res.json({
-//       displayName: req.user.profile.displayName,
-//       emailAddress: req.user.profile.emails[0].address
-//     });
-//   }
-// });
+router.get('/', (req, res) => {
+  // check if user is authenticated
+  if (!req.isAuthenticated()) {
+    res.redirect('login');
+  } else {
+    return res.json({
+      displayName: req.user.profile.displayName,
+      emailAddress: req.user.profile.emails[0].address
+    });
+  }
+});
 
 router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
     (req, res) => {
@@ -64,51 +68,73 @@ router.get('/token',
 
 
 router.get('/test', (req, res) => {
-  // check if user is authenticated
-  var userData = {
-    name : 'didier',
-    lastname : 'cerdas',
-    email : ''
-  }
 
-  searchUser(req, res, userData, (err, response) => {
-    console.log(response);
-    res.send(response);
-  });
+  checkUserAvailable(req, res);
+
 });
 
 function checkUserAvailable(req, res) {
-  var userData = {
-    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  }
-  var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
-  var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
-
   // var userData = {
-  //   name : '',
-  //   lastname : '',
-  //   email : 'didier.cerdas@avantica.net'
+  //   name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
+  //   lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
+  //   email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   // }
-  console.log('PARAMS');
-  console.log(userData);
-  console.log(date);
-  console.log(time);
+  // //2018-03-07
+  // var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
+  // //21:00:00
+  // var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
 
-  // searchUser(req, res, userData, (err, response) => {
-  //
-  //
-  //   graphHelper.checkUserAvailable(user, date, time, (err, response) => {
-  //     console.log(response);
-  //     return res.json({
-  //       speech: speech,
-  //       displayText: speech,
-  //       source: "dialog-flow-server"
-  //     });
-  //
-  //   });
-  // });
+  var userData = {
+    name : '',
+    lastname : '',
+    email : 'didier.cerdas@avantica.net'
+  }
+  var date = '2018-03-07';
+  var time = '07:00:00';
+  var duration = '';
+
+  searchUser(req, res, userData, (err, response) => {
+
+    var body = {
+      "attendees": eventHelper.getAttendees([userData]),
+      "timeConstraint": eventHelper.getTimeConstraint(date, time),
+      "locationConstraint": {
+        "isRequired": "false",
+        "suggestLocation": "true",
+        "locations": [
+          {
+            "displayName": "Conf Room 32/1368",
+            "locationEmailAddress": "conf32room1368@imgeek.onmicrosoft.com"
+          }
+        ]
+      },
+      "meetingDuration": eventHelper.getDuration(duration)
+    }
+
+    graphHelper.checkUserAvailable(req.user.accessToken, body, (err, response) => {
+      var message = '';
+
+      if (!response.meetingTimeSuggestions.length){
+        message = "Couldn't find any space\n";
+      }else{
+        message = 'I found space:\n';
+        for (var i in response.meetingTimeSuggestions){
+          var slot = response.meetingTimeSuggestions[i];
+          var start = slot.meetingTimeSlot.start.dateTime.replace('T', ' ') + ' UTC';
+          var end = slot.meetingTimeSlot.end.dateTime.replace('T', ' ') + ' UTC';
+          var newStartDate = new Date(start);
+          var newEndDate = new Date(end);
+          message += newStartDate.toString() + ' - ' + newEndDate.toString() + '\n';
+        }
+      }
+      return res.json({
+        speech: message,
+        displayText: message,
+        source: "dialog-flow-server"
+      });
+    });
+
+  });
 
 }
 
@@ -119,20 +145,17 @@ function inviteUser(req, res){
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
+  console.log(req.body);
 
-  graphHelper.searchUser(userData, (err, res) => {
-
-    return res.json({
-      speech: 'invited',
-      displayText: 'invited',
-      contextOut: [
-        {
-          invites : ['one']
-        }
-      ],
-      source: "dialog-flow-server"
-    });
-
+  return res.json({
+    speech: 'invited',
+    displayText: 'invited',
+    outputContexts: [
+      {
+        invites : []
+      }
+    ],
+    source: "dialog-flow-server"
   });
 }
 

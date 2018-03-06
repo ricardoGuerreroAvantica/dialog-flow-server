@@ -18,8 +18,9 @@ function getUserData(accessToken, callback) {
 function checkUserAvailable(accessToken, body,  callback){
   request
     .post('https://graph.microsoft.com/v1.0/me/findMeetingTimes')
-    .set('Authorization', 'Bearer ' + accessToken)
     .send(body)
+    .set('Authorization', 'Bearer ' + accessToken)
+    .set('Content-Type', 'application/json')
     .end((err, res) => {
       callback(err, res.body);
     });
@@ -36,7 +37,7 @@ function searchUser(accessToken, userData, callback){
     filter += (userData.name) ? "startswith(displayName,'" + userData.name + "')" : '';
     filter += (userData.lastname) ? " and startswith(surname,'" + userData.lastname + "')" : '';
   }
-  
+
   request
     .get('https://graph.microsoft.com/v1.0/users?' + filter)
     .set('Authorization', 'Bearer ' + accessToken)
