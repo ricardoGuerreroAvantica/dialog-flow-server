@@ -156,7 +156,10 @@ function inviteUser(req, res){
       {
         "name": "invites",
         "parameters": {
-          "people" : 
+          "people" : [
+            "1",
+            "2"
+          ]
         },
         "lifespan": 5
       }
