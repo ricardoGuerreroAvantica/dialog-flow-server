@@ -11,6 +11,8 @@ const passport = require('passport');
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
   console.log('Action : ' + action);
+  console.log(req.isAuthenticated());
+  console.log(req);
   //CHECK FOR LOGIN
   if (!req.isAuthenticated()) {
     res.redirect('login');
@@ -53,7 +55,7 @@ router.get('/login', passport.authenticate('azuread-openidconnect', { failureRed
 
       console.log('------ LOGIN REQ ------');
       console.log(req);
-      
+
       return res.json({
         speech: 'Please sign in',
         displayText: 'Please sign in',
