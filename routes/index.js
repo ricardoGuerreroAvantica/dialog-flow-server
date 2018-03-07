@@ -48,7 +48,7 @@ router.post("/botSpeak", (req, res) => {
 //   }
 // });
 
-router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
+router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/error' }),
     (req, res) => {
       //res.redirect('/');
 
@@ -63,6 +63,18 @@ router.get('/login', passport.authenticate('azuread-openidconnect', { failureRed
       });
     }
 );
+
+router.get('/error', (e, res) => {
+  e.innerError = (e.response) ? e.response.text : '';
+  console.log('------ ERROR ------');
+  console.log(e);
+  return res.json({
+    speech: 'Error!',
+    displayText: 'Error!',
+    source: "dialog-server-flow"
+  });
+});
+
 
 router.get('/token',
   passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
