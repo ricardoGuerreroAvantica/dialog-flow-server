@@ -150,12 +150,14 @@ function inviteUser(req, res){
   console.log(json.stringify(req.body.contexts));
 
   return res.json({
-    "speech": 'invited',
-    "displayText": 'invited',
-    "contextOut" : [
-      {"hi" : ["it's me"]}
+    speech: 'invited',
+    displayText: 'invited',
+    outputContexts: [
+      {
+        invites : []
+      }
     ],
-    "source": "dialog-flow-server"
+    source: "dialog-flow-server"
   });
 }
 
