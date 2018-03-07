@@ -153,7 +153,7 @@ function inviteUser(req, res){
     "speech": 'invited',
     "displayText": 'invited',
     "contextOut" : [
-      "hi":"hello"
+      {"hi" : ["it's me"]}
     ],
     "source": "dialog-flow-server"
   });
