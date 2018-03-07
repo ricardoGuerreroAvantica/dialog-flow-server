@@ -153,7 +153,7 @@ function inviteUser(req, res){
     "speech": 'invited',
     "displayText": 'invited',
     "outputContexts": [
-      {
+      "invites" : {
         "name":"invites",
         "parameters":{
           "name" : userData.name
