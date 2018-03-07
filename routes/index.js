@@ -145,6 +145,7 @@ function inviteUser(req, res){
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
+  console.log('CHECK');
   console.log(req.body);
   console.log(req.body.result.contexts);
   console.log(JSON.stringify(req.body.result.contexts));
