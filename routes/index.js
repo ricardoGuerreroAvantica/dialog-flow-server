@@ -66,32 +66,16 @@ router.get('/token',
 );
 
 
-
-router.get('/test', (req, res) => {
-
-  checkUserAvailable(req, res);
-
-});
-
 function checkUserAvailable(req, res) {
-  // var userData = {
-  //   name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-  //   lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-  //   email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  // }
-  // //2018-03-07
-  // var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
-  // //21:00:00
-  // var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
-
   var userData = {
-    name : '',
-    lastname : '',
-    email : 'didier.cerdas@avantica.net'
+    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
+    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
+    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
-  var date = '2018-03-07';
-  var time = '07:00:00';
-  var duration = '';
+  //2018-03-07
+  var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
+  //21:00:00
+  var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
 
   searchUser(req, res, userData, (err, response) => {
 
@@ -145,52 +129,85 @@ function inviteUser(req, res){
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
-  var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
-  var people = [];
 
-  for (var i in contexts){
-    if (contexts[i].name == 'invites'){
-      people = contexts[i].parameters.people;
-    }
-  }
-  people.push(userData);
+  searchUser(req, res, userData, (err, response) => {
+    var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
+    var people = [];
 
-  console.log(req.body);
-  console.log(req.body.result.contexts);
-  console.log(JSON.stringify(req.body.result.contexts));
-
-  return res.json({
-    speech: 'invited',
-    displayText: 'invited',
-    contextOut: [
-      {
-        "name": "invites",
-        "parameters": {
-          "people": people
-        },
-        "lifespan": 5
+    for (var i in contexts){
+      if (contexts[i].name == 'invites'){
+        people = contexts[i].parameters.people;
       }
-    ],
-    "source": "dialog-flow-server"
+    }
+    people.push(
+      {
+        "emailAddress": {
+          "address": response.mail,
+          "name": response.displayName
+        },
+        "type": "required"
+      }
+    );
+
+    return res.json({
+      speech: 'invited',
+      displayText: 'invited',
+      contextOut: [
+        {
+          "name": "invites",
+          "parameters": {
+            "people": people
+          },
+          "lifespan": 5
+        }
+      ],
+      "source": "dialog-flow-server"
+    });
   });
 }
 
 
 function createEvent(req, res){
-  var name = req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '';
-  var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
-  var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
-  var invites = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
+  var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
+  var eventContext = {};
+  var invitesContext = {};
+  for (var i in contexts){
+    if (contexts[i].name == 'createevent'){
+      eventContext = contexts[i];
+    }
+    if (contexts[i].name == 'invites'){
+      invitesContext = contexts[i];
+    }
+  }
+  var name = eventContext.parameters.name ? eventContext.parameters.name : '';
+  var date = eventContext.parameters.date ? eventContext.parameters.date : '';
+  var time = eventContext.parameters.time ? eventContext.parameters.time : '';
+  var invites = invitesContext.parameters.people ? invitesContext.parameters.people : [];
+  //30 MINUTES PER REUNION
+  var endTime = addMinutes(new Date(time), 30).toString();
 
-  graphHelper.createEvent(name, date, time, invites, (err, res) => {
+  var body = {
+    "subject": name,
+    "attendees": invites,
+    "start": {
+      "dateTime": date + 'T' + time + '.000Z',
+      "timeZone": "Central Standard Time"
+    },
+    "end": {
+      "dateTime": date + 'T' + endTime + '.000Z',
+      "timeZone": "Central Standard Time"
+    }
+  }
+  console.log(body);
 
-
-    return res.json({
-      speech: speech,
-      displayText: speech,
-      source: "dialog-flow-server"
-    });
-  });
+  // graphHelper.createEvent(name, date, invites, (err, res) => {
+  //
+  //   return res.json({
+  //     speech: speech,
+  //     displayText: speech,
+  //     source: "dialog-flow-server"
+  //   });
+  // });
 
 }
 
@@ -235,20 +252,8 @@ router.get('/disconnect', (req, res) => {
   });
 });
 
-
-
-// helpers
-function hasAccessTokenExpired(e) {
-  let expired;
-  if (!e.innerError) {
-    expired = false;
-  } else {
-    expired = e.forbidden &&
-      e.message === 'InvalidAuthenticationToken' &&
-      e.response.error.message === 'Access token has expired.';
-  }
-  return expired;
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
 }
-
 
 module.exports = router;
