@@ -147,7 +147,7 @@ function inviteUser(req, res){
   }
   console.log(req.body);
   console.log(req.body.contexts);
-  console.log(json.stringify(req.body.contexts));
+  console.log(JSON.stringify(req.body.contexts));
 
   return res.json({
     speech: 'invited',
