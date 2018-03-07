@@ -150,9 +150,9 @@ function inviteUser(req, res){
   console.log(json.stringify(req.body.contexts));
 
   return res.json({
-    speech: 'invited',
-    displayText: 'invited',
-    outputContexts: [
+    "speech": 'invited',
+    "displayText": 'invited',
+    "outputContexts": [
       {
         "name":"invites",
         "parameters":{
@@ -161,7 +161,7 @@ function inviteUser(req, res){
         "lifespan":5
       }
     ],
-    source: "dialog-flow-server"
+    "source": "dialog-flow-server"
   });
 }
 
