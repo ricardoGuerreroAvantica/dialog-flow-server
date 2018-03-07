@@ -152,8 +152,8 @@ function inviteUser(req, res){
   return res.json({
     "speech": 'invited',
     "displayText": 'invited',
-    "outputContexts": [
-      "invites" : {
+    "contexts" : [
+      {
         "name":"invites",
         "parameters":{
           "name" : userData.name
