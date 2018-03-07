@@ -145,7 +145,16 @@ function inviteUser(req, res){
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
-  console.log('CHECK');
+  var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
+  var people = [];
+
+  for (var i in contexts){
+    if (contexts[i].name == 'invites'){
+      people = contexts[i].parameters.people;
+    }
+  }
+  people.push(userData);
+
   console.log(req.body);
   console.log(req.body.result.contexts);
   console.log(JSON.stringify(req.body.result.contexts));
@@ -153,19 +162,16 @@ function inviteUser(req, res){
   return res.json({
     speech: 'invited',
     displayText: 'invited',
-    "contextOut": [
+    contextOut: [
       {
-        "name": "newInvites",
+        "name": "invites",
         "parameters": {
-          "people": ["1", "2"]
+          "people": people
         },
         "lifespan": 5
       }
     ],
-    "payload": {
-      "peoplePayload": ["1", "2"]
-    },
-    source: "dialog-flow-server"
+    "source": "dialog-flow-server"
   });
 }
 
