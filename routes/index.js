@@ -11,28 +11,27 @@ const passport = require('passport');
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
   console.log('Action : ' + action);
-  console.log(req.isAuthenticated());
-  console.log(req);
   //CHECK FOR LOGIN
   if (!req.isAuthenticated()) {
     res.redirect('login');
-  }
-  switch (action) {
-    case 'checkUserAvailable':
-      checkUserAvailable(req, res);
-      break;
-    case 'createEventInvite':
-      inviteUser(req, res);
-      break;
-    case 'createEvent':
-      createEvent(req, res);
-      break;
-    default:
-      return res.json({
-        speech: 'Could you repeat that?',
-        displayText: 'Could you repeat that?',
-        source: "dialog-server-flow"
-      });
+  }else{
+    switch (action) {
+      case 'checkUserAvailable':
+        checkUserAvailable(req, res);
+        break;
+      case 'createEventInvite':
+        inviteUser(req, res);
+        break;
+      case 'createEvent':
+        createEvent(req, res);
+        break;
+      default:
+        return res.json({
+          speech: 'Could you repeat that?',
+          displayText: 'Could you repeat that?',
+          source: "dialog-server-flow"
+        });
+    }
   }
 });
 
@@ -55,6 +54,7 @@ router.get('/login', passport.authenticate('azuread-openidconnect', { failureRed
 
       console.log('------ LOGIN REQ ------');
       console.log(req);
+      console.log(res);
 
       return res.json({
         speech: 'Please sign in',
