@@ -139,22 +139,26 @@ function checkUserAvailable(req, res) {
 }
 
 
-
-
 function inviteUser(req, res){
   var userData = {
     name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
-  console.log(JSON.stringify(req.body));
+  console.log(req.body);
+  console.log(req.body.contexts);
+  console.log(json.stringify(req.body.contexts));
 
   return res.json({
     speech: 'invited',
     displayText: 'invited',
     outputContexts: [
       {
-        invites : []
+        "name":"invites",
+        "parameters":{
+          "name" : userData.name
+        },
+        "lifespan":5
       }
     ],
     source: "dialog-flow-server"
