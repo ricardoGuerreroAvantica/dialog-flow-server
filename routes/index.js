@@ -12,15 +12,18 @@ router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
   console.log('Action : ' + action);
   //CHECK FOR LOGIN
-  // if (!req.isAuthenticated()) {
-  //   res.redirect('login');
-  // }
+  if (!req.isAuthenticated()) {
+    res.redirect('login');
+  }
   switch (action) {
     case 'checkUserAvailable':
       checkUserAvailable(req, res);
       break;
     case 'createEventInvite':
       inviteUser(req, res);
+      break;
+    case 'createEvent':
+      createEvent(req, res);
       break;
     default:
       return res.json({
@@ -32,21 +35,30 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
-router.get('/', (req, res) => {
-  // check if user is authenticated
-  if (!req.isAuthenticated()) {
-    res.redirect('login');
-  } else {
-    return res.json({
-      displayName: req.user.profile.displayName,
-      emailAddress: req.user.profile.emails[0].address
-    });
-  }
-});
+// router.get('/', (req, res) => {
+//   // check if user is authenticated
+//   if (!req.isAuthenticated()) {
+//     res.redirect('login');
+//   } else {
+//     return res.json({
+//       displayName: req.user.profile.displayName,
+//       emailAddress: req.user.profile.emails[0].address
+//     });
+//   }
+// });
 
 router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
     (req, res) => {
-      res.redirect('/');
+      //res.redirect('/');
+
+      console.log('------ LOGIN REQ ------');
+      console.log(req);
+      
+      return res.json({
+        speech: 'Please sign in',
+        displayText: 'Please sign in',
+        source: "dialog-server-flow"
+      });
     }
 );
 
@@ -57,7 +69,13 @@ router.get('/token',
         if (!err) {
           req.user.profile.displayName = user.body.displayName;
           req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
-          res.redirect('/');
+
+          return res.json({
+            speech: 'Thank you for signing in. What can I do for you?',
+            displayText: 'Thank you for signing in. What can I do for you?',
+            source: "dialog-server-flow"
+          });
+
         } else {
           renderError(err, res);
         }
