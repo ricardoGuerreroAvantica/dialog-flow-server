@@ -154,14 +154,14 @@ function inviteUser(req, res){
     displayText: 'invited',
     outputContexts: [
       {
-        "name": "invites",
-        "parameters": {
-          "people" : [
+        name: "invites",
+        parameters: {
+          people : [
             "1",
             "2"
           ]
         },
-        "lifespan": 5
+        lifespan: 5
       }
     ],
     source: "dialog-flow-server"
