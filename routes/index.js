@@ -146,15 +146,19 @@ function inviteUser(req, res){
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
   console.log(req.body);
-  console.log(req.body.contexts);
-  console.log(JSON.stringify(req.body.contexts));
+  console.log(req.body.result.contexts);
+  console.log(JSON.stringify(req.body.result.contexts));
 
   return res.json({
     speech: 'invited',
     displayText: 'invited',
     outputContexts: [
       {
-        invites : []
+        "name": "invites",
+        "parameters": {
+          "people" : 
+        },
+        "lifespan": 5
       }
     ],
     source: "dialog-flow-server"
