@@ -153,18 +153,18 @@ function inviteUser(req, res){
   return res.json({
     speech: 'invited',
     displayText: 'invited',
-    outputContexts: [
+    "contextOut": [
       {
-        name: "invites",
-        parameters: {
-          people : [
-            "1",
-            "2"
-          ]
+        "name": "newInvites",
+        "parameters": {
+          "people": ["1", "2"]
         },
-        lifespan: 5
+        "lifespan": 5
       }
     ],
+    "payload": {
+      "peoplePayload": ["1", "2"]
+    },
     source: "dialog-flow-server"
   });
 }
