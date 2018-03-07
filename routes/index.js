@@ -139,13 +139,15 @@ function checkUserAvailable(req, res) {
 }
 
 
+
+
 function inviteUser(req, res){
   var userData = {
     name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
     lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
     email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
   }
-  console.log(req.body);
+  console.log(JSON.stringify(req.body));
 
   return res.json({
     speech: 'invited',
