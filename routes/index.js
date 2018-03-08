@@ -10,6 +10,7 @@ var axios = require('axios');
 //  */
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
+  console.log(req);
   console.log('Action : ' + action);
   //CHECK FOR LOGIN
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
@@ -161,7 +162,7 @@ function searchUser(req, res, userData, callback){
       .then((response) => {
         if (response.data.value.length > 1){
         var message = "I found these users with that name \n \n";
-        for (var i in response.data.value){
+        for (var i in response.data .value){
           message += response.data.value[i].displayName + " " + response.data.value[i].surname + "\n";
           message += "Email: " + response.data.value[i].mail + "\n \n";
         }
