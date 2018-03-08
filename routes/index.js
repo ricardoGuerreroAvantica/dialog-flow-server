@@ -10,9 +10,13 @@ var axios = require('axios');
 //  */
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  //sessionID: 'FL5BuwbxMl1OYaqm7oE7-0eD09zDjZWL',
   console.log(req.body.sessionId);
   console.log('Action : ' + action);
+  return res.json({
+    speech: 'TEST SESSION',
+    displayText: 'TEST SESSION',
+    source: "dialog-server-flow"
+  });
   //CHECK FOR LOGIN
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
     return res.json({
