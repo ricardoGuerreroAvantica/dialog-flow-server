@@ -80,6 +80,7 @@ router.get('/login', function (req, res) {
         // cache the refresh token in a cookie and go back to index
         res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
         res.cookie(authHelper.REFRESH_TOKEN_CACHE_KEY, refresh_token);
+        console.log(req);
         res.send('Wolfs');
       } else {
         console.log(JSON.parse(e.data).error_description);
