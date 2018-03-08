@@ -82,7 +82,7 @@ router.get('/login', function (req, res) {
         console.log(req);
         console.log("-- LOG --");
         console.log(access_token);
-        console.log(refreshToken);
+        console.log(refresh_token);
         console.log(state);
         // cache the refresh token in a cookie and go back to index
         res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
