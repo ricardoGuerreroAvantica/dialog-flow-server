@@ -1,29 +1,27 @@
-const express = require('express');
-const router = express.Router();
-const graphHelper = require('../utils/graphHelper.js');
-const eventHelper = require('../utils/eventHelper.js');
-const passport = require('passport');
-
+var express = require('express');
+var router = express.Router();
+var authHelper = require('../authHelper.js');
+var requestUtil = require('../requestUtil.js');
+var eventHelper = require('../utils/eventHelper.js');
+var axios = require('axios');
 
 /**
  * Dialog flow web hook
 //  */
 router.post("/botSpeak", (req, res) => {
+    res.redirect('/');
+});
+
+router.get('/', function (req, res) {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
   console.log('Action : ' + action);
   //CHECK FOR LOGIN
-  if (!req.isAuthenticated()) {
+  if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
     res.redirect('login');
   }else{
     switch (action) {
       case 'checkUserAvailable':
         checkUserAvailable(req, res);
-        break;
-      case 'createEventInvite':
-        inviteUser(req, res);
-        break;
-      case 'createEvent':
-        createEvent(req, res);
         break;
       default:
         return res.json({
@@ -36,256 +34,138 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
-// router.get('/', (req, res) => {
-//   // check if user is authenticated
-//   if (!req.isAuthenticated()) {
-//     res.redirect('login');
-//   } else {
-//     return res.json({
-//       displayName: req.user.profile.displayName,
-//       emailAddress: req.user.profile.emails[0].address
-//     });
-//   }
-// });
-
-router.get('/login', passport.authenticate('azuread-openidconnect', { failureRedirect: '/error' }),
-    (req, res) => {
-      //res.redirect('/');
-
-      console.log('------ LOGIN REQ ------');
-      console.log(req);
-      console.log(res);
-
-      return res.json({
-        speech: 'Please sign in',
-        displayText: 'Please sign in',
-        source: "dialog-server-flow"
-      });
-    }
-);
-
-router.get('/error', (e, res) => {
-  e.innerError = (e.response) ? e.response.text : '';
-  console.log('------ ERROR ------');
-  console.log(e);
-  return res.json({
-    speech: 'Error!',
-    displayText: 'Error!',
-    source: "dialog-server-flow"
-  });
+router.get('/disconnect', function (req, res) {
+  var redirectUri = 'http://localhost:3000';
+  // check for token
+  req.session.destroy();
+  res.clearCookie('nodecookie');
+  res.clearCookie(authHelper.ACCESS_TOKEN_CACHE_KEY);
+  res.clearCookie(authHelper.REFRESH_TOKEN_CACHE_KEY);
+  res.status(200);
+  console.log('Disconnect redirect uri: ' + redirectUri);
+  res.redirect(
+    authHelper.credentials.authority +
+    authHelper.credentials.logout_endpoint +
+    '?post_logout_redirect_uri=' + redirectUri
+  );
 });
 
-
-router.get('/token',
-  passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
-    (req, res) => {
-      graphHelper.getUserData(req.user.accessToken, (err, user) => {
-        if (!err) {
-          req.user.profile.displayName = user.body.displayName;
-          req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
-
-          return res.json({
-            speech: 'Thank you for signing in. What can I do for you?',
-            displayText: 'Thank you for signing in. What can I do for you?',
-            source: "dialog-server-flow"
-          });
-
-        } else {
-          renderError(err, res);
-        }
-      });
-    }
-);
+/* GET home page. */
+router.get('/login', function (req, res) {
+  if (req.query.code !== undefined) {
+    authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token) {
+      if (e === null) {
+        // cache the refresh token in a cookie and go back to index
+        res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
+        res.cookie(authHelper.REFRESH_TOKEN_CACHE_KEY, refresh_token);
+        res.redirect('/');
+      } else {
+        console.log(JSON.parse(e.data).error_description);
+        res.status(500);
+        return res.json({
+          speech : e.data,
+          text : e.data,
+          source : 'dialog-flow-server'
+        });
+      }
+    });
+  } else {
+    return res.json({
+      speech : 'Please sign in to ' + authHelper.getAuthUrl(),
+      text : 'Please sign in to ' + authHelper.getAuthUrl(),
+      source : 'dialog-flow-server'
+    });
+  }
+});
 
 
 function checkUserAvailable(req, res) {
-  var userData = {
-    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  }
-  //2018-03-07
-  var date = req.body.result && req.body.result.parameters.date ? req.body.result.parameters.date : '';
-  //21:00:00
-  var time = req.body.result && req.body.result.parameters.time ? req.body.result.parameters.time : '';
+  wrapRequestAsCallback(req.cookies.REFRESH_TOKEN_CACHE_KEY, {
 
-  searchUser(req, res, userData, (err, response) => {
-
-    var body = {
-      "attendees": eventHelper.getAttendees([userData]),
-      "timeConstraint": eventHelper.getTimeConstraint(date, time),
-      "locationConstraint": {
-        "isRequired": "false",
-        "suggestLocation": "true",
-        "locations": [
-          {
-            "displayName": "Conf Room 32/1368",
-            "locationEmailAddress": "conf32room1368@imgeek.onmicrosoft.com"
-          }
-        ]
-      },
-      "meetingDuration": eventHelper.getDuration(duration)
-    }
-
-    graphHelper.checkUserAvailable(req.user.accessToken, body, (err, response) => {
-      var message = '';
-
-      if (!response.meetingTimeSuggestions.length){
-        message = "Couldn't find any space\n";
-      }else{
-        message = 'I found space:\n';
-        for (var i in response.meetingTimeSuggestions){
-          var slot = response.meetingTimeSuggestions[i];
-          var start = slot.meetingTimeSlot.start.dateTime.replace('T', ' ') + ' UTC';
-          var end = slot.meetingTimeSlot.end.dateTime.replace('T', ' ') + ' UTC';
-          var newStartDate = new Date(start);
-          var newEndDate = new Date(end);
-          message += newStartDate.toString() + ' - ' + newEndDate.toString() + '\n';
-        }
+    onSuccess: function (results) {
+      //GET REQUEST PARAMETERS
+      var userData = {
+        name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
+        lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
+        email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
       }
-      return res.json({
-        speech: message,
-        displayText: message,
-        source: "dialog-flow-server"
-      });
-    });
+      var date = req.body.result.parameters.date;
+      var time = req.body.result.parameters.time;
 
-  });
-
-}
-
-
-function inviteUser(req, res){
-  var userData = {
-    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  }
-
-  searchUser(req, res, userData, (err, response) => {
-    var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
-    var people = [];
-
-    for (var i in contexts){
-      if (contexts[i].name == 'invites'){
-        people = contexts[i].parameters.people;
-      }
-    }
-    people.push(
-      {
-        "emailAddress": {
-          "address": response.mail,
-          "name": response.displayName
-        },
-        "type": "required"
-      }
-    );
-
-    return res.json({
-      speech: 'invited',
-      displayText: 'invited',
-      contextOut: [
-        {
-          "name": "invites",
-          "parameters": {
-            "people": people
+      searchUser(req, res, userData, (err, response) => {
+        axios.post('https://graph.microsoft.com/v1.0/me/findMeetingTimes', {
+          headers : {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + results.access_token
           },
-          "lifespan": 5
-        }
-      ],
-      "source": "dialog-flow-server"
-    });
+          body : {
+            attendees: eventHelper.getAttendees([userData]),
+            timeConstraint: eventHelper.getTimeConstraint(date, time),
+            meetingDuration: eventHelper.getDuration(duration)
+          }
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      });
+
+    },
+    onFailure: function (err) {
+      res.status(err.code);
+      console.log(err.message);
+    }
   });
 }
-
-
-function createEvent(req, res){
-  var contexts = req.body.result && req.body.result.contexts ? req.body.result.contexts : [];
-  var eventContext = {};
-  var invitesContext = {};
-  for (var i in contexts){
-    if (contexts[i].name == 'createevent'){
-      eventContext = contexts[i];
-    }
-    if (contexts[i].name == 'invites'){
-      invitesContext = contexts[i];
-    }
-  }
-  var name = eventContext.parameters.name ? eventContext.parameters.name : '';
-  var date = eventContext.parameters.date ? eventContext.parameters.date : '';
-  var time = eventContext.parameters.time ? eventContext.parameters.time : '';
-  var invites = invitesContext.parameters.people ? invitesContext.parameters.people : [];
-  //30 MINUTES PER REUNION
-  var endTime = addMinutes(new Date(time), 30).toString();
-
-  var body = {
-    "subject": name,
-    "attendees": invites,
-    "start": {
-      "dateTime": date + 'T' + time + '.000Z',
-      "timeZone": "Central Standard Time"
-    },
-    "end": {
-      "dateTime": date + 'T' + endTime + '.000Z',
-      "timeZone": "Central Standard Time"
-    }
-  }
-  console.log(body);
-
-  // graphHelper.createEvent(name, date, invites, (err, res) => {
-  //
-  //   return res.json({
-  //     speech: speech,
-  //     displayText: speech,
-  //     source: "dialog-flow-server"
-  //   });
-  // });
-
-}
-
 
 function searchUser(req, res, userData, callback){
-  graphHelper.searchUser(req.user.accessToken, userData, (err, response) => {
-    if (response.value.length > 1){
-      var message = "I found these users with that name \n \n";
-      for (var i in response.value){
-        message += response.value[i].displayName + " " + response.value[i].surname + "\n";
-        message += "Email: " + response.value[i].mail + "\n \n";
+  wrapRequestAsCallback(req.cookies.REFRESH_TOKEN_CACHE_KEY, {
+
+    onSuccess: function (results) {
+      var name = (userData.name) ? userData.name : ''
+      var filter = '$filter=';
+      if (userData.email){
+        filter += "startswith(mail,'" + userData.email + "')";
+      }else {
+        filter += (userData.name) ? "startswith(displayName,'" + userData.name + "')" : '';
+        filter += (userData.lastname) ? " and startswith(surname,'" + userData.lastname + "')" : '';
       }
-      return res.json({
-        speech: message,
-        displayText: message,
-        source: "dialog-server-flow"
+      axios.get('https://graph.microsoft.com/v1.0/users?' + filter, {
+        headers : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + results.access_token
+        }
+      })
+      .then((response) => {
+        callback(response.data.value);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    }else if (!response.value.length){
-      return res.json({
-        speech: "Can't find someone with that name",
-        displayText: "Can't find someone with that name",
-        source: "dialog-server-flow"
-      });
-    }else {
-      callback(err, {
-          displayName : response.value[0].displayName,
-          givenName : response.value[0].givenName,
-          mail : response.value[0].mail,
-          surname : response.value[0].surname,
-        })
+    },
+    onFailure: function (err) {
+      res.status(err.code);
+      console.log(err.message);
     }
   });
 }
 
 
-router.get('/disconnect', (req, res) => {
-  req.session.destroy(() => {
-    req.logOut();
-    res.clearCookie('graphNodeCookie');
-    res.status(200);
-    res.redirect('/');
+function wrapRequestAsCallback(tokenKey, callback) {
+  authHelper.getTokenFromRefreshToken(tokenKey, function (e, results) {
+    if (results !== null) {
+      callback.onSuccess(results);
+    } else {
+      callback.onFailure({
+        code: 500,
+        message: 'An unexpected error was encountered acquiring access token from refresh token'
+      });
+    }
   });
-});
-
-function addMinutes(date, minutes) {
-    return new Date(date.getTime() + minutes*60000);
 }
 
 module.exports = router;
