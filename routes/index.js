@@ -10,7 +10,8 @@ var axios = require('axios');
 //  */
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  console.log(req);
+  //sessionID: 'FL5BuwbxMl1OYaqm7oE7-0eD09zDjZWL',
+  console.log(req.body.sessionId);
   console.log('Action : ' + action);
   //CHECK FOR LOGIN
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
@@ -75,12 +76,18 @@ router.get('/disconnect', function (req, res) {
 /* GET home page. */
 router.get('/login', function (req, res) {
   if (req.query.code !== undefined) {
-    authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token) {
+    authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
+        console.log("-- REQ LOGIN --");
+        console.log(req);
+        console.log("-- LOG --");
+        console.log(access_token);
+        console.log(refreshToken);
+        console.log(state);
         // cache the refresh token in a cookie and go back to index
         res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
         res.cookie(authHelper.REFRESH_TOKEN_CACHE_KEY, refresh_token);
-        console.log(req);
+
         res.send('Wolfs');
       } else {
         console.log(JSON.parse(e.data).error_description);
