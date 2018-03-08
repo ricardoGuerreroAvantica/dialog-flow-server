@@ -75,6 +75,8 @@ router.get('/disconnect', function (req, res) {
 
 /* GET home page. */
 router.get('/login', function (req, res) {
+  console.log('--- QUERY ---');
+  console.log(req.query)
   if (req.query.code !== undefined) {
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {

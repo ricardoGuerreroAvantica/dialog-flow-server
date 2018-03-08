@@ -22,8 +22,9 @@ function getAuthUrl() {
   return credentials.authority + credentials.authorize_endpoint +
     '?client_id=' + credentials.client_id +
     '&response_type=code' +
-    '&state=123' +
-    '&redirect_uri=' + credentials.redirect_uri;
+    '&redirect_uri=' + credentials.redirect_uri +
+    '&state=12345';
+
 }
 
 /**
