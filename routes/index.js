@@ -9,7 +9,24 @@ var axios = require('axios');
  * Dialog flow web hook
 //  */
 router.post("/botSpeak", (req, res) => {
-    res.redirect('/');
+  var action = req.body.result && req.body.result.action ? req.body.result.action : '';
+  console.log('Action : ' + action);
+  //CHECK FOR LOGIN
+  if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
+    res.redirect('login');
+  }else{
+    switch (action) {
+      case 'checkUserAvailable':
+        checkUserAvailable(req, res);
+        break;
+      default:
+        return res.json({
+          speech: 'Could you repeat that?',
+          displayText: 'Could you repeat that?',
+          source: "dialog-server-flow"
+        });
+    }
+  }
 });
 
 router.get('/', function (req, res) {
@@ -58,7 +75,7 @@ router.get('/login', function (req, res) {
         // cache the refresh token in a cookie and go back to index
         res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
         res.cookie(authHelper.REFRESH_TOKEN_CACHE_KEY, refresh_token);
-        res.redirect('/');
+        res.send('Wolfs');
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
