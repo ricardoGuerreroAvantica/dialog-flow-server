@@ -13,7 +13,11 @@ router.post("/botSpeak", (req, res) => {
   console.log('Action : ' + action);
   //CHECK FOR LOGIN
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
-    res.redirect('login');
+    return res.json({
+      speech : 'Please sign in to ' + authHelper.getAuthUrl(),
+      text : 'Please sign in to ' + authHelper.getAuthUrl(),
+      source : 'dialog-flow-server'
+    });
   }else{
     switch (action) {
       case 'checkUserAvailable':
@@ -79,21 +83,12 @@ router.get('/login', function (req, res) {
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
-        return res.json({
-          speech : e.data,
-          text : e.data,
-          source : 'dialog-flow-server'
-        });
+        return res.send(e.data);
       }
-    });
-  } else {
-    return res.json({
-      speech : 'Please sign in to ' + authHelper.getAuthUrl(),
-      text : 'Please sign in to ' + authHelper.getAuthUrl(),
-      source : 'dialog-flow-server'
     });
   }
 });
+
 
 
 function checkUserAvailable(req, res) {
@@ -108,8 +103,14 @@ function checkUserAvailable(req, res) {
       }
       var date = req.body.result.parameters.date;
       var time = req.body.result.parameters.time;
+      console.log("parameters");
+      console.log(userData);
+      console.log(date);
+      console.log(time);
 
       searchUser(req, res, userData, (err, response) => {
+        console.log(userData);
+
         axios.post('https://graph.microsoft.com/v1.0/me/findMeetingTimes', {
           headers : {
             'Content-Type': 'application/json',
@@ -158,7 +159,32 @@ function searchUser(req, res, userData, callback){
         }
       })
       .then((response) => {
-        callback(response.data.value);
+        if (response.data.value.length > 1){
+        var message = "I found these users with that name \n \n";
+        for (var i in response.data.value){
+          message += response.data.value[i].displayName + " " + response.data.value[i].surname + "\n";
+          message += "Email: " + response.data.value[i].mail + "\n \n";
+        }
+        return res.json({
+          speech: message,
+          displayText: message,
+          source: "dialog-server-flow"
+        });
+      }else if (!response.data.value.length){
+        return res.json({
+          speech: "Can't find someone with that name",
+          displayText: "Can't find someone with that name",
+          source: "dialog-server-flow"
+        });
+      }else {
+        callback(err, {
+            displayName : response.data.value[0].displayName,
+            givenName : response.data.value[0].givenName,
+            mail : response.data.value[0].mail,
+            surname : response.data.value[0].surname,
+          })
+      }
+
       })
       .catch((error) => {
         console.log(error);
