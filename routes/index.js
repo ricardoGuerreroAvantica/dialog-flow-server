@@ -14,8 +14,8 @@ router.post("/botSpeak", (req, res) => {
   console.log(req.body);
   console.log(req);
   return res.json({
-    speech: 'TEST SESSION',
-    displayText: 'TEST SESSION',
+    speech: 'TEST SESSION ',
+    displayText: 'TEST SESSION ',
     source: "dialog-server-flow"
   });
   //CHECK FOR LOGIN
