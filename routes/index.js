@@ -10,13 +10,13 @@ var axios = require('axios');
 //  */
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  console.log(req.body);
-  console.log(req.body.sessionId);
   console.log('Action : ' + action);
+  console.log(req.body);
   console.log(req);
   return res.json({
     speech: 'TEST SESSION',
     displayText: 'TEST SESSION',
+    req : req,
     source: "dialog-server-flow"
   });
   //CHECK FOR LOGIN
