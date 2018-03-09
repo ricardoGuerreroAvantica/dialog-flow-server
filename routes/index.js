@@ -10,14 +10,14 @@ var axios = require('axios');
 //  */
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  console.log('Action : ' + action);
-  console.log(req.body);
-  console.log(req);
-  return res.json({
-    speech: 'TEST SESSION ',
-    displayText: 'TEST SESSION ',
-    source: "dialog-server-flow"
-  });
+  // console.log('Action : ' + action);
+  // console.log(req.body);
+  // console.log(req);
+  // return res.json({
+  //   speech: 'TEST SESSION ',
+  //   displayText: 'TEST SESSION ',
+  //   source: "dialog-server-flow"
+  // });
   //CHECK FOR LOGIN
   if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
     return res.json({
