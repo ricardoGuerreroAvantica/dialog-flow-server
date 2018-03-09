@@ -11,11 +11,12 @@ var axios = require('axios');
 router.post("/botSpeak", (req, res) => {
   var action = req.body.result && req.body.result.action ? req.body.result.action : '';
   console.log('Action : ' + action);
+  console.log(JSON.stringify(req));
   console.log(req.body.result);
   return res.json({
     speech: 'TEST SESSION ',
     displayText: 'TEST SESSION ',
-    req : req,
+    req : JSON.stringify(req),
     source: "dialog-server-flow"
   });
   //CHECK FOR LOGIN
