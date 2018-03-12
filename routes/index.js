@@ -12,18 +12,13 @@ var tokens = {};
  * Dialog flow web hook
 //  */
 router.post("/botSpeak", (req, res) => {
+  console.log(tokens);
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
-
-    console.log('getTokenContext answer');
-    console.log(sessionContext);
-    console.log(sessionContext.parameters);
-    console.log(sessionContext.parameters.key);
-
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
 
-    if (tokens.token && tokens.token.REFRESH_TOKEN_CACHE_KEY === undefined) {
+    if (!token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
         speech: 'Please login',
         displayText: 'Please login ' + authHelper.getAuthUrl(token),
@@ -52,9 +47,9 @@ router.post("/botSpeak", (req, res) => {
 
 function getTokenContext(req, res, callback){
   var tokenContext = getContext(req.body.result.contexts, 'token');
-  if (tokenContext === undefined){
+  if (Object.keys(tokenContext).length === 0){
     var key = uid(25);
-    tokens.key = {
+    tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '',
       REFRESH_TOKEN_CACHE_KEY : ''
     }
