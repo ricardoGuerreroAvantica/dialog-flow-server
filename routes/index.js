@@ -18,23 +18,17 @@ router.post("/botSpeak", (req, res) => {
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
+    console.log('TOKEN : ' + token);
 
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
-
       return res.json({
         speech: 'Please login',
-        displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
+        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
         source: "dialog-server-flow",
-        contextOut : [{
-            name: "token",
-            parameters: {
-              key: sessionContext.parameters.key,
-            },
-            lifespan: 5
-          }
-        ],
-    });
-
+        contextOut : [
+            sessionContext
+        ]
+      });
     }else{
       switch (action) {
         case 'checkUserAvailable':
