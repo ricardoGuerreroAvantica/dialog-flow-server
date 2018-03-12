@@ -18,7 +18,7 @@ router.post("/botSpeak", (req, res) => {
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-    console.log('sessionContext : ' + sessionContext);
+    console.log('sessionContext : ' + JSON.stringify(sessionContext));
     console.log('TOKENS2 : ' + JSON.stringify(tokens));
     console.log('TOKEN : ' + JSON.stringify(token));
 
