@@ -14,6 +14,12 @@ var tokens = {};
 router.post("/botSpeak", (req, res) => {
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
+
+    console.log('getTokenContext answer');
+    console.log(sessionContext);
+    console.log(sessionContext.parameters);
+    console.log(sessionContext.parameters.key);
+
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
 
@@ -21,7 +27,10 @@ router.post("/botSpeak", (req, res) => {
       return res.json({
         speech: 'Please login',
         displayText: 'Please login ' + authHelper.getAuthUrl(token),
-        source: "dialog-server-flow"
+        source: "dialog-server-flow",
+        outputContexts: [
+          sessionContext
+        ]
       });
     }else{
       switch (action) {
@@ -43,7 +52,10 @@ router.post("/botSpeak", (req, res) => {
 
 function getTokenContext(req, res, callback){
   var tokenContext = getContext(req.body.contexts, 'token');
-  if (!tokenContext){
+  console.log('getTokenContext');
+  console.log(req.body);
+  console.log(tokenContext);
+  if (tokenContext === undefined){
     var key = uid(25);
     tokens.key = {
       ACCESS_TOKEN_CACHE_KEY : '',
