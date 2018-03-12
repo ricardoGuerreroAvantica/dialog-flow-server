@@ -51,6 +51,13 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
+router.get("/check", (req, res) => {
+  return res.json({
+    tokens : tokens
+  });
+})
+
+
 function getTokenContext(req, res, callback){
   var tokenContext = getContext(req.body.result.contexts, 'token');
   if (Object.keys(tokenContext).length === 0){
