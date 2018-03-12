@@ -17,8 +17,12 @@ router.post("/botSpeak", (req, res) => {
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-    console.log('sessionContext : ' + JSON.stringify(sessionContext));
+
+    console.log('1');
     console.log('TOKEN : ' + JSON.stringify(token));
+    console.log('2');
+    console.log('sessionContext : ' + JSON.stringify(sessionContext));
+    console.log('3');
 
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
@@ -30,8 +34,10 @@ router.post("/botSpeak", (req, res) => {
         ]
       });
     }
+    console.log('4');
     switch (action) {
       case 'checkUserAvailable':
+      console.log('5');
         checkUserAvailable(req, res, token);
         break;
       default:
@@ -50,6 +56,27 @@ router.post("/botSpeak", (req, res) => {
 
 
 router.get("/check", (req, res) => {
+
+  var key =
+  {"name":"token",
+    "parameters":{
+      "name.original":"Didier",
+      "date":"2018-03-13",
+      "time.original":"at 4pm",
+      "date.original":"tomorrow",
+      "name":"Didier",
+      "time":"16:00:00",
+      "lastname.original":"Cerdas",
+      "key":"sd4hkjfkd7q",
+      "lastname":"Cerdas"
+  },"lifespan":4};
+
+  var data = { sd4hkjfkd7q: "12312312312312312" };
+
+  var res = data['sd4hkjfkd7q'];
+
+  console.log(res);
+
   return res.json({
     tokens : tokens
   });
