@@ -51,9 +51,9 @@ router.post("/botSpeak", (req, res) => {
         displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
         source: "dialog-server-flow",
         outputContexts : [
-          
+          {
             sessionContext
-
+          }
         ]
       });
 
