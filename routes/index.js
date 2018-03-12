@@ -77,10 +77,10 @@ function getContext(contexts, name){
 /* GET home page. */
 router.get('/login', function (req, res) {
   console.log('--- LOGIN ---');
-  console.log(req.query)
+  console.log(req.query.code);
+  console.log(req.query.state);
   if (req.query.state !== undefined && req.query.code !== undefined) {
     var token = req.query.state;
-
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
 
@@ -88,7 +88,7 @@ router.get('/login', function (req, res) {
         tokens.token.REFRESH_TOKEN_CACHE_KEY = refresh_token;
         console.log(tokens);
 
-        res.send('Login successfull');
+        return res.send('Login successfull');
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
