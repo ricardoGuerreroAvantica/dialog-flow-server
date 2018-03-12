@@ -10,6 +10,7 @@ var tokens = {};
 
 /**
  * Dialog flow web hook
+ https://dialog-flow-service.herokuapp.com/login
 //  */
 router.post("/botSpeak", (req, res) => {
   console.log(tokens);
@@ -77,15 +78,15 @@ function getContext(contexts, name){
 /* GET home page. */
 router.get('/login', function (req, res) {
   console.log('--- LOGIN ---');
-  console.log(req.query.code);
-  console.log(req.query.state);
+  console.log('CODE :: ' + req.query.code);
+  console.log('STATE :: ' + req.query.state);
   if (req.query.state !== undefined && req.query.code !== undefined) {
     var token = req.query.state;
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
 
-        tokens.token.ACCESS_TOKEN_CACHE_KEY = access_token;
-        tokens.token.REFRESH_TOKEN_CACHE_KEY = refresh_token;
+        tokens[token].ACCESS_TOKEN_CACHE_KEY = access_token;
+        tokens[token].REFRESH_TOKEN_CACHE_KEY = refresh_token;
         console.log(tokens);
 
         return res.send('Login successfull');
