@@ -13,13 +13,11 @@ var tokens = {};
  https://dialog-flow-service.herokuapp.com/login
 //  */
 router.post("/botSpeak", (req, res) => {
-  console.log('TOKENS1 : ' + JSON.stringify(tokens));
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
     console.log('sessionContext : ' + JSON.stringify(sessionContext));
-    console.log('TOKENS2 : ' + JSON.stringify(tokens));
     console.log('TOKEN : ' + JSON.stringify(token));
 
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
@@ -89,9 +87,6 @@ function getContext(contexts, name){
 
 /* GET home page. */
 router.get('/login', function (req, res) {
-  console.log('--- LOGIN ---');
-  console.log('CODE :: ' + req.query.code);
-  console.log('STATE :: ' + req.query.state);
   if (req.query.state !== undefined && req.query.code !== undefined) {
     var token = req.query.state;
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
