@@ -53,7 +53,7 @@ router.post("/botSpeak", (req, res) => {
 function getTokenContext(req, res, callback){
   var tokenContext = getContext(req.body.contexts, 'token');
   console.log('getTokenContext');
-  console.log(req.body);
+  console.log(req.body.contexts);
   console.log(tokenContext);
   if (tokenContext === undefined){
     var key = uid(25);
