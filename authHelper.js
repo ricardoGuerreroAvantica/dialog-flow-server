@@ -18,12 +18,12 @@ var credentials = {
  * Generate a fully formed uri to use for authentication based on the supplied resource argument
  * @return {string} a fully formed uri with which authentication can be completed
  */
-function getAuthUrl() {
+function getAuthUrl(state) {
   return credentials.authority + credentials.authorize_endpoint +
     '?client_id=' + credentials.client_id +
     '&response_type=code' +
     '&redirect_uri=' + credentials.redirect_uri +
-    '&state=12345';
+    '&state=' + state;
 
 }
 

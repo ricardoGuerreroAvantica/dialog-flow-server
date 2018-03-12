@@ -4,97 +4,87 @@ var authHelper = require('../authHelper.js');
 var requestUtil = require('../requestUtil.js');
 var eventHelper = require('../utils/eventHelper.js');
 var axios = require('axios');
+var uid = require('uid');
+
+var tokens = {};
 
 /**
  * Dialog flow web hook
 //  */
 router.post("/botSpeak", (req, res) => {
-  var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  console.log('Action : ' + action);
-  console.log(req.body.result);
-  return res.json({
-    speech: 'TEST SESSION ',
-    displayText: 'TEST SESSION ',
-    source: "dialog-server-flow"
+  //GENERATE TOKEN CONTEXT FOR LOGIN
+  getTokenContext(req, res, (sessionContext) => {
+    var action = req.body.result && req.body.result.action ? req.body.result.action : '';
+    var token = tokens[sessionContext.parameters.key];
+
+    if (tokens.token && tokens.token.REFRESH_TOKEN_CACHE_KEY === undefined) {
+      return res.json({
+        speech: 'Please login',
+        displayText: 'Please login ' + authHelper.getAuthUrl(token),
+        source: "dialog-server-flow"
+      });
+    }else{
+      switch (action) {
+        case 'checkUserAvailable':
+          checkUserAvailable(req, res);
+          break;
+        default:
+          return res.json({
+            speech: 'Could you repeat that?',
+            displayText: 'Could you repeat that?',
+            source: "dialog-server-flow"
+          });
+      }
+    }
+
   });
-  //CHECK FOR LOGIN
-  if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
-    return res.json({
-      speech : 'Please sign in to ' + authHelper.getAuthUrl(),
-      text : 'Please sign in to ' + authHelper.getAuthUrl(),
-      source : 'dialog-flow-server'
-    });
-  }else{
-    switch (action) {
-      case 'checkUserAvailable':
-        checkUserAvailable(req, res);
-        break;
-      default:
-        return res.json({
-          speech: 'Could you repeat that?',
-          displayText: 'Could you repeat that?',
-          source: "dialog-server-flow"
-        });
+});
+
+
+function getTokenContext(req, res, callback){
+  var tokenContext = getContext(req.body.contexts, 'token');
+  if (!tokenContext){
+    var key = uid(25);
+    tokens.key = {
+      ACCESS_TOKEN_CACHE_KEY : '',
+      REFRESH_TOKEN_CACHE_KEY : ''
+    }
+    tokenContext = {
+      "name": "token",
+      "parameters": {
+        "key" : key
+      },
+      "lifespan": 5
     }
   }
-});
+  callback(tokenContext);
+}
 
-router.get('/', function (req, res) {
-  var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-  console.log('Action : ' + action);
-  //CHECK FOR LOGIN
-  if (req.cookies.REFRESH_TOKEN_CACHE_KEY === undefined) {
-    res.redirect('login');
-  }else{
-    switch (action) {
-      case 'checkUserAvailable':
-        checkUserAvailable(req, res);
-        break;
-      default:
-        return res.json({
-          speech: 'Could you repeat that?',
-          displayText: 'Could you repeat that?',
-          source: "dialog-server-flow"
-        });
+function getContext(contexts, name){
+  for (var i in contexts){
+    if (contexts[i].name === name){
+      return contexts[i];
     }
   }
-});
+  return {};
+}
 
-
-router.get('/disconnect', function (req, res) {
-  var redirectUri = 'http://localhost:3000';
-  // check for token
-  req.session.destroy();
-  res.clearCookie('nodecookie');
-  res.clearCookie(authHelper.ACCESS_TOKEN_CACHE_KEY);
-  res.clearCookie(authHelper.REFRESH_TOKEN_CACHE_KEY);
-  res.status(200);
-  console.log('Disconnect redirect uri: ' + redirectUri);
-  res.redirect(
-    authHelper.credentials.authority +
-    authHelper.credentials.logout_endpoint +
-    '?post_logout_redirect_uri=' + redirectUri
-  );
-});
 
 /* GET home page. */
 router.get('/login', function (req, res) {
-  console.log('--- QUERY ---');
+  console.log('--- LOGIN ---');
   console.log(req.query)
-  if (req.query.code !== undefined) {
+  if (req.query.state !== undefined && req.query.code !== undefined) {
+    var token = req.query.state;
+
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
-        console.log("-- REQ LOGIN --");
-        console.log(req);
-        console.log("-- LOG --");
-        console.log(access_token);
-        console.log(refresh_token);
-        console.log(state);
-        // cache the refresh token in a cookie and go back to index
-        res.cookie(authHelper.ACCESS_TOKEN_CACHE_KEY, access_token);
-        res.cookie(authHelper.REFRESH_TOKEN_CACHE_KEY, refresh_token);
 
-        res.send('Wolfs');
+        tokens.token.ACCESS_TOKEN_CACHE_KEY = access_token;
+        tokens.token.REFRESH_TOKEN_CACHE_KEY = refresh_token;
+        console.log(tokens);
+
+        res.send('Login successful'l);
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
@@ -103,7 +93,6 @@ router.get('/login', function (req, res) {
     });
   }
 });
-
 
 
 function checkUserAvailable(req, res) {
@@ -118,6 +107,7 @@ function checkUserAvailable(req, res) {
       }
       var date = req.body.result.parameters.date;
       var time = req.body.result.parameters.time;
+
       console.log("parameters");
       console.log(userData);
       console.log(date);
