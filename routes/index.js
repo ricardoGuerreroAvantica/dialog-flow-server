@@ -84,7 +84,7 @@ router.get('/login', function (req, res) {
         tokens.token.REFRESH_TOKEN_CACHE_KEY = refresh_token;
         console.log(tokens);
 
-        res.send('Login successful'l);
+        res.send('Login successfull');
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
