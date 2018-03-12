@@ -22,27 +22,18 @@ router.post("/botSpeak", (req, res) => {
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
 
       return res.json({
-        "fulfillmentText": 'Please login',
-        "fulfillmentMessages": [
-          {
-            text: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key)
+        speech: 'Please login',
+        displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
+        source: "dialog-server-flow",
+        outputContexts : [{
+            name: "token",
+            parameters: {
+              key: sessionContext.parameters.key,
+            },
+            lifespan: 5
           }
         ],
-        "source": "dialog-flow-server",
-        "outputContexts": [
-            sessionContext
-        ],
-      });
-      // console.log('SESSION :  ' + JSON.stringify(q));
-      // return res.json({
-      //   speech: 'Please login',
-      //   displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
-      //   source: "dialog-server-flow",
-      //   outputContexts : [{
-      //
-      //   }
-      //   ]
-      // });
+    });
 
     }else{
       switch (action) {
