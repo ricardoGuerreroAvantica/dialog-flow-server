@@ -25,7 +25,7 @@ router.post("/botSpeak", (req, res) => {
         speech: 'Please login',
         displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
         source: "dialog-server-flow",
-        outputContexts : [{
+        contextOut : [{
             name: "token",
             parameters: {
               key: sessionContext.parameters.key,
