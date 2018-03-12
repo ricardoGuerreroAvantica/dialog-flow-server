@@ -41,7 +41,7 @@ router.post("/botSpeak", (req, res) => {
       console.log('SESSION :  ' + JSON.stringify(sessionContext));
       return res.json({
         speech: 'Please login',
-        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
+        displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
         source: "dialog-server-flow",
         outputContexts : [
           sessionContext
