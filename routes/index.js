@@ -38,17 +38,25 @@ router.post("/botSpeak", (req, res) => {
       //     object(EventInput)
       //   },
       // });
-
-      return res.json({
-        speech: 'Please login',
-        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
-        source: "dialog-server-flow",
-        "outputContexts" : [
+      var q = {
+        outputContexts : [
           {
             sessionContext
           }
         ]
+      };
+      console.log(JSON.stringify(q));
+      return res.json({
+        speech: 'Please login',
+        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
+        source: "dialog-server-flow",
+        outputContexts : [
+          
+            sessionContext
+
+        ]
       });
+
     }else{
       switch (action) {
         case 'checkUserAvailable':
