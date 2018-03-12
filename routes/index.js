@@ -29,18 +29,20 @@ router.post("/botSpeak", (req, res) => {
             sessionContext
         ]
       });
-    }else{
-      switch (action) {
-        case 'checkUserAvailable':
-          checkUserAvailable(req, res);
-          break;
-        default:
-          return res.json({
-            speech: 'Could you repeat that?',
-            displayText: 'Could you repeat that?',
-            source: "dialog-server-flow"
-          });
-      }
+    }
+    switch (action) {
+      case 'checkUserAvailable':
+        checkUserAvailable(req, res, token);
+        break;
+      default:
+        return res.json({
+          speech: 'Could you repeat that?',
+          displayText: 'Could you repeat that?',
+          source: "dialog-server-flow",
+          contextOut : [
+              sessionContext
+          ]
+        });
     }
 
   });
@@ -101,9 +103,8 @@ router.get('/login', function (req, res) {
 });
 
 
-function checkUserAvailable(req, res) {
-  wrapRequestAsCallback(req.cookies.REFRESH_TOKEN_CACHE_KEY, {
-
+function checkUserAvailable(req, res, token) {
+  wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       //GET REQUEST PARAMETERS
       var userData = {
@@ -150,8 +151,8 @@ function checkUserAvailable(req, res) {
   });
 }
 
-function searchUser(req, res, userData, callback){
-  wrapRequestAsCallback(req.cookies.REFRESH_TOKEN_CACHE_KEY, {
+function searchUser(req, res, token, userData, callback){
+  wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
 
     onSuccess: function (results) {
       var name = (userData.name) ? userData.name : ''
