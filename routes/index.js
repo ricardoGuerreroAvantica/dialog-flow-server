@@ -38,15 +38,16 @@ router.post("/botSpeak", (req, res) => {
       //     object(EventInput)
       //   },
       // });
-      console.log('SESSION :  ' + JSON.stringify(sessionContext));
-      return res.json({
+      var q = {
         speech: 'Please login',
         displayText: 'SESSION :  ' + JSON.stringify(sessionContext),
         source: "dialog-server-flow",
         outputContexts : [
           sessionContext
         ]
-      });
+      };
+      console.log('SESSION :  ' + JSON.stringify(q));
+      return res.json(q);
 
     }else{
       switch (action) {
