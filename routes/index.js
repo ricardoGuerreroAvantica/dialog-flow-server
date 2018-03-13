@@ -13,7 +13,6 @@ var tokens = {};
  https://dialog-flow-service.herokuapp.com/login
 //  */
 router.post("/botSpeak", (req, res) => {
-  console.log('TOKENS : ' + JSON.stringify(tokens));
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
@@ -33,7 +32,7 @@ router.post("/botSpeak", (req, res) => {
       case 'checkUserAvailable':
         checkUserAvailable(req, res, sessionContext);
         break;
-      case 'invitePerson':
+      case 'createEventInvite':
         invitePerson(req, res, sessionContext);
         break;
       case 'createEvent':
@@ -182,7 +181,7 @@ function checkUserAvailable(req, res, sessionContext) {
         };
 
         requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody),
-          (e, response) =>{
+          (e, response) => {
             var message = '';
             var speech = '';
             if (response.meetingTimeSuggestions.length == 0){

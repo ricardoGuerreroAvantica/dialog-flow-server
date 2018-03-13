@@ -57,9 +57,11 @@ function postData(host, path, accessToken, data, callback) {
   // Set up the request
   var post = https.request(options, function (res) {
     res.on('data', function (chunk) {
-      callback(null, chunk);
+      console.log('Data: ' + chunk);
+      callback(null, JSON.parse(chunk));
     });
   });
+
 
   // write the outbound data to it
   post.write(data);
