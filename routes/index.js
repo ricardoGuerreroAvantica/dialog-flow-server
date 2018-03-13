@@ -109,7 +109,7 @@ router.get('/login', function (req, res) {
 
 
 function createEvent(req, res, sessionContext) {
-  
+
 }
 
 
@@ -183,8 +183,28 @@ function checkUserAvailable(req, res, sessionContext) {
 
         requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody),
           (e, response) =>{
-            console.log('RESULT : ' + response);
-            console.log('RESULT : ' + JSON.stringify(response));
+            var message = '';
+            var speech = '';
+            if (response.meetingTimeSuggestions.length == 0){
+              message = "Sorry couldn't find any space";
+              speech = "Sorry couldn't find any space";
+            }else {
+              message = user.displayName + " is available at: \n";
+              speech = "I found some space, look at these";
+              for (var i in response.meetingTimeSuggestions){
+                var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
+                message += slot.start.dateTime + ' - ' + slot.end.dateTime;
+              }
+            }
+
+            return res.json({
+              speech: speech,
+              displayText: message,
+              source: "dialog-server-flow",
+              contextOut : [
+                  sessionContext
+              ]
+            });
           }
         );
 
