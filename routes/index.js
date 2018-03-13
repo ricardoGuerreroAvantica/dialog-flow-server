@@ -13,16 +13,11 @@ var tokens = {};
  https://dialog-flow-service.herokuapp.com/login
 //  */
 router.post("/botSpeak", (req, res) => {
+  console.log('TOKENS : ' + JSON.stringify(tokens));
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-
-    console.log('1');
-    console.log('TOKEN : ' + JSON.stringify(token));
-    console.log('2');
-    console.log('sessionContext : ' + JSON.stringify(sessionContext));
-    console.log('3');
 
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
@@ -34,11 +29,15 @@ router.post("/botSpeak", (req, res) => {
         ]
       });
     }
-    console.log('4');
     switch (action) {
       case 'checkUserAvailable':
-      console.log('5');
-        checkUserAvailable(req, res, token);
+        checkUserAvailable(req, res, sessionContext);
+        break;
+      case 'invitePerson':
+        invitePerson(req, res, sessionContext);
+        break;
+      case 'createEvent':
+        createEvent(req, res, sessionContext);
         break;
       default:
         return res.json({
@@ -53,34 +52,6 @@ router.post("/botSpeak", (req, res) => {
 
   });
 });
-
-
-router.get("/check", (req, res) => {
-
-  var key =
-  {"name":"token",
-    "parameters":{
-      "name.original":"Didier",
-      "date":"2018-03-13",
-      "time.original":"at 4pm",
-      "date.original":"tomorrow",
-      "name":"Didier",
-      "time":"16:00:00",
-      "lastname.original":"Cerdas",
-      "key":"sd4hkjfkd7q",
-      "lastname":"Cerdas"
-  },"lifespan":4};
-
-  var data = { sd4hkjfkd7q: "12312312312312312" };
-
-  var res = data['sd4hkjfkd7q'];
-
-  console.log(res);
-
-  return res.json({
-    tokens : tokens
-  });
-})
 
 
 function getTokenContext(req, res, callback){
@@ -121,68 +92,116 @@ router.get('/login', function (req, res) {
 
         tokens[token].ACCESS_TOKEN_CACHE_KEY = access_token;
         tokens[token].REFRESH_TOKEN_CACHE_KEY = refresh_token;
-        console.log(tokens);
 
-        return res.send('Login successfull');
+        return res.json({
+          result: 'Login successfull'
+        });
       } else {
         console.log(JSON.parse(e.data).error_description);
         res.status(500);
-        return res.send(e.data);
+        return res.json({
+          result: e.data
+        });
       }
     });
   }
 });
 
 
-function checkUserAvailable(req, res, token) {
-  wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
-    onSuccess: function (results) {
-      //GET REQUEST PARAMETERS
-      var userData = {
-        name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-        lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-        email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-      }
-      var date = req.body.result.parameters.date;
-      var time = req.body.result.parameters.time;
+function createEvent(req, res, sessionContext) {
+  
+}
 
-      console.log("parameters");
-      console.log(userData);
-      console.log(date);
-      console.log(time);
 
-      searchUser(req, res, userData, (err, response) => {
-        console.log(userData);
 
-        axios.post('https://graph.microsoft.com/v1.0/me/findMeetingTimes', {
-          headers : {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + results.access_token
-          },
-          body : {
-            attendees: eventHelper.getAttendees([userData]),
-            timeConstraint: eventHelper.getTimeConstraint(date, time),
-            meetingDuration: eventHelper.getDuration(duration)
+function invitePerson(req, res, sessionContext) {
+  var token = tokens[sessionContext.parameters.key];
+  var userData = {
+    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
+    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
+    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
+  }
+
+  searchUser(req, res, sessionContext, userData, (user) => {
+    wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+      onSuccess: function (results) {
+
+        var invitesContext = getContext(req.body.result.contexts, 'invites');
+        if (Object.keys(invitesContext).length === 0){
+          invitesContext = {
+            "name": "invites",
+            "parameters": {
+              "invites" : [user]
+            },
+            "lifespan": 5
           }
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      });
+        }else{
+          invitesContext.parameters.invites.push(user);
+        }
 
-    },
-    onFailure: function (err) {
-      res.status(err.code);
-      console.log(err.message);
-    }
+        return res.json({
+          speech: user.displayName + ' was invited',
+          displayText: user.displayName + ' was invited',
+          source: "dialog-server-flow",
+          contextOut : [
+            sessionContext,
+            invitesContext
+          ]
+        });
+
+      },
+      onFailure: function (err) {
+        res.status(err.code);
+        console.log(err.message);
+      }
+    });
+
   });
 }
 
-function searchUser(req, res, token, userData, callback){
+
+function checkUserAvailable(req, res, sessionContext) {
+  var token = tokens[sessionContext.parameters.key];
+  var userData = {
+    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
+    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
+    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
+  }
+  var duration = req.body.result && req.body.result.parameters.duration ? req.body.result.parameters.duration : '';
+  var date = req.body.result.parameters.date;
+  var time = req.body.result.parameters.time;
+
+  searchUser(req, res, sessionContext, userData, (user) => {
+
+    wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+      onSuccess: function (results) {
+        var postBody = {
+          attendees: eventHelper.getAttendees([user]),
+          timeConstraint : eventHelper.getTimeConstraint(date, time),
+          meetingDuration : eventHelper.getDuration(duration)
+        };
+
+        requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody),
+          (e, response) =>{
+            console.log('RESULT : ' + response);
+            console.log('RESULT : ' + JSON.stringify(response));
+          }
+        );
+
+      },
+      onFailure: function (err) {
+        res.status(err.code);
+        console.log(err.message);
+      }
+    });
+
+  });
+}
+
+
+
+function searchUser(req, res, sessionContext, userData, callback){
+  var token = tokens[sessionContext.parameters.key];
   wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
 
     onSuccess: function (results) {
@@ -194,6 +213,7 @@ function searchUser(req, res, token, userData, callback){
         filter += (userData.name) ? "startswith(displayName,'" + userData.name + "')" : '';
         filter += (userData.lastname) ? " and startswith(surname,'" + userData.lastname + "')" : '';
       }
+
       axios.get('https://graph.microsoft.com/v1.0/users?' + filter, {
         headers : {
           'Content-Type': 'application/json',
@@ -201,6 +221,7 @@ function searchUser(req, res, token, userData, callback){
           Authorization: 'Bearer ' + results.access_token
         }
       })
+
       .then((response) => {
         if (response.data.value.length > 1){
         var message = "I found these users with that name \n \n";
@@ -213,23 +234,23 @@ function searchUser(req, res, token, userData, callback){
           displayText: message,
           source: "dialog-server-flow"
         });
-      }else if (!response.data.value.length){
-        return res.json({
-          speech: "Can't find someone with that name",
-          displayText: "Can't find someone with that name",
-          source: "dialog-server-flow"
-        });
-      }else {
-        callback(err, {
-            displayName : response.data.value[0].displayName,
-            givenName : response.data.value[0].givenName,
-            mail : response.data.value[0].mail,
-            surname : response.data.value[0].surname,
-          })
-      }
-
+        }else if (!response.data.value.length){
+          return res.json({
+            speech: "Can't find someone with that name",
+            displayText: "Can't find someone with that name",
+            source: "dialog-server-flow"
+          });
+        }else {
+          callback({
+              displayName : response.data.value[0].displayName,
+              givenName : response.data.value[0].givenName,
+              mail : response.data.value[0].mail,
+              surname : response.data.value[0].surname,
+            });
+        }
       })
       .catch((error) => {
+        console.log("Search user error " + error);
         console.log(error);
       });
     },
