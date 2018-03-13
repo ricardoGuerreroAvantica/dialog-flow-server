@@ -10,7 +10,7 @@ var credentials = {
   logout_endpoint: '/oauth2/logout',
   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
-  redirect_uri: ' http://localhost:3000/login',
+  redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
   resouce: 'https://graph.microsoft.com/'
 };
 
