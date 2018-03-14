@@ -5,6 +5,7 @@ var requestUtil = require('../requestUtil.js');
 var eventHelper = require('../utils/eventHelper.js');
 var axios = require('axios');
 var uid = require('uid');
+var moment = require('moment');
 
 var tokens = {};
 
@@ -108,6 +109,49 @@ router.get('/login', function (req, res) {
 
 
 function createEvent(req, res, sessionContext) {
+  var token = tokens[sessionContext.parameters.key];
+  var invitesContext = getContext(req.body.result.contexts, 'invites');
+  var eventContext = getContext(req.body.result.contexts, 'createevent');
+  var name = eventContext.parameters.eventName ? eventContext.parameters.eventName : '';
+  var date = eventContext.parameters.date ? eventContext.parameters.date : '';
+  var startTime = eventContext.parameters.time ? eventContext.parameters.time : '';
+  var invites = invitesContext.parameters.invites ? invitesContext.parameters.invites : [];
+  //30 MINUTES PER REUNION
+  var endTime = moment(startTime, 'HH:mm:ss').add('30', 'minutes').format('HH:mm:ss');
+
+  wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+    onSuccess: function (results) {
+
+      var body = {
+        "subject": name, "attendees": invites,
+        "start": { "dateTime": date + 'T' + startTime + '.000Z', "timeZone": "Central Standard Time" },
+        "end": { "dateTime": date + 'T' + endTime + '.000Z', "timeZone": "Central Standard Time" }
+      }
+      console.log("BODY");
+      console.log(body);
+      requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
+        (e, response) => {
+          var message = JSON.stringify(response);
+          var speech = '';
+
+          return res.json({
+            speech: speech,
+            displayText: message,
+            source: "dialog-server-flow",
+            contextOut : [
+                sessionContext
+            ]
+          });
+        }
+      );
+
+    },
+    onFailure: function (err) {
+      res.status(err.code);
+      console.log(err.message);
+    }
+
+  });
 
 }
 
@@ -126,17 +170,24 @@ function invitePerson(req, res, sessionContext) {
       onSuccess: function (results) {
 
         var invitesContext = getContext(req.body.result.contexts, 'invites');
+        var invite = {
+		      "emailAddress": {
+		        "address":user.mail,
+		        "name": user.displayName
+		      },
+		      "type": "required"
+		    }
+
         if (Object.keys(invitesContext).length === 0){
           invitesContext = {
             "name": "invites",
             "parameters": {
-              "invites" : [user]
+              "invites" : []
             },
-            "lifespan": 5
+            "lifespan": 10
           }
-        }else{
-          invitesContext.parameters.invites.push(user);
         }
+        invitesContext.parameters.invites.push(invite);
 
         return res.json({
           speech: user.displayName + ' was invited',
@@ -292,6 +343,14 @@ function wrapRequestAsCallback(tokenKey, callback) {
       });
     }
   });
+}
+
+function addMinutes(time, minsToAdd) {
+  function D(J){ return (J<10? '0':'') + J;};
+  var piece = time.split(':');
+  var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+
+  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
 }
 
 module.exports = router;

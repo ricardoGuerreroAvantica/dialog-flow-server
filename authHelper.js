@@ -1,7 +1,7 @@
 var OAuth = require('oauth');
 
 //https://dialog-flow-service.herokuapp.com/login
-//http://localhost.com/login
+//http://localhost:3000/login
 // The application registration (must match Azure AD config)
 var credentials = {
   authority: 'https://login.microsoftonline.com/common',
