@@ -10,7 +10,7 @@ var credentials = {
   logout_endpoint: '/oauth2/logout',
   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
-  redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
+  redirect_uri: 'http://localhost:3000/login',
   resouce: 'https://graph.microsoft.com/'
 };
 
@@ -86,9 +86,25 @@ function getTokenFromRefreshToken(refreshToken, callback) {
   );
 }
 
+
+function wrapRequestAsCallback(tokenKey, callback) {
+  getTokenFromRefreshToken(tokenKey, function (e, results) {
+    if (results !== null) {
+      callback.onSuccess(results);
+    } else {
+      callback.onFailure({
+        code: 500,
+        message: 'An unexpected error was encountered acquiring access token from refresh token'
+      });
+    }
+  });
+}
+
+
 exports.credentials = credentials;
 exports.getAuthUrl = getAuthUrl;
 exports.getTokenFromCode = getTokenFromCode;
 exports.getTokenFromRefreshToken = getTokenFromRefreshToken;
+exports.wrapRequestAsCallback = wrapRequestAsCallback;
 exports.ACCESS_TOKEN_CACHE_KEY = 'ACCESS_TOKEN_CACHE_KEY';
 exports.REFRESH_TOKEN_CACHE_KEY = 'REFRESH_TOKEN_CACHE_KEY';
