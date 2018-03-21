@@ -82,7 +82,7 @@ function showEventsByName(req, res, sessionContext, token){
 
 
 function parseEvent(response){
-  var message = 'Found this events for next week \n';
+  var message = 'Found these events \n';
   for (var i in response.data.value){
     message += 'Subject: ' + response.data.value[i].subject + '\n';
     //2018-03-16T13:00:00.0000000
@@ -93,6 +93,7 @@ function parseEvent(response){
     else
       message += 'Location: to be announced' + '\n';
     message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n';
+    message += '\n';
   }
   return {
     speech: (response.data.value.length > 0) ? 'Found these events for next week' : 'There is nothing on your agenda',

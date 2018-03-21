@@ -41,6 +41,7 @@ function parseDate(date){
     moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').local().format('kk:mm');
 }
 
+
 exports.parseDate = parseDate;
 exports.getAttendees = getAttendees;
 exports.getTimeConstraint = getTimeConstraint;

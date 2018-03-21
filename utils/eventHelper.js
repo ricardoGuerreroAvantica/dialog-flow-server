@@ -14,12 +14,19 @@ function createEvent(req, res, sessionContext, token) {
   var duration = eventContext.parameters.duration ? eventContext.parameters.duration : '';
   var invites = invitesContext.parameters.invites ? invitesContext.parameters.invites : [];
   //30 MINUTES PER REUNION
-  var endTime = (duration) ? moment(startTime, 'HH:mm:ss').add( moment(duration, 'HH:mm:ss').format('mm') , 'minutes').format('HH:mm:ss') :
-    moment(startTime, 'HH:mm:ss').add('30', 'minutes').format('HH:mm:ss');
+  var endTime;
 
+  if (duration.unit === 'h'){
+    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'hours').format('HH:mm:ss');
+  }
+  else if (duration.unit === 'min'){
+    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'minutes').format('HH:mm:ss'); 
+  }
+  else {
+    endTime = moment(startTime, 'HH:mm:ss').add('30', 'minutes').format('HH:mm:ss');
+  }
   authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
-
       var body = {
         "subject": name, "attendees": invites,
         "start": { "dateTime": date + 'T' + startTime + '.000Z', "timeZone": "Central Standard Time" },
@@ -31,12 +38,7 @@ function createEvent(req, res, sessionContext, token) {
           var speech = '';
 
           return res.json({
-            speech: speech,
-            displayText: message,
-            source: "dialog-server-flow",
-            contextOut : [
-                sessionContext
-            ]
+            speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]
           });
         }
       );
@@ -65,25 +67,15 @@ function invitePerson(req, res, sessionContext, token) {
       onSuccess: function (results) {
 
         var invitesContext = getContext(req.body.result.contexts, 'invites');
-        var invite = {
-		      "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required"
-		    }
-
+        var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
         if (Object.keys(invitesContext).length === 0){
-          invitesContext = {
-            "name": "invites", "parameters": { "invites" : [] }, "lifespan": 10
-          }
+          invitesContext = { "name": "invites", "parameters": { "invites" : [] }, "lifespan": 10 }
         }
         invitesContext.parameters.invites.push(invite);
 
         return res.json({
-          speech: user.displayName + ' was invited',
-          displayText: user.displayName + ' was invited',
-          source: "dialog-server-flow",
-          contextOut : [
-            sessionContext,
-            invitesContext
-          ]
+          speech: user.displayName + ' was invited', displayText: user.displayName + ' was invited', source: "dialog-server-flow",
+          contextOut : [ sessionContext, invitesContext]
         });
 
       },
@@ -132,12 +124,7 @@ function checkUserAvailable(req, res, sessionContext, token) {
             }
 
             return res.json({
-              speech: speech,
-              displayText: message,
-              source: "dialog-server-flow",
-              contextOut : [
-                  sessionContext
-              ]
+              speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]
             });
           }
         );
