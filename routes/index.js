@@ -60,7 +60,7 @@ router.post("/botSpeak", (req, res) => {
 
 
 function getTokenContext(req, res, callback){
-  var tokenContext = getContext(req.body.result.contexts, 'token');
+  var tokenContext = commons.getContext(req.body.result.contexts, 'token');
   if (Object.keys(tokenContext).length === 0){
     var key = uid(25);
     tokens[key] = {
@@ -75,14 +75,7 @@ function getTokenContext(req, res, callback){
   callback(tokenContext);
 }
 
-function getContext(contexts, name){
-  for (var i in contexts){
-    if (contexts[i].name === name){
-      return contexts[i];
-    }
-  }
-  return {};
-}
+
 
 
 /* GET home page. */

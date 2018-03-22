@@ -1,5 +1,14 @@
 var moment = require('moment');
 
+function getContext(contexts, name){
+  for (var i in contexts){
+    if (contexts[i].name === name){
+      return contexts[i];
+    }
+  }
+  return {};
+}
+
 function getAttendees(invites){
   var result = [];
 

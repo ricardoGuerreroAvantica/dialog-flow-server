@@ -6,8 +6,8 @@ var axios = require('axios');
 var moment = require('moment');
 
 function createEvent(req, res, sessionContext, token) {
-  var invitesContext = getContext(req.body.result.contexts, 'invites');
-  var eventContext = getContext(req.body.result.contexts, 'createevent');
+  var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
+  var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
   var name = eventContext.parameters.eventName ? eventContext.parameters.eventName : '';
   var date = eventContext.parameters.date ? eventContext.parameters.date : '';
   var startTime = eventContext.parameters.time ? eventContext.parameters.time : '';
@@ -20,7 +20,7 @@ function createEvent(req, res, sessionContext, token) {
     endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'hours').format('HH:mm:ss');
   }
   else if (duration.unit === 'min'){
-    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'minutes').format('HH:mm:ss'); 
+    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'minutes').format('HH:mm:ss');
   }
   else {
     endTime = moment(startTime, 'HH:mm:ss').add('30', 'minutes').format('HH:mm:ss');
@@ -66,7 +66,7 @@ function invitePerson(req, res, sessionContext, token) {
     authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
       onSuccess: function (results) {
 
-        var invitesContext = getContext(req.body.result.contexts, 'invites');
+        var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
         var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
         if (Object.keys(invitesContext).length === 0){
           invitesContext = { "name": "invites", "parameters": { "invites" : [] }, "lifespan": 10 }
