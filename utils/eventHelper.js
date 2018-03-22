@@ -32,6 +32,9 @@ function createEvent(req, res, sessionContext, token) {
         "start": { "dateTime": date + 'T' + startTime + '.000Z', "timeZone": "Central Standard Time" },
         "end": { "dateTime": date + 'T' + endTime + '.000Z', "timeZone": "Central Standard Time" }
       }
+      console.log("BODY");
+      console.log(body);
+      
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
         (e, response) => {
           var speech = response.subject + 'created\n';
