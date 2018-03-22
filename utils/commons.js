@@ -36,7 +36,7 @@ function getTimeConstraint(date, time){
           "timeZone": "Central America Standard Time"
         },
         "end": {
-          "dateTime": date + 'T23:59:59.000Z',
+          "dateTime": date + 'T' + moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add('2', 'hours').format('HH:mm:ss') + '.000Z',
           "timeZone": "Central America Standard Time"
         }
       }
