@@ -34,8 +34,15 @@ function createEvent(req, res, sessionContext, token) {
       }
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
         (e, response) => {
-          var message = JSON.stringify(response);
-          var speech = '';
+          var speech = response.subject + 'created\n';
+          var message = 'Subject: ' + response.data.value[i].subject + '\n';
+          message += 'Starts at: ' + commons.parseDate(response.data.value[i].start.dateTime) + '\n';
+          message += 'Ends at: ' + commons.parseDate(response.data.value[i].end.dateTime) + '\n';
+          if (response.data.value[i].location.displayName)
+            message += 'Location: ' + response.data.value[i].location.displayName + '\n';
+          else
+            message += 'Location: to be announced' + '\n';
+          message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n';
 
           return res.json({
             speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]

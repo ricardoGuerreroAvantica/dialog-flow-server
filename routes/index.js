@@ -59,6 +59,9 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
+
+
+
 function getTokenContext(req, res, callback){
   var tokenContext = commons.getContext(req.body.result.contexts, 'token');
   if (Object.keys(tokenContext).length === 0){
@@ -98,8 +101,6 @@ router.get('/login', function (req, res) {
     });
   }
 });
-
-
 
 
 
