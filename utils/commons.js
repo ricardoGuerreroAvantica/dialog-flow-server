@@ -51,6 +51,7 @@ function parseDate(date){
 }
 
 
+exports.getContext = getContext;
 exports.parseDate = parseDate;
 exports.getAttendees = getAttendees;
 exports.getTimeConstraint = getTimeConstraint;
