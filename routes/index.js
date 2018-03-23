@@ -22,7 +22,7 @@ router.post("/botSpeak", (req, res) => {
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
         speech: 'Please login',
-        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
+        displayText: 'Please login [link](' + authHelper.getAuthUrl(sessionContext.parameters.key) + ')',
         source: "dialog-server-flow",
         contextOut : [
             sessionContext
@@ -71,6 +71,19 @@ router.get('/checkDate', (req, res) => {
   //console.log(moment(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss'));
   res.json({data : 'hi'});
 });
+
+
+router.get('/privacy', (req, res) => {
+
+  res.json({info : 'soon'});
+});
+
+
+router.get('/terms', (req, res) => {
+
+  res.json({info : 'soon'});
+});
+
 
 
 
