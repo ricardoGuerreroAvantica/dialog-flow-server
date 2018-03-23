@@ -9,43 +9,46 @@ function createEvent(req, res, sessionContext, token) {
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
   var name = eventContext.parameters.eventName ? eventContext.parameters.eventName : '';
-  var date = eventContext.parameters.date ? eventContext.parameters.date : '';
-  var startTime = eventContext.parameters.time ? eventContext.parameters.time : '';
-  var duration = eventContext.parameters.duration ? eventContext.parameters.duration : '';
   var invites = invitesContext.parameters.invites ? invitesContext.parameters.invites : [];
-  //30 MINUTES PER REUNION
-  var endTime;
 
+  var startDate = startDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
+    .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var endDate;
+
+  var duration = eventContext.parameters.duration ? eventContext.parameters.duration : '';
   if (duration.unit === 'h'){
-    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'hours').format('HH:mm:ss');
+    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
+      .add( duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   }
   else if (duration.unit === 'min'){
-    endTime = moment(startTime, 'HH:mm:ss').add( duration.amount, 'minutes').format('HH:mm:ss');
+    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
+      .add( duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   }
   else {
-    endTime = moment(startTime, 'HH:mm:ss').add('30', 'minutes').format('HH:mm:ss');
+    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
+      .add( '30', 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   }
   authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var body = {
         "subject": name, "attendees": invites,
-        "start": { "dateTime": date + 'T' + startTime + '.000Z', "timeZone": "Central Standard Time" },
-        "end": { "dateTime": date + 'T' + endTime + '.000Z', "timeZone": "Central Standard Time" }
+        "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
+        "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
       }
-      console.log("BODY");
-      console.log(body);
-      
+      console.log(JSON.stringify(body, null, 2));
+
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
         (e, response) => {
+
           var speech = response.subject + 'created\n';
-          var message = 'Subject: ' + response.data.value[i].subject + '\n';
-          message += 'Starts at: ' + commons.parseDate(response.data.value[i].start.dateTime) + '\n';
-          message += 'Ends at: ' + commons.parseDate(response.data.value[i].end.dateTime) + '\n';
-          if (response.data.value[i].location.displayName)
-            message += 'Location: ' + response.data.value[i].location.displayName + '\n';
+          var message = 'Subject: ' + response.subject + '\n';
+          message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
+          message += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
+          if (response.location.displayName)
+            message += 'Location: ' + response.location.displayName + '\n';
           else
             message += 'Location: to be announced' + '\n';
-          message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n';
+          message += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
 
           return res.json({
             speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]

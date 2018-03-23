@@ -27,17 +27,19 @@ function getAttendees(invites){
 }
 
 function getTimeConstraint(date, time){
+  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   var result = {
     "timeslots": [
       {
         "start": {
-          "dateTime": date + 'T' + time + '.000Z',
-          "timeZone": "Central America Standard Time"
+          "dateTime": startDate + '.000Z',
+          "timeZone": "UTC"
         },
         "end": {
-          "dateTime": date + 'T' + moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add('2', 'hours').format('HH:mm:ss') + '.000Z',
-          "timeZone": "Central America Standard Time"
+          "dateTime": endDate + '.000Z',
+          "timeZone": "UTC"
         }
       }
     ]
@@ -46,7 +48,6 @@ function getTimeConstraint(date, time){
 }
 
 function parseDate(date){
-
   /** CONVERT TO UTC
   moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
   */

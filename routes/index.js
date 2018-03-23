@@ -58,6 +58,19 @@ router.post("/botSpeak", (req, res) => {
   });
 });
 
+var moment = require('moment');
+router.get('/checkDate', (req, res) => {
+  var date = '2018-03-26';
+  var time = '08:00:00';
+  console.log(moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss'));
+  var date2 = '2018-03-27';
+  var time2 = '13:00:00';
+  console.log(moment.utc(date2 + ' ' + time2, 'YYYY-MM-DD HH:mm:ss').utcOffset("-05:00").format('YYYY-MM-DDTHH:mm:ss'));
+  //var date = '2018-03-26';
+  //var time = '18:30:00';
+  //console.log(moment(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss'));
+  res.json({data : 'hi'});
+});
 
 
 
