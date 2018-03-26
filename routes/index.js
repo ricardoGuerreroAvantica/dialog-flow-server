@@ -18,11 +18,11 @@ router.post("/botSpeak", (req, res) => {
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-    if (token === undefined){
+    if (typeof token === undefined){
       console.log('Error reading token');
       disconnect();
     }
-    if (action == 'disconnect' || token === undefined){
+    if (action == 'disconnect'){
       console.log('Disconnecting');
       disconnect();
     }
@@ -93,10 +93,7 @@ function disconnect(req, res) {
 function getTokenContext(req, res, callback){
   var tokenContext = commons.getContext(req.body.result.contexts, 'token');
 
-  if (typeof tokenContext === undefined ||
-    typeof tokenContext.parameters === undefined ||
-    typeof tokenContext.parameters.key === undefined){
-
+  if (typeof tokenContext === undefined || (typeof tokenContext !== undefined && typeof tokenContext.parameters.key !== undefined)){
     var key = uid(25);
     tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '',
