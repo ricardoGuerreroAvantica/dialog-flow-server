@@ -19,11 +19,11 @@ router.post("/botSpeak", (req, res) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
     if (token === undefined){
-      console.console.log('Error reading token');
+      console.log('Error reading token');
       disconnect();
     }
     if (action == 'disconnect' || token === undefined){
-      console.console.log('Disconnecting');
+      console.log('Disconnecting');
       disconnect();
     }
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
