@@ -48,6 +48,9 @@ router.post("/botSpeak", (req, res) => {
       case 'showEventsByName':
         userHelper.showEventsByName(req, res, sessionContext, token);
         break;
+      case 'disconnect':
+        disconnect();
+        break;
       default:
         return res.json({
           speech: 'Could you repeat that?', displayText: 'Could you repeat that?',
@@ -56,20 +59,6 @@ router.post("/botSpeak", (req, res) => {
     }
 
   });
-});
-
-var moment = require('moment');
-router.get('/checkDate', (req, res) => {
-  var date = '2018-03-26';
-  var time = '08:00:00';
-  console.log(moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss'));
-  var date2 = '2018-03-27';
-  var time2 = '13:00:00';
-  console.log(moment.utc(date2 + ' ' + time2, 'YYYY-MM-DD HH:mm:ss').utcOffset("-05:00").format('YYYY-MM-DDTHH:mm:ss'));
-  //var date = '2018-03-26';
-  //var time = '18:30:00';
-  //console.log(moment(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss'));
-  res.json({data : 'hi'});
 });
 
 
@@ -86,11 +75,20 @@ router.get('/terms', (req, res) => {
 
 
 
+function disconnect(req, res) {
+  var tokenContext = {
+    "name": "token", "parameters": {}, "lifespan": 10 }
+  return res.json({
+    speech: 'Disconnected...', displayText: 'Disconnected...',
+    source: "dialog-server-flow", contextOut : [ sessionContext ]
+  });
+}
+
 
 
 function getTokenContext(req, res, callback){
   var tokenContext = commons.getContext(req.body.result.contexts, 'token');
-  if (Object.keys(tokenContext).length === 0){
+  if (Object.keys(tokenContext).length === 0 || tokenContext.parameters.key === undefined){
     var key = uid(25);
     tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '',
