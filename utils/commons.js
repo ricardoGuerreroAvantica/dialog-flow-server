@@ -6,7 +6,7 @@ function getContext(contexts, name){
       return contexts[i];
     }
   }
-  return {};
+  return undefined;
 }
 
 function getAttendees(invites){

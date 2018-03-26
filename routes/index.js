@@ -92,17 +92,20 @@ function disconnect(req, res) {
 
 function getTokenContext(req, res, callback){
   var tokenContext = commons.getContext(req.body.result.contexts, 'token');
-  if (Object.keys(tokenContext).length === 0 || tokenContext.parameters.key === undefined){
+
+  if (typeof tokenContext === undefined ||
+    typeof tokenContext.parameters === undefined ||
+    typeof tokenContext.parameters.key === undefined){
+
     var key = uid(25);
     tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '',
       REFRESH_TOKEN_CACHE_KEY : ''
     }
     tokenContext = {
-      "name": "token", "parameters": { "key" : key }, "lifespan": 10 }
-  }else{
-    tokenContext.lifespan = 10;
+      "name": "token", "parameters": { "key" : key }}
   }
+  tokenContext.lifespan = 10;
   callback(tokenContext);
 }
 
