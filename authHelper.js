@@ -10,6 +10,7 @@ var credentials = {
   logout_endpoint: '/oauth2/logout',
   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
+  scope : 'Calendars.Read.Shared Calendars.ReadWrite User.Read User.ReadBasicAll'
   redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
   resouce: 'https://graph.microsoft.com/'
 };
@@ -22,6 +23,7 @@ function getAuthUrl(state) {
   return credentials.authority + credentials.authorize_endpoint +
     '?client_id=' + credentials.client_id +
     '&response_type=code' +
+    '&scope=' + credentials.scope +
     '&redirect_uri=' + credentials.redirect_uri +
     '&state=' + state;
 }
