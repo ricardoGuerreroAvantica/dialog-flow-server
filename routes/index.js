@@ -18,7 +18,14 @@ router.post("/botSpeak", (req, res) => {
   getTokenContext(req, res, (sessionContext) => {
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-
+    if (token === undefined){
+      console.console.log('Error reading token');
+      disconnect();
+    }
+    if (action == 'disconnect' || token === undefined){
+      console.console.log('Disconnecting');
+      disconnect();
+    }
     if (!token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
         speech: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
@@ -47,9 +54,6 @@ router.post("/botSpeak", (req, res) => {
         break;
       case 'showEventsByName':
         userHelper.showEventsByName(req, res, sessionContext, token);
-        break;
-      case 'disconnect':
-        disconnect();
         break;
       default:
         return res.json({
