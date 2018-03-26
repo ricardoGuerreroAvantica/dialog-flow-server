@@ -40,15 +40,15 @@ function createEvent(req, res, sessionContext, token) {
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
         (e, response) => {
 
-          var speech = response.subject + 'created\n';
-          var message = 'Subject: ' + response.subject + '\n';
-          message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
-          message += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
+          var message = response.subject + 'created\n';
+          var speech = 'Subject: ' + response.subject + '\n';
+          speech += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
+          speech += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
           if (response.location.displayName)
-            message += 'Location: ' + response.location.displayName + '\n';
+            speech += 'Location: ' + response.location.displayName + '\n';
           else
-            message += 'Location: to be announced' + '\n';
-          message += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
+            speech += 'Location: to be announced' + '\n';
+          speech += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
 
           return res.json({
             speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]
@@ -128,11 +128,11 @@ function checkUserAvailable(req, res, sessionContext, token) {
             if (response.meetingTimeSuggestions.length == 0){
               message, speech = "Sorry couldn't find any space";
             }else {
-              message = user.displayName + " is available at: \n";
-              speech = "I found some space, look at these";
+              speech = user.displayName + " is available at: \n";
+              message = "I found some space, look at these";
               for (var i in response.meetingTimeSuggestions){
                 var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n';
+                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n';
               }
             }
 

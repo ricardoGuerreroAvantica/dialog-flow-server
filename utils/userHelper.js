@@ -82,22 +82,22 @@ function showEventsByName(req, res, sessionContext, token){
 
 
 function parseEvent(response){
-  var message = 'Found these events \n';
+  var speech = 'Found these events \n';
   for (var i in response.data.value){
-    message += 'Subject: ' + response.data.value[i].subject + '\n';
+    speech += 'Subject: ' + response.data.value[i].subject + '\n';
     //2018-03-16T13:00:00.0000000
-    message += 'Starts at: ' + commons.parseDate(response.data.value[i].start.dateTime) + '\n';
-    message += 'Ends at: ' + commons.parseDate(response.data.value[i].end.dateTime) + '\n';
+    speech += 'Starts at: ' + commons.parseDate(response.data.value[i].start.dateTime) + '\n';
+    speech += 'Ends at: ' + commons.parseDate(response.data.value[i].end.dateTime) + '\n';
     if (response.data.value[i].location.displayName)
-      message += 'Location: ' + response.data.value[i].location.displayName + '\n';
+      speech += 'Location: ' + response.data.value[i].location.displayName + '\n';
     else
-      message += 'Location: to be announced' + '\n';
-    message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n';
-    message += '\n';
+      speech += 'Location: to be announced' + '\n';
+    speech += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n';
+    speech += '\n';
   }
   return {
-    speech: (response.data.value.length > 0) ? 'Found these events for next week' : 'There is nothing on your agenda',
-    displayText: (response.data.value.length > 0) ? message : 'There is nothing on your agenda',
+    speech: (response.data.value.length > 0) ? speech : 'There is nothing on your agenda',
+    displayText: (response.data.value.length > 0) ? 'Found these events for next week' : 'There is nothing on your agenda',
     source: "dialog-server-flow"
   };
 }
