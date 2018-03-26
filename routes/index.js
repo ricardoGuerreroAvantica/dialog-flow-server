@@ -94,7 +94,7 @@ function getTokenContext(req, res, callback){
   var tokenContext = commons.getContext(req.body.result.contexts, 'token');
   console.log('Token context');
   console.log(tokenContext);
-  if (tokenContext && tokenContext.parameters && tokenContext.parameters.key){
+  if (!tokenContext || !tokenContext.parameters || !tokenContext.parameters.key){
     var key = uid(25);
     tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '',
