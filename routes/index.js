@@ -14,20 +14,25 @@ var tokens = {};
  https://dialog-flow-service.herokuapp.com/login
 //  */
 router.post("/botSpeak", (req, res) => {
-  //GENERATE TOKEN CONTEXT FOR LOGIN
-  getTokenContext(req, res, (sessionContext) => {
-    console.log("Tokens");
-    console.log(tokens);
-    var action = req.body.result && req.body.result.action ? req.body.result.action : '';
-    var token = tokens[sessionContext.parameters.key];
-    console.log(token);
-    if (action === 'disconnect'){
-      console.log('Disconnecting');
-      disconnect(req, res);
+  var action = req.body.result && req.body.result.action;
+  if (action === 'disconnect'){
+    console.log('Disconnecting');
+    disconnect(req, res);
+  }
+
+  setToken(req, res, (tokenContext) => {
+    var key = tokenContext.parameters.key;
+
+    console.log("Token Context: " + tokenContext);
+    console.log("Tokens : " + tokens);
+
+    if (!tokens[key]){
+      return res.json({
+        speech: 'Please login', displayText: 'Please login',
+        source: "dialog-server-flow", contextOut : [ tokenContext ]
+      });
     }
-    if (!token || !token.REFRESH_TOKEN_CACHE_KEY) {
-      disconnect(req, res);
-    }
+
     switch (action) {
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionContext, token);
@@ -58,6 +63,23 @@ router.post("/botSpeak", (req, res) => {
 });
 
 
+function setToken(req, res, callback){
+  var context = commons.getContext(req.body.result.contexts, 'token');
+
+  if (!context || !context.parameters){
+    context = {
+      "name": "token", "parameters": { "key" : uid(25) }
+    }
+    tokens[context.parameters.key] = {
+      ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
+    }
+  }
+  tokenContext.lifespan = 10;
+  callback(context);
+}
+
+
+
 router.get('/privacy', (req, res) => {
 
   res.json({info : 'soon'});
@@ -82,22 +104,6 @@ function disconnect(req, res) {
 
 
 
-function getTokenContext(req, res, callback){
-  var tokenContext = commons.getContext(req.body.result.contexts, 'token');
-  console.log('Token context');
-  console.log(tokenContext);
-  if (!tokenContext || !tokenContext.parameters || !tokenContext.parameters.key){
-    var key = uid(25);
-    tokens[key] = {
-      ACCESS_TOKEN_CACHE_KEY : '',
-      REFRESH_TOKEN_CACHE_KEY : ''
-    }
-    tokenContext = {
-      "name": "token", "parameters": { "key" : key }}
-  }
-  tokenContext.lifespan = 10;
-  callback(tokenContext);
-}
 
 
 
