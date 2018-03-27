@@ -10,15 +10,10 @@ var credentials = {
   logout_endpoint: '/oauth2/logout',
   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
-  scope : 'https%3A%2F%2Fgraph.microsoft.com%2Fcalendars.Read.Shared%20' +
-  'https%3A%2F%2Fgraph.microsoft.com%2Fcalendars.ReadWrite%20' +
-  'https%3A%2F%2Fgraph.microsoft.com%2FUser.Read%20' +
-  'https%3A%2F%2Fgraph.microsoft.com%2FUser.ReadBasicAll%20',
+  scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
   redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
   resouce: 'https://graph.microsoft.com/'
 };
-
-//Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll
 
 /**
  * Generate a fully formed uri to use for authentication based on the supplied resource argument
