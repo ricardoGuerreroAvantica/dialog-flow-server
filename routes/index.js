@@ -23,10 +23,10 @@ router.post("/botSpeak", (req, res) => {
     console.log(token);
     if (action === 'disconnect'){
       console.log('Disconnecting');
-      disconnect();
+      disconnect(req, res);
     }
     if (!token || !token.REFRESH_TOKEN_CACHE_KEY) {
-      disconnect();
+      disconnect(req, res);
     }
     switch (action) {
       case 'checkUserAvailable':
