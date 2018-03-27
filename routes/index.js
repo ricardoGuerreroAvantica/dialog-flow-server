@@ -22,11 +22,11 @@ router.post("/botSpeak", (req, res) => {
 
   setToken(req, res, (tokenContext) => {
     var key = tokenContext.parameters.key;
-
+    var token = tokens[key];
     console.log("Token Context: " + tokenContext);
     console.log("Tokens : " + tokens);
 
-    if (!tokens[key]){
+    if (!token){
       return res.json({
         speech: 'Please login', displayText: 'Please login',
         source: "dialog-server-flow", contextOut : [ tokenContext ]
@@ -35,27 +35,27 @@ router.post("/botSpeak", (req, res) => {
 
     switch (action) {
       case 'checkUserAvailable':
-        eventHelper.checkUserAvailable(req, res, sessionContext, token);
+        eventHelper.checkUserAvailable(req, res, tokenContext, token);
         break;
       case 'createEventInvite':
-        eventHelper.invitePerson(req, res, sessionContext, token);
+        eventHelper.invitePerson(req, res, tokenContext, token);
         break;
       case 'createEvent':
-        eventHelper.createEvent(req, res, sessionContext, token);
+        eventHelper.createEvent(req, res, tokenContext, token);
         break;
       case 'showEvents':
-        userHelper.showAllEvents(req, res, sessionContext, token);
+        userHelper.showAllEvents(req, res, tokenContext, token);
         break;
       case 'showPeriodEvents':
-        userHelper.showPeriodEvents(req, res, sessionContext, token);
+        userHelper.showPeriodEvents(req, res, tokenContext, token);
         break;
       case 'showEventsByName':
-        userHelper.showEventsByName(req, res, sessionContext, token);
+        userHelper.showEventsByName(req, res, tokenContext, token);
         break;
       default:
         return res.json({
           speech: 'Could you repeat that?', displayText: 'Could you repeat that?',
-          source: "dialog-server-flow", contextOut : [ sessionContext ]
+          source: "dialog-server-flow", contextOut : [ tokenContext ]
         });
     }
 
