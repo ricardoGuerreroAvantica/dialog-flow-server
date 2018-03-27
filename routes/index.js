@@ -23,10 +23,10 @@ router.post("/botSpeak", (req, res) => {
   setToken(req, res, (tokenContext) => {
     var key = tokenContext.parameters.key;
     var token = tokens[key];
-    console.log("Token Context: " + tokenContext);
-    console.log("Tokens : " + tokens);
+    console.log("Token Context: " + JSON.stirngify(tokenContext));
+    console.log("Tokens : " + JSON.stirngify(tokens));
 
-    if (!token){
+    if (!token || !token.REFRESH_TOKEN_CACHE_KEY){
       return res.json({
         speech: 'Please login', displayText: 'Please login',
         source: "dialog-server-flow", contextOut : [ tokenContext ]
@@ -66,7 +66,7 @@ router.post("/botSpeak", (req, res) => {
 function setToken(req, res, callback){
   var context = commons.getContext(req.body.result.contexts, 'token');
 
-  if (!context || !context.parameters){
+  if (!context || !context.parameters || !context.parameters.key){
     context = {
       "name": "token", "parameters": { "key" : uid(25) }
     }
