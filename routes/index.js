@@ -75,8 +75,8 @@ function disconnect(req, res) {
   var tokenContext = {
     "name": "token", "parameters": {}, "lifespan": 10 }
   return res.json({
-    speech: 'You are disconnect. Please login', displayText: 'You are disconnect. Please login',
-    source: "dialog-server-flow", contextOut : [ sessionContext ]
+    speech: 'You are disconnected. Please login', displayText: 'You are disconnected. Please login',
+    source: "dialog-server-flow", contextOut : [ tokenContext ]
   });
 }
 
