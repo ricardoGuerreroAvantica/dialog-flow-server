@@ -23,8 +23,8 @@ router.post("/botSpeak", (req, res) => {
   setToken(req, res, (tokenContext) => {
     var key = tokenContext.parameters.key;
     var token = tokens[key];
-    console.log("Token Context: " + JSON.stirngify(tokenContext));
-    console.log("Tokens : " + JSON.stirngify(tokens));
+    console.log("Token Context: " + JSON.stringify(tokenContext));
+    console.log("Tokens : " + JSON.stringify(tokens));
 
     if (!token || !token.REFRESH_TOKEN_CACHE_KEY){
       return res.json({
