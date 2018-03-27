@@ -16,25 +16,17 @@ var tokens = {};
 router.post("/botSpeak", (req, res) => {
   //GENERATE TOKEN CONTEXT FOR LOGIN
   getTokenContext(req, res, (sessionContext) => {
+    console.log("Tokens");
+    console.log(tokens);
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-    if (typeof token === undefined){
-      console.log('Error reading token');
-      disconnect();
-    }
-    if (action == 'disconnect'){
+
+    if (action === 'disconnect'){
       console.log('Disconnecting');
       disconnect();
     }
-    if (token.REFRESH_TOKEN_CACHE_KEY === undefined || !token.REFRESH_TOKEN_CACHE_KEY) {
-      return res.json({
-        speech: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
-        displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
-        source: "dialog-server-flow",
-        contextOut : [
-            sessionContext
-        ]
-      });
+    if (!token || !token.REFRESH_TOKEN_CACHE_KEY) {
+      disconnect();
     }
     switch (action) {
       case 'checkUserAvailable':
@@ -83,7 +75,7 @@ function disconnect(req, res) {
   var tokenContext = {
     "name": "token", "parameters": {}, "lifespan": 10 }
   return res.json({
-    speech: 'Disconnected...', displayText: 'Disconnected...',
+    speech: 'You are disconnect. Please login', displayText: 'You are disconnect. Please login',
     source: "dialog-server-flow", contextOut : [ sessionContext ]
   });
 }
