@@ -74,7 +74,7 @@ function setToken(req, res, callback){
       ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
     }
   }
-  tokenContext.lifespan = 10;
+  context.lifespan = 10;
   callback(context);
 }
 
