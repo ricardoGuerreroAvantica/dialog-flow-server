@@ -3,13 +3,24 @@ var OAuth = require('oauth');
 //https://dialog-flow-service.herokuapp.com/login
 //http://localhost:3000/login
 // The application registration (must match Azure AD config)
+// var credentials = {
+//   authority: 'https://login.microsoftonline.com/common',
+//   authorize_endpoint: '/oauth2/authorize',
+//   token_endpoint: '/oauth2/token',
+//   logout_endpoint: '/oauth2/logout',
+//   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
+//   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
+//   scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
+//   redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
+//   resouce: 'https://graph.microsoft.com/'
+// };
 var credentials = {
   authority: 'https://login.microsoftonline.com/common',
   authorize_endpoint: '/oauth2/authorize',
   token_endpoint: '/oauth2/token',
   logout_endpoint: '/oauth2/logout',
-  client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
-  client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
+  client_id: '497dbf94-b859-4c20-8486-61ac556fa967',
+  client_secret: '87E9D6VYVagZkdy0IR/UA7HKAsRxGX6xJR6bA+vmdyA=',
   scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
   redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
   resouce: 'https://graph.microsoft.com/'
