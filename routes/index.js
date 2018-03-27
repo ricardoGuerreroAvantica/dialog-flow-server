@@ -28,7 +28,7 @@ router.post("/botSpeak", (req, res) => {
 
     if (!token || !token.REFRESH_TOKEN_CACHE_KEY){
       return res.json({
-        speech: 'Please login', displayText: 'Please login',
+        speech: 'Please login ' + authHelper.getAuthUrl(key), displayText: 'Please login',
         source: "dialog-server-flow", contextOut : [ tokenContext ]
       });
     }
