@@ -110,13 +110,15 @@ function disconnect(req, res) {
 
 /* GET home page. */
 router.get('/login', function (req, res) {
-  if (req.query.state !== undefined && req.query.code !== undefined) {
-    var token = req.query.state;
+  if (req.query.state && req.query.code) {
+    var key = req.query.state;
+    console.log("Tokens by login : " + JSON.stringify(tokens));
+    console.log("Tokens by login : " + key);
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
 
-        tokens[token].ACCESS_TOKEN_CACHE_KEY = access_token;
-        tokens[token].REFRESH_TOKEN_CACHE_KEY = refresh_token;
+        tokens[key].ACCESS_TOKEN_CACHE_KEY = access_token;
+        tokens[key].REFRESH_TOKEN_CACHE_KEY = refresh_token;
 
         return res.json({ result: 'Login successfull' });
 
