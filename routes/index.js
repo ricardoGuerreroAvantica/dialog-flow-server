@@ -26,7 +26,7 @@ router.post("/botSpeak", (req, res) => {
       console.log('Disconnecting');
       disconnect();
     }
-    if (!token.REFRESH_TOKEN_CACHE_KEY) {
+    if (token.REFRESH_TOKEN_CACHE_KEY === undefined || !token.REFRESH_TOKEN_CACHE_KEY) {
       return res.json({
         speech: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
         displayText: 'Please login ' + authHelper.getAuthUrl(sessionContext.parameters.key),
