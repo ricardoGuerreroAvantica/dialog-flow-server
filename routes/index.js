@@ -20,7 +20,7 @@ router.post("/botSpeak", (req, res) => {
     console.log(tokens);
     var action = req.body.result && req.body.result.action ? req.body.result.action : '';
     var token = tokens[sessionContext.parameters.key];
-
+    console.log(token);
     if (action === 'disconnect'){
       console.log('Disconnecting');
       disconnect();
