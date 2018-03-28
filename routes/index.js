@@ -67,10 +67,11 @@ function setToken(req, res, callback){
   var context = commons.getContext(req.body.result.contexts, 'token');
 
   if (!context || !context.parameters || !context.parameters.key){
+    var key = uid(25);
     context = {
-      "name": "token", "parameters": { "key" : uid(25) }
+      "name": "token", "parameters": { "key" : key }
     }
-    tokens[context.parameters.key] = {
+    tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
     }
   }
@@ -116,7 +117,8 @@ router.get('/login', function (req, res) {
     console.log("Tokens by login : " + key);
     authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
       if (e === null) {
-
+        console.log("Access token by login : " + access_token);
+        console.log("Refresh token by login : " + refresh_token);
         tokens[key].ACCESS_TOKEN_CACHE_KEY = access_token;
         tokens[key].REFRESH_TOKEN_CACHE_KEY = refresh_token;
 
