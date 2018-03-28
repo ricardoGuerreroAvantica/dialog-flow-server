@@ -65,7 +65,7 @@ router.post("/botSpeak", (req, res) => {
 
 function setToken(req, res, callback){
   var context = commons.getContext(req.body.result.contexts, 'token');
-
+  console.log("Context by setToken : " + context);
   if (!context || !context.parameters || !context.parameters.key){
     var key = uid(25);
     context = {
@@ -74,6 +74,7 @@ function setToken(req, res, callback){
     tokens[key] = {
       ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
     }
+    console.log("Tokens by setToken : " + tokens);
   }
   context.lifespan = 10;
   callback(context);
@@ -102,11 +103,6 @@ function disconnect(req, res) {
     source: "dialog-server-flow", contextOut : [ tokenContext ]
   });
 }
-
-
-
-
-
 
 
 /* GET home page. */
