@@ -81,7 +81,8 @@ function invitePerson(req, res, sessionContext, token) {
 
         var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
         var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-        if (Object.keys(invitesContext).length === 0){
+
+        if (!invitesContext){
           invitesContext = { "name": "invites", "parameters": { "invites" : [] }, "lifespan": 10 }
         }
         invitesContext.parameters.invites.push(invite);
