@@ -5,30 +5,26 @@ var commons = require('./commons.js');
 var axios = require('axios');
 var moment = require('moment');
 
-function createEvent(req, res, sessionContext, token) {
+function createEvent(req, res, sessionTokens) {
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
-  var name = eventContext.parameters.eventName ? eventContext.parameters.eventName : '';
-  var invites = invitesContext.parameters.invites ? invitesContext.parameters.invites : [];
+  var name = eventContext.parameters.eventName;
+  var invites = invitesContext.parameters.invites;
+  var duration = eventContext.parameters.duration;
+  var date = eventContext.parameters.date;
+  var time = eventContext.parameters.time;
 
-  var startDate = startDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
-    .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var startDate = startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   var endDate;
 
-  var duration = eventContext.parameters.duration ? eventContext.parameters.duration : '';
-  if (duration.unit === 'h'){
-    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
-      .add( duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  }
-  else if (duration.unit === 'min'){
-    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
-      .add( duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  }
-  else {
-    endDate = moment.utc(eventContext.parameters.date + ' ' + eventContext.parameters.time, 'YYYY-MM-DD HH:mm:ss')
-      .add( '30', 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  }
-  authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+  if (duration.unit === 'h')
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else if (duration.unit === 'min')
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('30', 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var body = {
         "subject": name, "attendees": invites,
@@ -37,48 +33,47 @@ function createEvent(req, res, sessionContext, token) {
       }
       console.log(JSON.stringify(body, null, 2));
 
-      requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body),
-        (e, response) => {
+      requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
+        var message = response.subject + 'created\n';
+        var speech = 'Subject: ' + response.subject + '\n';
+        speech += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
+        speech += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
+        if (response.location.displayName)
+          speech += 'Location: ' + response.location.displayName + '\n';
+        else
+          speech += 'Location: to be announced' + '\n';
+        speech += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
 
-          var message = response.subject + 'created\n';
-          var speech = 'Subject: ' + response.subject + '\n';
-          speech += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
-          speech += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
-          if (response.location.displayName)
-            speech += 'Location: ' + response.location.displayName + '\n';
-          else
-            speech += 'Location: to be announced' + '\n';
-          speech += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
-
-          return res.json({
-            speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]
-          });
-        }
-      );
-
+        return res.json({
+          speech: speech,
+          displayText: message,
+          source: "dialog-server-flow"
+        });
+      });
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : err.message,
+        }
+      });
     }
-
   });
 
 }
 
 
 
-function invitePerson(req, res, sessionContext, token) {
-  var userData = {
-    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  }
+function invitePerson(req, res, sessionTokens) {
+  var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
 
-  searchUser(req, res, token, userData, (user) => {
-    authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+  searchUser(req, res, sessionTokens, userData, (user) => {
+
+    authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
       onSuccess: function (results) {
-
         var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
         var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
 
@@ -89,31 +84,33 @@ function invitePerson(req, res, sessionContext, token) {
 
         return res.json({
           speech: user.displayName + ' was invited', displayText: user.displayName + ' was invited', source: "dialog-server-flow",
-          contextOut : [ sessionContext, invitesContext]
+          contextOut : [invitesContext]
         });
 
       },
       onFailure: function (err) {
         res.status(err.code);
         console.log(err.message);
+        return res.json({
+          error : {
+            name : 'State error',
+            description : err.message,
+          }
+        });
       }
     });
-
   });
+
 }
 
 
-function checkUserAvailable(req, res, sessionContext, token) {
-  var userData = {
-    name : req.body.result && req.body.result.parameters.name ? req.body.result.parameters.name : '',
-    lastname : req.body.result && req.body.result.parameters.lastname ? req.body.result.parameters.lastname : '',
-    email : req.body.result && req.body.result.parameters.email ? req.body.result.parameters.email : ''
-  }
-  var duration = req.body.result && req.body.result.parameters.duration ? req.body.result.parameters.duration : '';
+function checkUserAvailable(req, res, sessionTokens) {
+  var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
+  var duration = req.body.result.parameters.duration;
   var date = req.body.result.parameters.date;
   var time = req.body.result.parameters.time;
 
-  searchUser(req, res, token, userData, (user) => {
+  searchUser(req, res, sessionTokens, userData, (user) => {
 
     authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
       onSuccess: function (results) {
@@ -123,8 +120,7 @@ function checkUserAvailable(req, res, sessionContext, token) {
           meetingDuration : 'PT1H'
         };
 
-        requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody),
-          (e, response) => {
+        requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody), (e, response) => {
             var message, speech = '';
             if (response.meetingTimeSuggestions.length == 0){
               message, speech = "Sorry couldn't find any space";
@@ -136,9 +132,10 @@ function checkUserAvailable(req, res, sessionContext, token) {
                 speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n';
               }
             }
-
             return res.json({
-              speech: speech, displayText: message, source: "dialog-server-flow", contextOut : [ sessionContext ]
+              speech: speech,
+              displayText: message,
+              source: "dialog-server-flow"
             });
           }
         );
@@ -147,6 +144,12 @@ function checkUserAvailable(req, res, sessionContext, token) {
       onFailure: function (err) {
         res.status(err.code);
         console.log(err.message);
+        return res.json({
+          error : {
+            name : 'State error',
+            description : err.message,
+          }
+        });
       }
     });
 
@@ -155,9 +158,9 @@ function checkUserAvailable(req, res, sessionContext, token) {
 
 
 
-function searchUser(req, res, token, userData, callback){
-  authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+function searchUser(req, res, sessionTokens, userData, callback){
 
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var name = (userData.name) ? userData.name : ''
       var filter = '$filter=';
@@ -175,7 +178,6 @@ function searchUser(req, res, token, userData, callback){
           Authorization: 'Bearer ' + results.access_token
         }
       })
-
       .then((response) => {
         if (response.data.value.length > 1){
         var message = "I found these users with that name \n \n";
@@ -206,11 +208,23 @@ function searchUser(req, res, token, userData, callback){
       .catch((error) => {
         console.log("Search user error " + error);
         console.log(error);
+        return res.json({
+          error : {
+            name : 'State error',
+            description : err.message,
+          }
+        });
       });
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : err.message,
+        }
+      });
     }
   });
 }

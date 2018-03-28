@@ -8,91 +8,137 @@ var uid = require('uid');
 
 var tokens = {};
 
-
-/**
- * Dialog flow web hook
- https://dialog-flow-service.herokuapp.com/login
-//  */
-router.post("/botSpeak", (req, res) => {
-  var action = req.body.result && req.body.result.action;
-  if (action === 'disconnect'){
-    console.log('Disconnecting');
-    disconnect(req, res);
+router.post("/request", (req, res) => {
+  var session = commons.getContext(req.body.result.contexts, 'session');
+  //Native app android
+  if (session && session.parameters && session.parameters.id){
+    var nativeId = session.parameters.id;
+    return parseAction(req, res, nativeId);
+  //Non native app
+  }else{
+    return res.json({
+      error : {
+        name : 'Non supported device',
+        description : "The current device is not integrated with calendar-bot.",
+      }
+    });
   }
-
-  setToken(req, res, (tokenContext) => {
-    var key = tokenContext.parameters.key;
-    var token = tokens[key];
-    console.log("Token Context: " + JSON.stringify(tokenContext));
-    console.log("Tokens : " + JSON.stringify(tokens));
-
-    if (!token || !token.REFRESH_TOKEN_CACHE_KEY){
-      return res.json({
-        speech: 'Please login ' + authHelper.getAuthUrl(key), displayText: 'Please login',
-        source: "dialog-server-flow", contextOut : [ tokenContext ]
-      });
+  return res.json({
+    error : {
+      name : 'Non supported device',
+      description : "The current device is not integrated with calendar-bot.",
     }
-
-    switch (action) {
-      case 'checkUserAvailable':
-        eventHelper.checkUserAvailable(req, res, tokenContext, token);
-        break;
-      case 'createEventInvite':
-        eventHelper.invitePerson(req, res, tokenContext, token);
-        break;
-      case 'createEvent':
-        eventHelper.createEvent(req, res, tokenContext, token);
-        break;
-      case 'showEvents':
-        userHelper.showAllEvents(req, res, tokenContext, token);
-        break;
-      case 'showPeriodEvents':
-        userHelper.showPeriodEvents(req, res, tokenContext, token);
-        break;
-      case 'showEventsByName':
-        userHelper.showEventsByName(req, res, tokenContext, token);
-        break;
-      default:
-        return res.json({
-          speech: 'Could you repeat that?', displayText: 'Could you repeat that?',
-          source: "dialog-server-flow", contextOut : [ tokenContext ]
-        });
-    }
-
   });
 });
 
 
-function setToken(req, res, callback){
-  var context = commons.getContext(req.body.result.contexts, 'token');
-  console.log("Context by setToken : " + JSON.stringify(context));
-  if (!context || !context.parameters || !context.parameters.key){
-    var key = uid(25);
-    context = {
-      "name": "token", "parameters": { "key" : key }
-    }
-    tokens[key] = {
-      ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
-    }
-    console.log("Tokens by setToken : " + tokens);
-  }else{
-    var key = context.parameters.key;
-    var token = tokens[key];
-    if (!token || !token.REFRESH_TOKEN_CACHE_KEY){
-      var key = uid(25);
-      context = {
-        "name": "token", "parameters": { "key" : key }
+router.get('/signIn', function (req, res) {
+  var sessionId = req.query.state;
+  var code = req.query.code;
+
+  if (!code) {
+    console.log("Code error");
+    return res.json({
+      error : {
+        name : "Code error",
+        description : "An error ocurred login to Microsoft Graph",
       }
-      tokens[key] = {
-        ACCESS_TOKEN_CACHE_KEY : '', REFRESH_TOKEN_CACHE_KEY : ''
-      }
-      console.log("Tokens by setToken : " + tokens);
-    }
+    });
   }
-  context.lifespan = 10;
-  callback(context);
+  if (!sessionId) {
+    console.log("Id error");
+    return res.json({
+      error : {
+        name : 'State error',
+        description : "Can't find a unique key for the user",
+      }
+    });
+  }
+  authHelper.getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
+    if (!error) {
+      console.log("Access token by login : " + access_token);
+      console.log("Refresh token by login : " + refresh_token);
+      tokens[sessionId].ACCESS_TOKEN_CACHE_KEY = access_token;
+      tokens[sessionId].REFRESH_TOKEN_CACHE_KEY = refresh_token;
+      return res.json({
+        error : {
+          name : 'State error',
+          description : "Can't find a unique key for the user",
+        }
+      });
+    } else {
+      console.log(JSON.parse(error.data).error_description);
+      res.status(500);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : error.data,
+        }
+      });
+    }
+  });
+
+});
+
+
+/**
+ @sessionId Device unique key
+*/
+function parseAction(req, res, sessionId) {
+  verifyUser(req, res, sessionId, (sessionTokens) => {
+    var action = req.body.result && req.body.result.action;
+    switch (action) {
+      case 'disconnect':
+        return disconnect(req, res, sessionId);
+      case 'checkUserAvailable':
+        return eventHelper.checkUserAvailable(req, res, sessionTokens);
+      case 'createEventInvite':
+        return eventHelper.invitePerson(req, res, sessionTokens);
+      case 'createEvent':
+        return eventHelper.createEvent(req, res, sessionTokens);
+      case 'showEvents':
+        return userHelper.showAllEvents(req, res, sessionTokens);
+      case 'showPeriodEvents':
+        return userHelper.showPeriodEvents(req, res, sessionTokens);
+      case 'showEventsByName':
+        return userHelper.showEventsByName(req, res, sessionTokens);
+      default:
+        return res.json({
+          speech: 'Could you repeat that?',
+          displayText: 'Could you repeat that?',
+          source: "dialog-server-flow"
+        });
+    }
+  });
 }
 
+/**
+ @sessionId Device unique key
+*/
+function verifyUser(req, res, sessionId) {
+  var sessionTokens = tokens[sessionId];
+
+  //not logged in
+  if (!sessionTokens){
+    return res.json({
+      speech: 'Please login ' + authHelper.getAuthUrl(key),
+      displayText: 'Please login',
+      source: "dialog-server-flow"
+    });
+  }
+
+  return sessionTokens;
+}
+
+
+function disconnect(req, res, sessionId) {
+  delete tokens[sessionId]
+  return res.json({
+    speech: 'Disconnected',
+    displayText: 'Disconnected',
+    source: "dialog-server-flow"
+  });
+}
 
 
 router.get('/privacy', (req, res) => {
@@ -106,41 +152,6 @@ router.get('/terms', (req, res) => {
   res.json({info : 'soon'});
 });
 
-
-
-function disconnect(req, res) {
-  var tokenContext = {
-    "name": "token", "parameters": {}, "lifespan": 10 }
-  return res.json({
-    speech: 'You are disconnected. Please login', displayText: 'You are disconnected. Please login',
-    source: "dialog-server-flow", contextOut : [ tokenContext ]
-  });
-}
-
-
-/* GET home page. */
-router.get('/login', function (req, res) {
-  if (req.query.state && req.query.code) {
-    var key = req.query.state;
-    console.log("Tokens by login : " + JSON.stringify(tokens));
-    console.log("Tokens by login : " + key);
-    authHelper.getTokenFromCode(req.query.code, function (e, access_token, refresh_token, state) {
-      if (e === null) {
-        console.log("Access token by login : " + access_token);
-        console.log("Refresh token by login : " + refresh_token);
-        tokens[key].ACCESS_TOKEN_CACHE_KEY = access_token;
-        tokens[key].REFRESH_TOKEN_CACHE_KEY = refresh_token;
-
-        return res.json({ result: 'Login successfull' });
-
-      } else {
-        console.log(JSON.parse(e.data).error_description);
-        res.status(500);
-        return res.json({ result: e.data });
-      }
-    });
-  }
-});
 
 
 

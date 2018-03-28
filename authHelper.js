@@ -11,7 +11,7 @@ var credentials = {
   client_id: '2e1f2117-632c-43e6-a7d8-a4f4d4fbf1d0',
   client_secret: 'vzqWUXQ0625%:zfeuHYJ4%:',
   scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
-  redirect_uri: 'https://dialog-flow-service.herokuapp.com/login',
+  redirect_uri: 'https://dialog-flow-service.herokuapp.com/signIn',
   resouce: 'https://graph.microsoft.com/'
 };
 

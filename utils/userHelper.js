@@ -3,9 +3,9 @@ var commons = require('./commons.js');
 var moment = require('moment');
 var axios = require('axios');
 
-function showAllEvents(req, res, sessionContext, token){
+function showAllEvents(req, res, sessionTokens){
 
-  authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       axios.get('https://graph.microsoft.com/v1.0/me/events?$select=subject,body,bodyPreview,organizer,attendees,start,end,location', {
         headers : { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: 'Bearer ' + results.access_token }
@@ -22,13 +22,19 @@ function showAllEvents(req, res, sessionContext, token){
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : err.message,
+        }
+      });
     }
   });
 }
 
-function showPeriodEvents(req, res, sessionContext, token){
+function showPeriodEvents(req, res, sessionTokens){
 
-  authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       //	2018-03-19/2018-03-25
       var periods = req.body.result.parameters.period.split("/");
@@ -43,22 +49,31 @@ function showPeriodEvents(req, res, sessionContext, token){
         return res.json(parseEvent(response));
       })
       .catch((error) => {
-        return res.json({ speech: 'An error ocurred finding events',
-          displayText: 'An error ocurred finding events', source: "dialog-server-flow" });
+        return res.json({
+          speech: 'An error ocurred finding events',
+          displayText: 'An error ocurred finding events',
+          source: "dialog-server-flow" }
+        );
       });
 
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : err.message,
+        }
+      });
     }
   });
 }
 
 
-function showEventsByName(req, res, sessionContext, token){
+function showEventsByName(req, res, sessionTokens){
 
-  authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var name = req.body.result.parameters.name;
       axios.get("https://graph.microsoft.com/v1.0/me/events?$filter=startswith(subject,'" + name +"')", {
@@ -68,14 +83,22 @@ function showEventsByName(req, res, sessionContext, token){
         return res.json(parseEvent(response));
       })
       .catch((error) => {
-        return res.json({ speech: 'An error ocurred finding events called ' + name,
-          displayText: 'An error ocurred finding events called ' + name, source: "dialog-server-flow" });
+        return res.json({
+          speech: 'An error ocurred finding events called ' + name,
+          displayText: 'An error ocurred finding events called ' + name,
+          source: "dialog-server-flow" });
       });
 
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
+      return res.json({
+        error : {
+          name : 'State error',
+          description : err.message,
+        }
+      });
     }
   });
 }
