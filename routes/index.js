@@ -84,6 +84,7 @@ router.get('/signIn', function (req, res) {
  @sessionId Device unique key
 */
 function parseAction(req, res, sessionId) {
+  console.log('sessionId : ' + sessionId);
   verifyUser(req, res, sessionId, (sessionTokens) => {
     var action = req.body.result && req.body.result.action;
     switch (action) {
