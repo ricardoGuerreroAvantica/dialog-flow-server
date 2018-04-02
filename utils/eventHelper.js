@@ -129,7 +129,8 @@ function checkUserAvailable(req, res, sessionTokens) {
               message = "I found some space, look at these";
               for (var i in response.meetingTimeSuggestions){
                 var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + "\n";
+                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime);
+                speech += " \n ";
               }
             }
             return res.json({
