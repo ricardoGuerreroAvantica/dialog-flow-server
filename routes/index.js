@@ -24,12 +24,6 @@ router.post("/request", (req, res) => {
       }
     });
   }
-  return res.json({
-    error : {
-      name : 'Non supported device',
-      description : "The current device is not integrated with calendar-bot.",
-    }
-  });
 });
 
 
@@ -130,8 +124,9 @@ function verifyUser(req, res, sessionId, callback) {
       displayText: 'Please login',
       source: "dialog-server-flow"
     });
+  }else{
+    callback(sessionTokens);
   }
-  callback(sessionTokens);
 }
 
 
