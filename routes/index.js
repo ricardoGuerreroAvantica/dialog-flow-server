@@ -92,16 +92,22 @@ function parseAction(req, res, sessionId) {
         disconnect(req, res, sessionId);
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionTokens);
+        break;
       case 'createEventInvite':
         eventHelper.invitePerson(req, res, sessionTokens);
+        break;
       case 'createEvent':
         eventHelper.createEvent(req, res, sessionTokens);
+        break;
       case 'showEvents':
         userHelper.showAllEvents(req, res, sessionTokens);
+        break;
       case 'showPeriodEvents':
         userHelper.showPeriodEvents(req, res, sessionTokens);
+        break;
       case 'showEventsByName':
         userHelper.showEventsByName(req, res, sessionTokens);
+        break;
       default:
         return res.json({
           speech: 'Could you repeat that?',
