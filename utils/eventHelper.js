@@ -112,7 +112,7 @@ function checkUserAvailable(req, res, sessionTokens) {
 
   searchUser(req, res, sessionTokens, userData, (user) => {
 
-    authHelper.wrapRequestAsCallback(token.REFRESH_TOKEN_CACHE_KEY, {
+    authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
       onSuccess: function (results) {
         var postBody = {
           attendees: commons.getAttendees([user]),
