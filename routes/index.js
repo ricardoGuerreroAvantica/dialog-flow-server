@@ -58,8 +58,12 @@ router.get('/signIn', function (req, res) {
     if (!error) {
       console.log("Access token by login : " + access_token);
       console.log("Refresh token by login : " + refresh_token);
-      tokens[sessionId].ACCESS_TOKEN_CACHE_KEY = access_token;
-      tokens[sessionId].REFRESH_TOKEN_CACHE_KEY = refresh_token;
+      tokens[sessionId] = {
+        ACCESS_TOKEN_CACHE_KEY : access_token,
+        REFRESH_TOKEN_CACHE_KEY : refresh_token
+      }
+      //tokens[sessionId].ACCESS_TOKEN_CACHE_KEY = access_token;
+      //tokens[sessionId].REFRESH_TOKEN_CACHE_KEY = refresh_token;
       return res.json({
         error : {
           name : 'State error',
