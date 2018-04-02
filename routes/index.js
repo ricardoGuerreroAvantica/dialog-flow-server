@@ -28,7 +28,7 @@ router.post("/request", (req, res) => {
 
 
 router.get('/signIn', function (req, res) {
-  var sessionId = req.query.state;
+  var state = req.query.state;
   var code = req.query.code;
 
   if (!code) {
@@ -40,7 +40,7 @@ router.get('/signIn', function (req, res) {
       }
     });
   }
-  if (!sessionId) {
+  if (!state) {
     console.log("Id error");
     return res.json({
       error : {
@@ -53,7 +53,8 @@ router.get('/signIn', function (req, res) {
     if (!error) {
       console.log("Access token by login : " + access_token);
       console.log("Refresh token by login : " + refresh_token);
-      tokens[sessionId] = {
+      console.log("SessionId : " + state);
+      tokens[state] = {
         ACCESS_TOKEN_CACHE_KEY : access_token,
         REFRESH_TOKEN_CACHE_KEY : refresh_token
       }
@@ -115,6 +116,7 @@ function parseAction(req, res, sessionId) {
 */
 function verifyUser(req, res, sessionId, callback) {
   var sessionTokens = tokens[sessionId];
+  console.log('sessionId : ' + sessionId);
   console.log('tokens : ' + JSON.stringify(tokens));
   console.log('sessionTokens : ' + sessionTokens);
   //not logged in
