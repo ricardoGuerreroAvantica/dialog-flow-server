@@ -11,7 +11,9 @@ var tokens = {};
 router.post("/request", (req, res) => {
   var session = commons.getContext(req.body.result.contexts, 'session');
 
-  console.log(req);
+  console.log('Data :' + JSON.stringify(req.body.originalRequest.source));
+  console.log('Data :' + JSON.stringify(req.body.originalRequest.data.user));
+
   //Native app android
   console.log('source : ' + req.source);
   if (session && session.parameters && session.parameters.id){
