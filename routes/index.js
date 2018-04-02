@@ -10,8 +10,12 @@ var tokens = {};
 
 router.post("/request", (req, res) => {
   var session = commons.getContext(req.body.result.contexts, 'session');
-  console.log('Session :' + JSON.stringify(session));
+
+  console.log('Data :' + JSON.stringify(req.data));
+  console.log('Data :' + JSON.stringify(req.data.user));
+  console.log('Data :' + JSON.stringify(req.source));
   //Native app android
+  console.log('source : ' + req.source);
   if (session && session.parameters && session.parameters.id){
     var nativeId = session.parameters.id;
     parseAction(req, res, nativeId);
@@ -85,6 +89,7 @@ router.get('/signIn', function (req, res) {
 */
 function parseAction(req, res, sessionId) {
   console.log('sessionId : ' + sessionId);
+
   verifyUser(req, res, sessionId, (sessionTokens) => {
     var action = req.body.result && req.body.result.action;
     switch (action) {
