@@ -115,9 +115,10 @@ function parseAction(req, res, sessionId) {
 /**
  @sessionId Device unique key
 */
-function verifyUser(req, res, sessionId) {
+function verifyUser(req, res, sessionId, callback) {
   var sessionTokens = tokens[sessionId];
-
+  console.log('tokens : ' + tokens);
+  console.log('sessionTokens : ' + sessionTokens);
   //not logged in
   if (!sessionTokens){
     return res.json({
@@ -126,8 +127,7 @@ function verifyUser(req, res, sessionId) {
       source: "dialog-server-flow"
     });
   }
-
-  return sessionTokens;
+  callback(sessionTokens);
 }
 
 
