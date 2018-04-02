@@ -13,7 +13,7 @@ router.post("/request", (req, res) => {
   //Native app android
   if (session && session.parameters && session.parameters.id){
     var nativeId = session.parameters.id;
-    return parseAction(req, res, nativeId);
+    parseAction(req, res, nativeId);
   //Non native app
   }else{
     return res.json({
@@ -89,19 +89,19 @@ function parseAction(req, res, sessionId) {
     var action = req.body.result && req.body.result.action;
     switch (action) {
       case 'disconnect':
-        return disconnect(req, res, sessionId);
+        disconnect(req, res, sessionId);
       case 'checkUserAvailable':
-        return eventHelper.checkUserAvailable(req, res, sessionTokens);
+        eventHelper.checkUserAvailable(req, res, sessionTokens);
       case 'createEventInvite':
-        return eventHelper.invitePerson(req, res, sessionTokens);
+        eventHelper.invitePerson(req, res, sessionTokens);
       case 'createEvent':
-        return eventHelper.createEvent(req, res, sessionTokens);
+        eventHelper.createEvent(req, res, sessionTokens);
       case 'showEvents':
-        return userHelper.showAllEvents(req, res, sessionTokens);
+        userHelper.showAllEvents(req, res, sessionTokens);
       case 'showPeriodEvents':
-        return userHelper.showPeriodEvents(req, res, sessionTokens);
+        userHelper.showPeriodEvents(req, res, sessionTokens);
       case 'showEventsByName':
-        return userHelper.showEventsByName(req, res, sessionTokens);
+        userHelper.showEventsByName(req, res, sessionTokens);
       default:
         return res.json({
           speech: 'Could you repeat that?',
