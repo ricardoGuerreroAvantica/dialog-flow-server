@@ -10,6 +10,7 @@ var tokens = {};
 
 router.post("/request", (req, res) => {
   var session = commons.getContext(req.body.result.contexts, 'session');
+  console.log('Session :' + JSON.stringify(session));
   //Native app android
   if (session && session.parameters && session.parameters.id){
     var nativeId = session.parameters.id;
