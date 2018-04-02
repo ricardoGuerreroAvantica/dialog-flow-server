@@ -11,15 +11,15 @@ var tokens = {};
 router.post("/request", (req, res) => {
   var session = commons.getContext(req.body.result.contexts, 'session');
 
-  console.log('Data :' + JSON.stringify(req.body.originalRequest.source));
-  console.log('Data :' + JSON.stringify(req.body.originalRequest.data.user));
-
   //Native app android
   console.log('source : ' + req.source);
   if (session && session.parameters && session.parameters.id){
     var nativeId = session.parameters.id;
     parseAction(req, res, nativeId);
   //Non native app
+  }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
+    var skypeId = req.body.originalRequest.data.user.id;
+    parseAction(req, res, skypeId);
   }else{
     return res.json({
       error : {
