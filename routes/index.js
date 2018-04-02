@@ -65,9 +65,8 @@ router.get('/signIn', function (req, res) {
       //tokens[sessionId].ACCESS_TOKEN_CACHE_KEY = access_token;
       //tokens[sessionId].REFRESH_TOKEN_CACHE_KEY = refresh_token;
       return res.json({
-        error : {
-          name : 'State error',
-          description : "Can't find a unique key for the user",
+        response : {
+          description : "Login Successful",
         }
       });
     } else {
@@ -121,7 +120,7 @@ function parseAction(req, res, sessionId) {
 */
 function verifyUser(req, res, sessionId, callback) {
   var sessionTokens = tokens[sessionId];
-  console.log('tokens : ' + tokens);
+  console.log('tokens : ' + JSON.stringify(tokens));
   console.log('sessionTokens : ' + sessionTokens);
   //not logged in
   if (!sessionTokens){
