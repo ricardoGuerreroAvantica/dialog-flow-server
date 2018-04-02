@@ -122,7 +122,7 @@ function verifyUser(req, res, sessionId, callback) {
   //not logged in
   if (!sessionTokens){
     return res.json({
-      speech: 'Please login ' + authHelper.getAuthUrl(key),
+      speech: 'Please login ' + authHelper.getAuthUrl(sessionId),
       displayText: 'Please login',
       source: "dialog-server-flow"
     });
