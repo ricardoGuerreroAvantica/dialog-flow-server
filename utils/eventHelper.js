@@ -23,9 +23,9 @@ function createEventFinish(req, res, sessionTokens) {
 
   authHelper.getTokenFromRefreshToken(sessionTokens.REFRESH_TOKEN_CACHE_KEY, (error, results) => {
     if (error){
-      res.status(err.code);
-      console.log(err.message);
-      return res.json({error : { name : 'State error', description : err.message, } });
+      res.status(error.code);
+      console.log(error.message);
+      return res.json({error : { name : 'State error', description : error.message, } });
     }
     axios({
         method: 'post',
@@ -51,9 +51,9 @@ function createEventFinish(req, res, sessionTokens) {
         return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
       })
       .catch((error) => {
-        res.status(err.code);
-        console.log(err.message);
-        return res.json({error : { name : 'State error', description : err.message, } });
+        res.status(error.code);
+        console.log(error.message);
+        return res.json({error : { name : 'State error', description : error.message, } });
       });
   });
 }
@@ -144,9 +144,9 @@ function checkUserAvailable(req, res, sessionTokens) {
           return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
         })
         .catch((error) => {
-          res.status(err.code);
-          console.log(err.message);
-          return res.json({error : { name : 'State error', description : err.message, } });
+          res.status(error.code);
+          console.log(error.message);
+          return res.json({error : { name : 'State error', description : error.message, } });
         });
     });
   });
