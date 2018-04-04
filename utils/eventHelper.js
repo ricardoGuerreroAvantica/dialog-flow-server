@@ -152,58 +152,6 @@ function checkUserAvailable(req, res, sessionTokens) {
   });
 }
 
-function checkUserAvailable(req, res, sessionTokens) {
-  var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
-  var duration = req.body.result.parameters.duration;
-  var date = req.body.result.parameters.date;
-  var time = req.body.result.parameters.time;
-
-  searchUser(req, res, sessionTokens, userData, (user) => {
-
-    authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
-      onSuccess: function (results) {
-        var postBody = {
-          attendees: commons.getAttendees([user]),
-          timeConstraint : commons.getTimeConstraint(date, time),
-          meetingDuration : 'PT1H'
-        };
-
-        requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody), (e, response) => {
-            var message, speech = '';
-            if (response.meetingTimeSuggestions.length == 0){
-              message, speech = "Sorry couldn't find any space";
-            }else {
-              speech = user.displayName + " is available at: \n";
-              message = "I found some space, look at these";
-              for (var i in response.meetingTimeSuggestions){
-                var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime);
-                speech += " \n ";
-              }
-            }
-            return res.json({
-              speech: speech,
-              displayText: message,
-              source: "dialog-server-flow"
-            });
-          }
-        );
-
-      },
-      onFailure: function (err) {
-        res.status(err.code);
-        console.log(err.message);
-        return res.json({
-          error : {
-            name : 'State error',
-            description : err.message,
-          }
-        });
-      }
-    });
-
-  });
-}
 
 
 
