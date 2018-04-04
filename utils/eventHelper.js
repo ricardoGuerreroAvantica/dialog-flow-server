@@ -118,38 +118,37 @@ function checkUserAvailable(req, res, sessionTokens) {
         console.log(error.message);
         return res.json({error : { name : 'State error', description : error.message, } });
       }
-      var data = {
-        attendees: commons.getAttendees([user]),
-        timeConstraint : commons.getTimeConstraint(date, time),
-        meetingDuration : 'PT1H'
-      }
-      axios({
-          method: 'post',
-          url: 'graph.microsoft.com/v1.0/me/events',
-          headers : {
-            'Content-Type' : 'application/json',
-            Authorization : 'Bearer ' + results.access_token,
-            'Content-Length': JSON.stringify(data).length
-          },
-          body: data
-        })
-        .then((response) => {
-          var message;
-          if (response.meetingTimeSuggestions.length == 0)
-            return res.json({ speech: "Sorry couldn't find any space", displayText: "Sorry couldn't find any space", source: "dialog-server-flow" });
 
-          message = user.displayName + " is available at: \n";
-          for (var i in response.meetingTimeSuggestions){
-            var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-            message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + ' \n';
-          }
-          return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
-        })
-        .catch((error) => {
-          res.status(error.code);
-          console.log(error.message);
-          return res.json({error : { name : 'State error', description : error.message, } });
-        });
+
+      axios.post('https://graph.microsoft.com/v1.0/me/events', {
+        headers : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + results.access_token
+        },
+        body : {
+          attendees: commons.getAttendees([user]),
+          timeConstraint : commons.getTimeConstraint(date, time),
+          meetingDuration : 'PT1H'
+        }
+      })
+      .then((response) => {
+        var message;
+        if (response.meetingTimeSuggestions.length == 0)
+          return res.json({ speech: "Sorry couldn't find any space", displayText: "Sorry couldn't find any space", source: "dialog-server-flow" });
+
+        message = user.displayName + " is available at: \n";
+        for (var i in response.meetingTimeSuggestions){
+          var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
+          message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + ' \n';
+        }
+        return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+      })
+      .catch((error) => {
+        res.status(error.code);
+        console.log(error.message);
+        return res.json({error : { name : 'State error', description : error.message, } });
+      });
     });
   });
 }
