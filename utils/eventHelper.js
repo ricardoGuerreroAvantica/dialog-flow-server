@@ -18,8 +18,8 @@ function createEventFinish(req, res, sessionTokens) {
   var endDate = (duration) ?
     moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, (duration.unit === 'h') ? 'minutes' : 'hours')
       .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss') :
-    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-
+    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  
   authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var body = {
