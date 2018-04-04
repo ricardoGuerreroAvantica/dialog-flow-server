@@ -6,6 +6,7 @@ var axios = require('axios');
 var moment = require('moment');
 
 function createEventFinish(req, res, sessionTokens) {
+  console.log("Create Event Finish");
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
   var name = eventContext.parameters.eventName;
