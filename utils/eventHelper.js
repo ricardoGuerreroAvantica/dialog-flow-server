@@ -118,18 +118,20 @@ function checkUserAvailable(req, res, sessionTokens) {
         console.log(error.message);
         return res.json({error : { name : 'State error', description : error.message, } });
       }
+      var data = {
+        attendees: commons.getAttendees([user]),
+        timeConstraint : commons.getTimeConstraint(date, time),
+        meetingDuration : 'PT1H'
+      }
       axios({
           method: 'post',
           url: 'graph.microsoft.com/v1.0/me/events',
           headers : {
             'Content-Type' : 'application/json',
-            Authorization : 'Bearer ' + results.access_token
+            Authorization : 'Bearer ' + results.access_token,
+            'Content-Length': JSON.stringify(data).length
           },
-          data: {
-            attendees: commons.getAttendees([user]),
-            timeConstraint : commons.getTimeConstraint(date, time),
-            meetingDuration : 'PT1H'
-          }
+          body: data
         })
         .then((response) => {
           var message;
