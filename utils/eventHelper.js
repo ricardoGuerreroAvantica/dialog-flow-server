@@ -80,7 +80,7 @@ function deleteInvite(req, res, sessionTokens) {
 }
 
 
-function invitePerson(req, res, sessionTokens) {
+function invite(req, res, sessionTokens) {
   var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
 
   searchUser(req, res, sessionTokens, userData, (user) => {
@@ -255,6 +255,6 @@ function addMinutes(time, minsToAdd) {
 }
 
 exports.deleteInvite = deleteInvite;
-exports.invitePerson = invitePerson;
+exports.invite = invite;
 exports.checkUserAvailable = checkUserAvailable;
 exports.createEventFinish = createEventFinish;
