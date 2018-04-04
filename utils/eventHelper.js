@@ -5,70 +5,65 @@ var commons = require('./commons.js');
 var axios = require('axios');
 var moment = require('moment');
 
-function createEvent(req, res, sessionTokens) {
-  var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
-  var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
-  var name = eventContext.parameters.eventName;
-  var invites = invitesContext.parameters.invites;
-  var duration = eventContext.parameters.duration;
-  var date = eventContext.parameters.date;
-  var time = eventContext.parameters.time;
-
-  var startDate = startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  var endDate;
-
-  if (duration.unit === 'h')
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else if (duration.unit === 'min')
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('30', 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-
-  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
-    onSuccess: function (results) {
-      var body = {
-        "subject": name, "attendees": invites,
-        "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
-        "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
-      }
-      console.log(JSON.stringify(body, null, 2));
-
-      requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
-        var message = response.subject + 'created\n';
-        var speech = 'Subject: ' + response.subject + '\n';
-        speech += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
-        speech += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
-        if (response.location.displayName)
-          speech += 'Location: ' + response.location.displayName + '\n';
-        else
-          speech += 'Location: to be announced' + '\n';
-        speech += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
-
-        return res.json({
-          speech: speech,
-          displayText: message,
-          source: "dialog-server-flow"
-        });
-      });
-    },
-    onFailure: function (err) {
-      res.status(err.code);
-      console.log(err.message);
-      return res.json({
-        error : {
-          name : 'State error',
-          description : err.message,
-        }
-      });
-    }
-  });
+function createEventBegin(req, res, sessionTokens) {
 
 }
 
 
+function createEventFinish(req, res, sessionTokens) {
+  var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
+  var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
+  var name = eventContext.parameters.eventName;
+  var invites = invitesContext.parameters.invites;
+  var duration = (eventContext.parameters.duration) ? eventContext.parameters.duration : { amount : 1, unit : 'h' };
+  var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss.000Z');
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, (duration.unit === 'h') ? 'hours' : 'minutes')
+    .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss.000Z');
 
-function invitePerson(req, res, sessionTokens) {
-  var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
+  authHelper.getTokenFromRefreshToken(sessionTokens.REFRESH_TOKEN_CACHE_KEY, (error, results) => {
+    if (error){
+      res.status(err.code);
+      console.log(err.message);
+      return res.json({error : { name : 'State error', description : err.message, } });
+    }
+    axios({
+        method: 'post',
+        url: 'graph.microsoft.com/v1.0/me/events',
+        headers : {
+          'Content-Type' : 'application/json',
+          Authorization : 'Bearer ' + results.access_token
+        },
+        data: {
+          subject : name,
+          attendees : invites,
+          start : { dateTime : startDate, timeZone : 'UTC' },
+          end : { dateTime : endDate, timeZone : 'UTC' }
+        }
+      })
+      .then((response) => {
+        var message = 'Subject: ' + response.subject + '\n' +
+          'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
+          (response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced' + '\n' +
+          'Organizer: ' + response.organizer.emailAddress.name;
+
+        return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+      })
+      .catch((error) => {
+        res.status(err.code);
+        console.log(err.message);
+        return res.json({error : { name : 'State error', description : err.message, } });
+      });
+  });
+}
+
+
+
+function invite(req, res, sessionTokens) {
+  var userData = { name : req.body.result.parameters.name,
+    lastname : req.body.result.parameters.lastname,
+    email : req.body.result.parameters.email }
 
   searchUser(req, res, sessionTokens, userData, (user) => {
 
@@ -103,6 +98,59 @@ function invitePerson(req, res, sessionTokens) {
 
 }
 
+function deleteInvite(req, res, sessionTokens) {
+
+}
+
+
+function checkUserAvailable(req, res, sessionTokens) {
+  var userData = { name : req.body.result.parameters.name,
+    lastname : req.body.result.parameters.lastname,
+    email : req.body.result.parameters.email }
+  var duration = req.body.result.parameters.duration;
+  var date = req.body.result.parameters.date;
+  var time = req.body.result.parameters.time;
+
+  searchUser(req, res, sessionTokens, userData, (user) => {
+    authHelper.getTokenFromRefreshToken(sessionTokens.REFRESH_TOKEN_CACHE_KEY, (error, results) => {
+      if (error){
+        res.status(err.code);
+        console.log(err.message);
+        return res.json({error : { name : 'State error', description : err.message, } });
+      }
+      axios({
+          method: 'post',
+          url: 'graph.microsoft.com/v1.0/me/events',
+          headers : {
+            'Content-Type' : 'application/json',
+            Authorization : 'Bearer ' + results.access_token
+          },
+          data: {
+            attendees: commons.getAttendees([user]),
+            timeConstraint : commons.getTimeConstraint(date, time),
+            meetingDuration : 'PT1H'
+          }
+        })
+        .then((response) => {
+          var message;
+          if (response.meetingTimeSuggestions.length == 0)
+            return res.json({ speech: "Sorry couldn't find any space", displayText: "Sorry couldn't find any space", source: "dialog-server-flow" });
+
+          message = user.displayName + " is available at: \n";
+          for (var i in response.meetingTimeSuggestions){
+            var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
+            message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + ' \n';
+          }
+          return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+        })
+        .catch((error) => {
+          res.status(err.code);
+          console.log(err.message);
+          return res.json({error : { name : 'State error', description : err.message, } });
+        });
+    });
+  });
+}
 
 function checkUserAvailable(req, res, sessionTokens) {
   var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
@@ -240,6 +288,8 @@ function addMinutes(time, minsToAdd) {
 }
 
 
-exports.invitePerson = invitePerson;
+exports.invite = invite;
 exports.checkUserAvailable = checkUserAvailable;
-exports.createEvent = createEvent;
+exports.createEventBegin = createEventBegin;
+exports.createEventFinish = createEventFinish;
+exports.deleteInvite = deleteInvite;

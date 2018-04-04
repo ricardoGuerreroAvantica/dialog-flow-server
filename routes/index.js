@@ -95,15 +95,24 @@ function parseAction(req, res, sessionId) {
     switch (action) {
       case 'disconnect':
         disconnect(req, res, sessionId);
+      //CREATE EVENT ACTIONS
+      case 'createEventBegin':
+        eventHelper.createEventBegin(req, res, sessionTokens);
+        break;
+      case 'createEventInvite':
+        eventHelper.invite(req, res, sessionTokens);
+        break;
+      case 'createEventDeleteInvite':
+        eventHelper.deleteInvite(req, res, sessionTokens);
+        break;
+      case 'createEventFinish':
+        eventHelper.createEventFinish(req, res, sessionTokens);
+        break;
+      //CHECK USER AVAILABLE
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionTokens);
         break;
-      case 'createEventInvite':
-        eventHelper.invitePerson(req, res, sessionTokens);
-        break;
-      case 'createEvent':
-        eventHelper.createEvent(req, res, sessionTokens);
-        break;
+      //SHOW MY PERSONAL INFROMATION
       case 'showEvents':
         userHelper.showAllEvents(req, res, sessionTokens);
         break;
