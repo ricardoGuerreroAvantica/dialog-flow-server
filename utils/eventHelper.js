@@ -5,7 +5,7 @@ var commons = require('./commons.js');
 var axios = require('axios');
 var moment = require('moment');
 
-function createEvent(req, res, sessionTokens) {
+function createEventFinish(req, res, sessionTokens) {
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
   var name = eventContext.parameters.eventName;
@@ -13,16 +13,11 @@ function createEvent(req, res, sessionTokens) {
   var duration = eventContext.parameters.duration;
   var date = eventContext.parameters.date;
   var time = eventContext.parameters.time;
-
-  var startDate = startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  var endDate;
-
-  if (duration.unit === 'h')
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else if (duration.unit === 'min')
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else
-    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('30', 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var endDate = (duration) ?
+    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, (duration.unit === 'h') ? 'minutes' : 'hours')
+      .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss') :
+    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
@@ -34,37 +29,55 @@ function createEvent(req, res, sessionTokens) {
       console.log(JSON.stringify(body, null, 2));
 
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
-        var message = response.subject + 'created\n';
-        var speech = 'Subject: ' + response.subject + '\n';
-        speech += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n';
-        speech += 'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n';
-        if (response.location.displayName)
-          speech += 'Location: ' + response.location.displayName + '\n';
-        else
-          speech += 'Location: to be announced' + '\n';
-        speech += 'Organizer: ' + response.organizer.emailAddress.name + '\n';
+        var message = response.subject + 'created' + '\n' +
+          'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
+          (response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced' + '\n' +
+          'Organizer: ' + response.organizer.emailAddress.name + '\n';
 
-        return res.json({
-          speech: speech,
-          displayText: message,
-          source: "dialog-server-flow"
-        });
+        return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
       });
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
-      return res.json({
-        error : {
-          name : 'State error',
-          description : err.message,
-        }
-      });
+      return res.json({ error : { name : 'State error', description : err.message, } });
     }
   });
-
 }
 
+
+function deleteInvite(req, res, sessionTokens) {
+  var userData = { name : req.body.result.parameters.name,
+    lastname : req.body.result.parameters.lastname,
+    email : req.body.result.parameters.email }
+  var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
+  var invites = invitesContext.parameters.invites;
+
+  for (var i in invites){
+    if (userData.name && userData.lastname && invites[i].emailAddress.name === userData.name + userData.lastname){
+      invites.splice(i, 1);
+      invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
+      return res.json({
+        speech: userData.name + userData.lastname + ' was uninvited', displayText: userData.name + userData.lastname + ' was uninvited',
+        source: "dialog-server-flow", contextOut : [invitesContext]
+      });
+    }else if (userData.email && invites[i].emailAddress.address === userData.email){
+      invites.splice(i, 1);
+      invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
+      return res.json({
+        speech: userData.email + ' was uninvited', displayText: userData.email + ' was uninvited',
+        source: "dialog-server-flow", contextOut : [invitesContext]
+      });
+    }
+  }
+  invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
+  return res.json({
+    speech: 'Couldnt find anyone with that ' + (userData.name) ? 'name': 'mail',
+    displayText: 'Couldnt find anyone with that ' + (userData.name) ? 'name': 'mail',
+    source: "dialog-server-flow", contextOut : [invitesContext]
+  });
+}
 
 
 function invitePerson(req, res, sessionTokens) {
@@ -239,7 +252,7 @@ function addMinutes(time, minsToAdd) {
   return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
 }
 
-
+exports.deleteInvite = deleteInvite;
 exports.invitePerson = invitePerson;
 exports.checkUserAvailable = checkUserAvailable;
-exports.createEvent = createEvent;
+exports.createEventFinish = createEventFinish;
