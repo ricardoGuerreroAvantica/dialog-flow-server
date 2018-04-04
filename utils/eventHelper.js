@@ -16,10 +16,10 @@ function createEventFinish(req, res, sessionTokens) {
   var time = eventContext.parameters.time;
   var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   var endDate = (duration) ?
-    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, (duration.unit === 'h') ? 'minutes' : 'hours')
+    moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, (duration.unit === 'h') ? 'hours' : 'minutes')
       .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss') :
     moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  
+  console.log('End Date :' + endDate);
   authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
       var body = {
