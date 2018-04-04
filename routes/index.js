@@ -97,7 +97,10 @@ function parseAction(req, res, sessionId) {
         disconnect(req, res, sessionId);
       //CREATE EVENT ACTIONS
       case 'createEventInvite':
-        eventHelper.invitePerson(req, res, sessionTokens);
+        eventHelper.invite(req, res, sessionTokens);
+        break;
+      case 'createEventDeleteInvite':
+        eventHelper.deleteInvite(req, res, sessionTokens);
         break;
       case 'createEventFinish':
         eventHelper.createEventFinish(req, res, sessionTokens);
@@ -109,6 +112,7 @@ function parseAction(req, res, sessionId) {
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionTokens);
         break;
+      //SHOW MY PERSONAL INFROMATION
       case 'showEvents':
         userHelper.showAllEvents(req, res, sessionTokens);
         break;

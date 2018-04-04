@@ -116,59 +116,61 @@ function invitePerson(req, res, sessionTokens) {
 
 }
 
+function deleteInvite(req, res, sessionTokens) {
+
+}
+
 
 function checkUserAvailable(req, res, sessionTokens) {
-  var userData = { name : req.body.result.parameters.name, lastname : req.body.result.parameters.lastname, email : req.body.result.parameters.email }
+  var userData = { name : req.body.result.parameters.name,
+    lastname : req.body.result.parameters.lastname,
+    email : req.body.result.parameters.email }
   var duration = req.body.result.parameters.duration;
   var date = req.body.result.parameters.date;
   var time = req.body.result.parameters.time;
 
   searchUser(req, res, sessionTokens, userData, (user) => {
+    authHelper.getTokenFromRefreshToken(sessionTokens.REFRESH_TOKEN_CACHE_KEY, (error, results) => {
+      if (error){
+        res.status(error.code);
+        console.log(error.message);
+        return res.json({error : { name : 'State error', description : error.message, } });
+      }
 
-    authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
-      onSuccess: function (results) {
-        var postBody = {
+
+      axios.post('https://graph.microsoft.com/v1.0/me/events', {
+        headers : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + results.access_token
+        },
+        body : {
           attendees: commons.getAttendees([user]),
           timeConstraint : commons.getTimeConstraint(date, time),
           meetingDuration : 'PT1H'
-        };
+        }
+      })
+      .then((response) => {
+        var message;
+        if (response.meetingTimeSuggestions.length == 0)
+          return res.json({ speech: "Sorry couldn't find any space", displayText: "Sorry couldn't find any space", source: "dialog-server-flow" });
 
-        requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody), (e, response) => {
-            var message, speech = '';
-            if (response.meetingTimeSuggestions.length == 0){
-              message, speech = "Sorry couldn't find any space";
-            }else {
-              speech = user.displayName + " is available at: \n";
-              message = "I found some space, look at these";
-              for (var i in response.meetingTimeSuggestions){
-                var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime);
-                speech += " \n ";
-              }
-            }
-            return res.json({
-              speech: speech,
-              displayText: message,
-              source: "dialog-server-flow"
-            });
-          }
-        );
-
-      },
-      onFailure: function (err) {
-        res.status(err.code);
-        console.log(err.message);
-        return res.json({
-          error : {
-            name : 'State error',
-            description : err.message,
-          }
-        });
-      }
+        message = user.displayName + " is available at: \n";
+        for (var i in response.meetingTimeSuggestions){
+          var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
+          message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + ' \n';
+        }
+        return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+      })
+      .catch((error) => {
+        res.status(error.code);
+        console.log(error.message);
+        return res.json({error : { name : 'State error', description : error.message, } });
+      });
     });
-
   });
 }
+
 
 
 
