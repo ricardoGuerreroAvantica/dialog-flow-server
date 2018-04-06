@@ -167,6 +167,11 @@ function disconnect(req, res, sessionId) {
 }
 
 
+router.get('/successful', (req, res) => {
+  res.render('../views/successfulLogIn');
+});
+
+
 router.get('/privacy', (req, res) => {
 
   res.json({info : 'soon'});
