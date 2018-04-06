@@ -175,7 +175,6 @@ function showInvites(req, res, sessionTokens, callback){
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
   var message = '';
-  var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
   for (var i in invites){
     message += invites[i].emailAddress.displayName + " Email: " + invites[i].emailAddress.mail + "\n";
   }
