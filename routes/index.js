@@ -105,9 +105,13 @@ function parseAction(req, res, sessionId) {
       case 'createEventFinish':
         eventHelper.createEventFinish(req, res, sessionTokens);
         break;
-      case 'createEventDeleteInvite':
+      case 'createEventDeleteInvite' :
         eventHelper.deleteInvite(req, res, sessionTokens);
         break;
+      case 'createEventShowInvites' :
+        eventHelper.showInvites(req, res, sessionTokens);
+        break;
+
 
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionTokens);

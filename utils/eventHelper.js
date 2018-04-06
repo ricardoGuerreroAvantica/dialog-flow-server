@@ -171,7 +171,21 @@ function checkUserAvailable(req, res, sessionTokens) {
   });
 }
 
+function showInvites(req, res, sessionTokens, callback){
+  var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
+  var invites = invitesContext.parameters.invites;
+  var message = '';
+  var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
+  for (var i in invites){
+    message += invites[i].emailAddress.displayName + " Email: " + invites[i].emailAddress.mail + "\n";
+  }
 
+  return res.json({
+    speech: message,
+    displayText: message,
+    source: "dialog-server-flow"
+  });
+}
 
 
 
@@ -255,6 +269,7 @@ function addMinutes(time, minsToAdd) {
   return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
 }
 
+exports.showInvites = showInvites;
 exports.deleteInvite = deleteInvite;
 exports.invite = invite;
 exports.checkUserAvailable = checkUserAvailable;
