@@ -176,7 +176,7 @@ function showInvites(req, res, sessionTokens, callback){
   var invites = invitesContext.parameters.invites;
   var message = '';
   for (var i in invites){
-    message += invites[i].emailAddress.displayName + " Email: " + invites[i].emailAddress.mail + "\n";
+    message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + "\n";
   }
 
   return res.json({
