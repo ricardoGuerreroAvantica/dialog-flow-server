@@ -61,7 +61,7 @@ function deleteInvite(req, res, sessionTokens) {
       invites.splice(i, 1);
       invitesContext = { name :   'invites', parameters : { invites : invites }, lifespan : 10 }
       return res.json({
-        speech: userData.name + userData.lastname + ' was uninvited', displayText: userData.name + userData.lastname + ' was uninvited',
+        speech: userData.name + userData.lastname + ' was uninvited ', displayText: userData.name + userData.lastname + ' was uninvited',
         source: "dialog-server-flow", contextOut : [invitesContext]
       });
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
@@ -69,7 +69,7 @@ function deleteInvite(req, res, sessionTokens) {
       invites.splice(i, 1);
       invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
       return res.json({
-        speech: userData.email + ' was uninvited', displayText: userData.email + ' was uninvited',
+        speech: userData.email + ' was uninvited ', displayText: userData.email + ' was uninvited',
         source: "dialog-server-flow", contextOut : [invitesContext]
       });
     }

@@ -89,6 +89,7 @@ router.get('/signIn', function (req, res) {
 */
 function parseAction(req, res, sessionId) {
   console.log('sessionId : ' + sessionId);
+  console.log('parameters : ' + JSON.stringify(req.body.result.contexts));
 
   verifyUser(req, res, sessionId, (sessionTokens) => {
     var action = req.body.result && req.body.result.action;
@@ -112,6 +113,10 @@ function parseAction(req, res, sessionId) {
         eventHelper.showInvites(req, res, sessionTokens);
         break;
 
+      //SHOW LOCATIONS
+      case 'showLocations':
+        eventHelper.showLocations(req, res, sessionTokens);
+        break;
 
       case 'checkUserAvailable':
         eventHelper.checkUserAvailable(req, res, sessionTokens);
@@ -165,6 +170,33 @@ function disconnect(req, res, sessionId) {
     source: "dialog-server-flow"
   });
 }
+
+
+
+var moment = require('moment');
+
+router.get('/check', (req, res) => {
+
+  var date = '2018-04-10 15:00:00';
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var duration = {
+    amount : 4,
+    unit : 'h'
+  };
+  var endDate = '';
+  if (duration && duration.unit && duration.unit === 'h')
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else if (duration && duration.unit && duration.unit === 'min')
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+
+  return res.json({ response : {
+      start : startDate ,
+      endDate : endDate
+    }
+  });
+});
 
 
 router.get('/successful', (req, res) => {
