@@ -53,12 +53,12 @@ function deleteInvite(req, res, sessionTokens) {
     email : req.body.result.parameters.email }
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
-
+console.log('Invites: ' + invites);
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name === userData.name + userData.lastname){
       console.log("Invite deleted");
       invites.splice(i, 1);
-      invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
+      invitesContext = { name :   'invites', parameters : { invites : invites }, lifespan : 10 }
       return res.json({
         speech: userData.name + userData.lastname + ' was uninvited', displayText: userData.name + userData.lastname + ' was uninvited',
         source: "dialog-server-flow", contextOut : [invitesContext]
@@ -76,8 +76,8 @@ function deleteInvite(req, res, sessionTokens) {
   console.log("Can't find invite");
   invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
   return res.json({
-    speech: 'Couldnt find anyone with that ' + (userData.name) ? 'name': 'mail',
-    displayText: 'Couldnt find anyone with that ' + (userData.name) ? 'name': 'mail',
+    speech: 'Couldnt find anyone with that ' + ((userData.name) ? 'name': 'mail'),
+    displayText: 'Couldnt find anyone with that ' + ((userData.name) ? 'name': 'mail'),
     source: "dialog-server-flow", contextOut : [invitesContext]
   });
 }
