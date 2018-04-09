@@ -53,7 +53,8 @@ function deleteInvite(req, res, sessionTokens) {
     email : req.body.result.parameters.email }
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
-console.log('Invites: ' + invites);
+  console.log('User data ' + userData);
+  console.log('Invites: ' + JSON.stringify(invites));
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name === userData.name + userData.lastname){
       console.log("Invite deleted");
