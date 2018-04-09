@@ -56,7 +56,7 @@ function deleteInvite(req, res, sessionTokens) {
   console.log('User data ' + JSON.stringify(userData));
   console.log('Invites: ' + JSON.stringify(invites));
   for (var i in invites){
-    if (userData.name && userData.lastname && invites[i].emailAddress.name === userData.name + userData.lastname){
+    if (userData.name && userData.lastname && invites[i].emailAddress.name.contains(userData.name + ' ' + userData.lastname)){
       console.log("Invite deleted");
       invites.splice(i, 1);
       invitesContext = { name :   'invites', parameters : { invites : invites }, lifespan : 10 }
