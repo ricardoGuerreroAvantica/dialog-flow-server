@@ -6,7 +6,6 @@ var axios = require('axios');
 var moment = require('moment');
 
 function createEventFinish(req, res, sessionTokens) {
-  console.log("Create Event Finish");
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
   var name = eventContext.parameters.eventName;
@@ -57,6 +56,7 @@ function deleteInvite(req, res, sessionTokens) {
 
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name === userData.name + userData.lastname){
+      console.log("Invite deleted");
       invites.splice(i, 1);
       invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
       return res.json({
@@ -64,6 +64,7 @@ function deleteInvite(req, res, sessionTokens) {
         source: "dialog-server-flow", contextOut : [invitesContext]
       });
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
+      console.log("Invite deleted");
       invites.splice(i, 1);
       invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
       return res.json({
@@ -72,6 +73,7 @@ function deleteInvite(req, res, sessionTokens) {
       });
     }
   }
+  console.log("Can't find invite");
   invitesContext = { name : 'invites', parameters : { invites : invites }, lifespan : 10 }
   return res.json({
     speech: 'Couldnt find anyone with that ' + (userData.name) ? 'name': 'mail',
