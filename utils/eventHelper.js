@@ -44,7 +44,7 @@ function createEventFinish(req, res, sessionTokens) {
           'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
         console.log(response.attendees.lenght);
         console.log(JSON.stringify(response.attendees));
-        if (response.attendees && response.attendees.lenght > 0){
+        if (response.attendees && response.attendees.length > 0){
           message += 'Invites: \n\n';
           for (var i in response.attendees){
             message += response.attendees[i].emailAddress.name + " Email: " + response.attendees[i].emailAddress.address + '\n\n';
