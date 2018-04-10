@@ -35,6 +35,8 @@ function createEventFinish(req, res, sessionTokens) {
       console.log(JSON.stringify(body, null, 2));
 
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
+        console.log('RESPONSE');
+        console.log(JSON.stringify(response, null, 2));
         var message = response.subject + 'created' + '\n' +
           'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
