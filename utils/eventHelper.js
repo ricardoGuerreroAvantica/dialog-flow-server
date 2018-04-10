@@ -14,10 +14,14 @@ function createEventFinish(req, res, sessionTokens) {
   var date = eventContext.parameters.date;
   var time = eventContext.parameters.time;
   var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+
   var endDate = '';
-  if (duration && duration.unit && duration.unit === 'h') endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else if (duration && duration.unit && duration.unit === 'min') endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  else endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  if (duration && duration.unit && duration.unit === 'h')
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else if (duration && duration.unit && duration.unit === 'min')
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  else
+    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
@@ -213,22 +217,14 @@ function searchUser(req, res, sessionTokens, userData, callback){
       })
       .then((response) => {
         if (response.data.value.length > 1){
-        var message = "I found these users with that name \n \n";
-        for (var i in response.data .value){
-          message += response.data.value[i].displayName + " " + response.data.value[i].surname + "\n";
-          message += "Email: " + response.data.value[i].mail + "\n \n";
-        }
-        return res.json({
-          speech: message,
-          displayText: message,
-          source: "dialog-server-flow"
-        });
+          var message = "I found these users with that name \n \n";
+          for (var i in response.data .value){
+            message += response.data.value[i].displayName + " " + response.data.value[i].surname + "\n";
+            message += "Email: " + response.data.value[i].mail + "\n \n";
+          }
+          return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
         }else if (!response.data.value.length){
-          return res.json({
-            speech: "Can't find someone with that name",
-            displayText: "Can't find someone with that name",
-            source: "dialog-server-flow"
-          });
+          return res.json({ speech: "Can't find someone with that name", displayText: "Can't find someone with that name", source: "dialog-server-flow" });
         }else {
           callback({
               displayName : response.data.value[0].displayName,
@@ -241,26 +237,66 @@ function searchUser(req, res, sessionTokens, userData, callback){
       .catch((error) => {
         console.log("Search user error " + error);
         console.log(error);
-        return res.json({
-          error : {
-            name : 'State error',
-            description : err.message,
-          }
-        });
+        return res.json({ error : { name : 'State error', description : err.message, } });
       });
     },
     onFailure: function (err) {
       res.status(err.code);
       console.log(err.message);
-      return res.json({
-        error : {
-          name : 'State error',
-          description : err.message,
-        }
-      });
+      return res.json({ error : { name : 'State error', description : err.message, } });
     }
   });
 }
+
+
+
+
+function showLocations(req, res, sessionTokens){
+
+  authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
+    onSuccess: function (results) {
+      axios.get('https://graph.microsoft.com/beta/me/findRooms', {
+        headers : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + results.access_token
+        }
+      })
+      .then((response) => {
+        var message = '';
+        if (response.value.length == 0){
+          message = "There aren't any location available";
+        }else {
+          message = "Locations: \n";
+          for (var i in response.value){
+            var location = response.value[i];
+            message += location.name + '\n';
+          }
+        }
+        return res.json({
+          speech: message,
+          displayText: message,
+          source: "dialog-server-flow"
+        });
+      }
+      .catch((error) => {
+        console.log("Locations error :  " + error);
+        console.log(error);
+        return res.json({ error : { name : 'State error', description : err.message, } });
+      });
+
+    },
+    onFailure: function (err) {
+      res.status(err.code);
+      console.log(err.message);
+      return res.json({ error : { name : 'State error', description : err.message, } });
+    }
+
+  });
+
+}
+
+
 
 
 function addMinutes(time, minsToAdd) {
@@ -276,3 +312,4 @@ exports.deleteInvite = deleteInvite;
 exports.invite = invite;
 exports.checkUserAvailable = checkUserAvailable;
 exports.createEventFinish = createEventFinish;
+exports.showLocations = showLocations;
