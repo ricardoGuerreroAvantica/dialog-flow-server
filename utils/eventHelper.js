@@ -42,8 +42,6 @@ function createEventFinish(req, res, sessionTokens) {
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
           ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
-        console.log(response.attendees.lenght);
-        console.log(JSON.stringify(response.attendees));
         if (response.attendees && response.attendees.length > 0){
           message += 'Invites: \n\n';
           for (var i in response.attendees){
