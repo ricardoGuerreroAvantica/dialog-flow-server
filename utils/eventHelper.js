@@ -8,6 +8,8 @@ var moment = require('moment');
 function createEventFinish(req, res, sessionTokens) {
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var eventContext = commons.getContext(req.body.result.contexts, 'createevent');
+  console.log('eventContext : ' + JSON.stringify(eventContext));
+  console.log('invitesContext : ' + JSON.stringify(invitesContext));
   var name = eventContext.parameters.eventName;
   var invites = invitesContext.parameters.invites;
   var duration = eventContext.parameters.duration;
