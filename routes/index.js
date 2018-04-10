@@ -195,6 +195,37 @@ router.get('/terms', (req, res) => {
 });
 
 
+// router.get('/check', (req, res) => {
+//
+//   var date = '2018-04-10';
+//   var time = '15:00:00';
+//   var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+//   var duration = {
+//     amount : 1,
+//     unit : 'h'
+//   };
+//   var endDate = '';
+//   if (duration && duration.unit && duration.unit === 'h'){
+//     endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+//     console.log('1');
+//   }
+//   else if (duration && duration.unit && duration.unit === 'min'){
+//     endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+//     console.log('2');
+//   }
+//   else{
+//     console.log('3');
+//     endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+//   }
+//
+//   return res.json({ response : {
+//       start : startDate ,
+//       endDate : endDate
+//     }
+//   });
+// });
+
+
 
 
 module.exports = router;

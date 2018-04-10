@@ -19,11 +19,11 @@ function createEventFinish(req, res, sessionTokens) {
 
   var endDate = '';
   if (duration && duration.unit && duration.unit === 'h')
-    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   else if (duration && duration.unit && duration.unit === 'min')
-    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, 'minutes').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   else
-    endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+    endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   authHelper.wrapRequestAsCallback(sessionTokens.REFRESH_TOKEN_CACHE_KEY, {
     onSuccess: function (results) {
