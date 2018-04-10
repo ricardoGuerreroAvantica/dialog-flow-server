@@ -264,7 +264,7 @@ function showLocations(req, res, sessionTokens){
       })
       .then((response) => {
         var message = '';
-        console.log(JSON.stringify(response));
+        console.log(response);
         if (response.value.length == 0){
           message = "There aren't any location available";
         }else {
