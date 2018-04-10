@@ -278,7 +278,7 @@ function showLocations(req, res, sessionTokens){
           displayText: message,
           source: "dialog-server-flow"
         });
-      }
+      })
       .catch((error) => {
         console.log("Locations error :  " + error);
         console.log(error);
