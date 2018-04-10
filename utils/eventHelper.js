@@ -271,7 +271,7 @@ function showLocations(req, res, sessionTokens){
           message = "Locations: \n";
           for (var i in response.data.value){
             var location = response.data.value[i];
-            message += location.name + '\n';
+            message += location.name + "\n";
           }
         }
         return res.json({
