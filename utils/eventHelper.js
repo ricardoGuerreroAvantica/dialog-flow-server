@@ -34,10 +34,10 @@ function createEventFinish(req, res, sessionTokens) {
 
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
         var message = response.subject + 'created' + '\n' +
-          'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
-          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
-          (response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced' + '\n' +
-          'Organizer: ' + response.organizer.emailAddress.name + '\n';
+          'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
+          (response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced' + '\n\n' +
+          'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
 
         return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
       });
@@ -146,12 +146,11 @@ function checkUserAvailable(req, res, sessionTokens) {
             if (response.meetingTimeSuggestions.length == 0){
               message, speech = "Sorry couldn't find any space";
             }else {
-              speech = user.displayName + " is available at: \n";
-              message = "I found some space, look at these";
+              speech = user.displayName + " is available at: \n\n";
+              message = "I found some space, look at these \n\n";
               for (var i in response.meetingTimeSuggestions){
                 var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime);
-                speech += " \n ";
+                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n\n';
               }
             }
             return res.json({
@@ -183,7 +182,7 @@ function showInvites(req, res, sessionTokens, callback){
   var invites = invitesContext.parameters.invites;
   var message = '';
   for (var i in invites){
-    message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + "\n";
+    message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + '\n\n';
   }
 
   return res.json({
