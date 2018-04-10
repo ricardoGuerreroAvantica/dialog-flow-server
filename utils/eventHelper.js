@@ -37,12 +37,20 @@ function createEventFinish(req, res, sessionTokens) {
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
         console.log('RESPONSE');
         console.log(JSON.stringify(response, null, 2));
-        var message = response.subject + 'created' + '\n' +
+        var message = response.subject + ' created' + '\n\n' +
           'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
-          (response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced' + '\n\n' +
+          (response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : ('Location: to be announced') + '\n\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
-
+        console.log('Message1 : ' + message);
+        if (response.attendees && response.attendees.lenght > 0){
+          message += 'Invites: \n\n';
+          for (var i in response.attendees){
+            message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + '\n\n';
+          }
+          console.log('Message2 : ' + message);
+        }
+        console.log('Message : ' + message);
         return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
       });
     },
