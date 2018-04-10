@@ -267,10 +267,10 @@ function showLocations(req, res, sessionTokens){
         if (response.data.value.length == 0){
           message = "There aren't any location available";
         }else {
-          message = "Locations: \n";
+          message = "Locations: \n\n";
           for (var i in response.data.value){
             var location = response.data.value[i];
-            message += location.name + "\n";
+            message += location.name + '\n\n';
           }
         }
         console.log(message);
