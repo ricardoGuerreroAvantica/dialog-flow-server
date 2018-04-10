@@ -265,12 +265,12 @@ function showLocations(req, res, sessionTokens){
       .then((response) => {
         var message = '';
         console.log(response);
-        if (response.value.length == 0){
+        if (response.data.value.length == 0){
           message = "There aren't any location available";
         }else {
           message = "Locations: \n";
-          for (var i in response.value){
-            var location = response.value[i];
+          for (var i in response.data.value){
+            var location = response.data.value[i];
             message += location.name + '\n';
           }
         }
