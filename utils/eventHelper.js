@@ -37,6 +37,7 @@ function createEventFinish(req, res, sessionTokens) {
       requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (e, response) => {
         console.log('RESPONSE');
         console.log(JSON.stringify(response, null, 2));
+        var speech = response.subject + ' created' + '\n\n' +
         var message = response.subject + ' created' + '\n\n' +
           'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
@@ -48,7 +49,7 @@ function createEventFinish(req, res, sessionTokens) {
             message += response.attendees[i].emailAddress.name + " Email: " + response.attendees[i].emailAddress.address + '\n\n';
           }
         }
-        return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+        return res.json({ speech: message, displayText: speech, source: "dialog-server-flow" });
       });
     },
     onFailure: function (err) {
@@ -151,20 +152,20 @@ function checkUserAvailable(req, res, sessionTokens) {
         };
 
         requestUtil.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', results.access_token, JSON.stringify(postBody), (e, response) => {
-            var message, speech = '';
+            var speech, message = '';
             if (response.meetingTimeSuggestions.length == 0){
-              message, speech = "Sorry couldn't find any space";
+              speech, message = "Sorry couldn't find any space";
             }else {
-              speech = user.displayName + " is available at: \n\n";
-              message = "I found some space, look at these \n\n";
+              message = user.displayName + " is available at: \n\n";
+              speech = "I found some space, look at these \n\n";
               for (var i in response.meetingTimeSuggestions){
                 var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                speech += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n\n';
+                message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n\n';
               }
             }
             return res.json({
-              speech: speech,
-              displayText: message,
+              speech: message,
+              displayText: speech,
               source: "dialog-server-flow"
             });
           }
@@ -189,14 +190,15 @@ function checkUserAvailable(req, res, sessionTokens) {
 function showInvites(req, res, sessionTokens, callback){
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
-  var message = '';
+  var message, speech = '';
+  speech = 'found these';
   for (var i in invites){
     message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + '\n\n';
   }
 
   return res.json({
     speech: message,
-    displayText: message,
+    displayText: speech,
     source: "dialog-server-flow"
   });
 }
@@ -226,11 +228,12 @@ function searchUser(req, res, sessionTokens, userData, callback){
       .then((response) => {
         if (response.data.value.length > 1){
           var message = "I found these users with that name \n \n";
+          var speech = "I found these users with that name \n \n";
           for (var i in response.data .value){
             message += response.data.value[i].displayName + " " + response.data.value[i].surname + "\n";
             message += "Email: " + response.data.value[i].mail + "\n \n";
           }
-          return res.json({ speech: message, displayText: message, source: "dialog-server-flow" });
+          return res.json({ speech: message, displayText: speech, source: "dialog-server-flow" });
         }else if (!response.data.value.length){
           return res.json({ speech: "Can't find someone with that name", displayText: "Can't find someone with that name", source: "dialog-server-flow" });
         }else {
@@ -271,11 +274,12 @@ function showLocations(req, res, sessionTokens){
         }
       })
       .then((response) => {
-        var message = '';
+        var message, speech = '';
         if (response.data.value.length == 0){
-          message = "There aren't any location available";
+          message, speech = "There aren't any location available";
         }else {
           message = "Locations: \n\n";
+          speech = "Found these locations";
           for (var i in response.data.value){
             var location = response.data.value[i];
             message += location.name + '\n\n';
@@ -284,7 +288,7 @@ function showLocations(req, res, sessionTokens){
         console.log(message);
         return res.json({
           speech: message,
-          displayText: message,
+          displayText: speech,
           source: "dialog-server-flow"
         });
       })
