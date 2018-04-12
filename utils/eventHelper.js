@@ -46,7 +46,8 @@ function createEventFinish(req, res, sessionTokens) {
         if (response.attendees && response.attendees.length > 0){
           message += 'Invites: \n\n';
           for (var i in response.attendees){
-            message += response.attendees[i].emailAddress.name + " Email: " + response.attendees[i].emailAddress.address + '\n\n';
+            message += response.attendees[i].emailAddress.name + " Email: " + response.attendees[i].emailAddress.address +
+              ((i !== response.attendees.length) ? '\n\n' : '');
           }
         }
         return res.json({ speech: message, displayText: speech, source: "dialog-server-flow" });
@@ -160,7 +161,8 @@ function checkUserAvailable(req, res, sessionTokens) {
               speech = "I found some space, look at these \n\n";
               for (var i in response.meetingTimeSuggestions){
                 var slot = response.meetingTimeSuggestions[i].meetingTimeSlot;
-                message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) + '\n\n';
+                message += commons.parseDate(slot.start.dateTime) + ' - ' + commons.parseDate(slot.end.dateTime) +
+                  ((i !== response.meetingTimeSuggestions.length) ? '\n\n' : '');
               }
             }
             return res.json({
@@ -191,11 +193,16 @@ function showInvites(req, res, sessionTokens, callback){
   var invitesContext = commons.getContext(req.body.result.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
   var message, speech = '';
-  speech = 'found these';
-  for (var i in invites){
-    message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + '\n\n';
+  if (invites.length > 0){
+    speech = 'These are the people invited';
+    message = 'Invites: \n\n'
+    for (var i in invites){
+      message += invites[i].emailAddress.name + " Email: " + invites[i].emailAddress.address + ((i !== invites.length) ? '\n\n' : '') ;
+    }
+  }else{
+    speech = "You haven't invited anyone";
+    message = "You haven't invited anyone\n\n";
   }
-
   return res.json({
     speech: message,
     displayText: speech,
