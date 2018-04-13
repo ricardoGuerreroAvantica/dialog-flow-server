@@ -107,6 +107,7 @@ function showEventsByName(req, res, sessionTokens){
 function parseEvent(response){
   var message = 'Found these events \n\n';
   message += '-------------------- \n\n';
+  console.log(response.data.value.length);
   for (var i in response.data.value){
     message += 'Subject: ' + response.data.value[i].subject + '\n\n';
     message += 'Starts at: ' + commons.parseDate(response.data.value[i].start.dateTime) + '\n\n';
@@ -116,6 +117,7 @@ function parseEvent(response){
     else
       message += 'Location: to be announced' + '\n\n';
     message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n\n ';
+    console.log(i);
     if (i < response.data.value.length - 1){
       message += '* \n';
       message += '* \n\n';
