@@ -64,6 +64,7 @@ router.get('/signIn', function (req, res) {
       }
       //tokens[sessionId].ACCESS_TOKEN_CACHE_KEY = access_token;
       //tokens[sessionId].REFRESH_TOKEN_CACHE_KEY = refresh_token;
+      return res.render('successfulLogIn');
       return res.json({
         response : {
           description : "Login Successful",
