@@ -117,7 +117,7 @@ function parseEvent(response){
     else
       message += 'Location: to be announced' + '\n\n';
     message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n\n';
-    message += '* \n\n';
+    message += '\n\n *';
   }
   return {
     speech: (response.data.value.length > 0) ? message : 'There is nothing on your agenda',
