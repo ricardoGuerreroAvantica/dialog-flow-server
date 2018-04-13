@@ -116,9 +116,10 @@ function parseEvent(response){
       message += 'Location: ' + response.data.value[i].location.displayName + '\n\n';
     else
       message += 'Location: to be announced' + '\n\n';
-    message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n\n ';
+    message += 'Organizer: ' + response.data.value[i].organizer.emailAddress.name + '\n\n';
     console.log(i);
     if (i < response.data.value.length - 1){
+      console.log("*");
       message += '* \n';
       message += '* \n\n';
     }
