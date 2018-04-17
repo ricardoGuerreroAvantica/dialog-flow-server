@@ -37,3 +37,5 @@ function searchUser(req, res){
   });
 
 }
+
+exports.searchUser = searchUser;

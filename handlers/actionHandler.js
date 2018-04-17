@@ -31,3 +31,5 @@ function parseAction(req, res){
       this.speech = 'Could you repeat that?';
   }
 }
+
+exports.parseAction = parseAction;
