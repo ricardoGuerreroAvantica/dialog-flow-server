@@ -17,7 +17,7 @@ var tokens = {};
 
 
 //CHECK FOR VALID DEVICES
-function validSession(next, res, req){
+function validSession(next, req, res){
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
   if (session && session.parameters && session.parameters.id){
@@ -33,12 +33,12 @@ function validSession(next, res, req){
     next(new Error());
   }
   console.log('validSession.options : ' + JSON.stirngify(this.options));
-  next(res, req);
+  next(req, res);
 }
 
 
 //CHECK IF USER LOGED IN
-function validUser(next, res, req){
+function validUser(next, req, res){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
 
