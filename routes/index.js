@@ -23,18 +23,18 @@ router.post("/request", (req, res) => {
     errorHandler.raiseError(res, 'VALID_USER_ERROR');
   });
 
-  Action.post('parseAction', (next) => {
-    var contexts  = this.contexts;
-    var message   = this.message;
-    var speech    = this.speech;
-
-    return res.json({
-      speech: speech,
-      displayText: message,
-      source: "dialog-server-flow",
-      contextOut : contexts
-    });
-  })
+  // Action.post('parseAction', (next) => {
+  //   var contexts  = this.contexts;
+  //   var message   = this.message;
+  //   var speech    = this.speech;
+  //
+  //   return res.json({
+  //     speech: speech,
+  //     displayText: message,
+  //     source: "dialog-server-flow",
+  //     contextOut : contexts
+  //   });
+  // });
   var action = new Action();
   action.parseAction(req, res);
 
