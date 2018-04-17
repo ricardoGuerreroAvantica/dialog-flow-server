@@ -48,7 +48,7 @@ function validUser(next, req, res){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
   console.log('validUser.options : ' + JSON.stringify(this.options));
-  console.log('validUser.next : ' + JSON.stringify(next));
+  console.log('validUser.next : ' + next);
   console.log('validUser.this : ' + JSON.stringify(this));
   next(req, res);
 }
