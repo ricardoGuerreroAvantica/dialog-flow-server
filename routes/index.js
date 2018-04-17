@@ -19,9 +19,7 @@ router.post("/request", (req, res) => {
 
   Action.pre('parseAction', authenticate.validSession, (error) => {
     errorHandler.raiseError(res, 'VALID_SESSION_ERROR');
-  });
-
-  Action.pre('parseAction', authenticate.validUser, (error) => {
+  }).pre('parseAction', authenticate.validUser, (error) => {
     errorHandler.raiseError(res, 'VALID_USER_ERROR');
   });
 

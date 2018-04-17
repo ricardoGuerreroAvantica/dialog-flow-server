@@ -4,7 +4,7 @@ var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
 
 var hooks = require('hooks');
-var Action = require('./../handlers/Action');
+var Action = require('./../handlers/Action.js');
 
 for (var k in hooks) {
   Action[k] = hooks[k];
@@ -17,10 +17,9 @@ function parseAction(req, res){
   switch (this.options.action) {
     case 'calendar_user_available' :
       Action.hook('findMeetingTimes', calendarHandler.findMeetingTimes);
-
-      Action.pre('findMeetingTimes', authenticate.refreshToken);
-      Action.pre('findMeetingTimes', userHandler.searchUser);
-      Action.pre('findMeetingTimes', authenticate.refreshToken);
+      Action.pre('findMeetingTimes', authenticate.refreshToken)
+        .pre('findMeetingTimes', userHandler.searchUser)
+        .pre('findMeetingTimes', authenticate.refreshToken);
 
       var action = new Action();
       action.findMeetingTimes(req, res);
