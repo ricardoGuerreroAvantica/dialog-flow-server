@@ -79,7 +79,7 @@ function refreshToken(next, req, res) {
 }
 
 
-function signIn(state, code){
+function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
 
