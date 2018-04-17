@@ -16,7 +16,8 @@ function parseAction(req, res){
 
   switch (this.options.action) {
     case 'calendar_user_available' :
-      Action.hook('findMeetingTimes', calendarHandler.findMeetingTimes);
+      console.log('--CHECK--');
+      Action.prototype.findMeetingTimes = actionHandler.findMeetingTimes;
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser)
         .pre('findMeetingTimes', authenticate.refreshToken);
@@ -30,6 +31,7 @@ function parseAction(req, res){
       this.message = 'Could you repeat that?';
       this.speech = 'Could you repeat that?';
   }
+  console.log('parseAction.options : ' + JSON.stringify(this.options));
 }
 
 exports.parseAction = parseAction;
