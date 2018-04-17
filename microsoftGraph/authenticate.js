@@ -32,7 +32,7 @@ function validSession(next, req, res){
   }else{
     next(new Error());
   }
-  console.log('validSession.options : ' + JSON.stirngify(this.options));
+  console.log('validSession.options : ' + JSON.stringify(this.options));
   next(req, res);
 }
 
@@ -45,7 +45,7 @@ function validUser(next, req, res){
   if (!this.options.sessionTokens){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
-  console.log('validUser.options : ' + JSON.stirngify(this.options));
+  console.log('validUser.options : ' + JSON.stringify(this.options));
   next(req, res);
 }
 
