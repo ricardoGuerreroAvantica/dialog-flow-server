@@ -1,3 +1,3 @@
-class Action {
+export default class Action {
   constructor() {}
 }
