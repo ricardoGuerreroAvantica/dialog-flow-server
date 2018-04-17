@@ -68,8 +68,8 @@ function refreshToken(next, req, res) {
       redirect_uri: credentials.redirect_uri,
       resource: credentials.resouce
     },
-    function(e, access_token, refresh_token, results){
-      if (e){
+    function(error, access_token, refresh_token, results){
+      if (error){
         next(new Error());
       }
       this.access_token = results.access_token;
