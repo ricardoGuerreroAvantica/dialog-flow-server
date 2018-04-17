@@ -33,6 +33,8 @@ function validSession(next, req, res){
     next(new Error());
   }
   console.log('validSession.options : ' + JSON.stringify(this.options));
+  console.log('validSession.next : ' + JSON.stringify(next));
+  console.log('validSession.this : ' + JSON.stringify(this));
   next(req, res);
 }
 
@@ -46,8 +48,8 @@ function validUser(next, req, res){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
   console.log('validUser.options : ' + JSON.stringify(this.options));
-  console.log('validSession.next : ' + JSON.stringify(next));
-  console.log('validSession.this : ' + JSON.stringify(this));
+  console.log('validUser.next : ' + JSON.stringify(next));
+  console.log('validUser.this : ' + JSON.stringify(this));
   next(req, res);
 }
 
