@@ -3,8 +3,8 @@ var authenticate = require('../microsoftGraph/authenticate.js');
 var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
 
-var hooks = require('hooks')
-  , Action = require('./Action');
+var hooks = require('hooks');
+var Action = require('./../handlers/Action');
 
 for (var k in hooks) {
   Action[k] = hooks[k];

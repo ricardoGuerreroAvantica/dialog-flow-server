@@ -1,3 +1,6 @@
-export default class Action {
-  constructor() {}
+
+module.exports = class Action {
+  constructor() {
+
+  }
 }

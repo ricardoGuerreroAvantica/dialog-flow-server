@@ -3,8 +3,8 @@ var router = express.Router();
 var authenticate = require('../microsoftGraph/authenticate.js');
 var errorHandler = require('../handlers/errorHandler.js');
 var actionHandler = require('../handlers/actionHandler.js');
-var hooks = require('hooks')
-  , Action = require('./../handlers/Action');
+var hooks = require('hooks');
+var Action = require('./../handlers/Action.js');
 
 for (var k in hooks) {
   Action[k] = hooks[k];
