@@ -22,7 +22,8 @@ function parseAction(req, res){
       Action.pre('findMeetingTimes', userHandler.searchUser);
       Action.pre('findMeetingTimes', authenticate.refreshToken);
 
-      calendarHandler.findMeetingTimes(req, res);
+      var action = new Action();
+      action.findMeetingTimes(req, res);
 
       break;
 

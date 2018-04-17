@@ -37,8 +37,8 @@ router.post("/request", (req, res) => {
       contextOut : contexts
     });
   })
-
-  actionHandler.parseAction(req, res);
+  var action = new Action();
+  action.parseAction(req, res);
 
 });
 
