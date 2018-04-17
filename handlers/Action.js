@@ -1,9 +1,3 @@
-/**
-  CONSTRUCTOR
-*/
-
-module.exports = {
-  pre : '',
-  post : '',
-  hook : ''
+class Action {
+  constructor() {}
 }
