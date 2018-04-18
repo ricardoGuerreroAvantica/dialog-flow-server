@@ -21,10 +21,12 @@ router.post("/request", (req, res) => {
     errorHandler.raiseError(res, 'VALID_USER_ERROR');
   });
 
-  Action.post('parseAction', (next) => {
-    var contexts  = this.contexts;
-    var message   = this.message;
-    var speech    = this.speech;
+  var action = new Action();
+
+  action.parseAction(req, res, (result) => {
+    var contexts  = result.contexts;
+    var message   = result.message;
+    var speech    = result.speech;
 
     return res.json({
       speech: speech,
@@ -33,8 +35,6 @@ router.post("/request", (req, res) => {
       contextOut : contexts
     });
   });
-  var action = new Action();
-  action.parseAction(req, res);
 
 });
 

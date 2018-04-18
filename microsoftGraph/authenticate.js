@@ -50,8 +50,8 @@ function validUser(next, req, res){
 }
 
 
-async function refreshToken(next, req, res) {
-  console.log('refreshToken.options.pre : ' + JSON.stringify(this));
+function refreshToken(next, req, res) {
+  console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(this));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
@@ -60,7 +60,7 @@ async function refreshToken(next, req, res) {
     credentials.authorize_endpoint,
     credentials.token_endpoint
   );
-  await oauth2.getOAuthAccessToken(
+  oauth2.getOAuthAccessToken(
     this.options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
     {
       grant_type: 'refresh_token',
@@ -78,6 +78,7 @@ async function refreshToken(next, req, res) {
       next(req, res);
     }
   );
+  console.log('refreshToken.end');
 }
 
 

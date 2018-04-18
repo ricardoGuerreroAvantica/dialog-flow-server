@@ -9,7 +9,7 @@ function searchUser(req, res){
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
       ((userData.lastname) ? ((filter) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
       ((userData.email) ? ((filter) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
-  console.log('searchUser.options.pre : ' + JSON.stirngify(this));
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stirngify(this));
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',
