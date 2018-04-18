@@ -15,7 +15,9 @@ async function parseAction(req, res){
   this.options.contexts = req.body.result.contexts;
   this.options.action = req.body.result.action;
   console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
+
   switch (this.options.action) {
+    ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
       console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
       //HOOK
@@ -28,7 +30,8 @@ async function parseAction(req, res){
       var action = new Action();
       await action.findMeetingTimes.call(this, req, res);
       break;
-
+      
+    ///////////////DEFAULT ANSWER///////////////
     default:
       this.message = 'Could you repeat that?';
       this.speech = 'Could you repeat that?';
