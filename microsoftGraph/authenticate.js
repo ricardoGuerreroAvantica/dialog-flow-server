@@ -51,8 +51,7 @@ function validUser(next, req, res){
 
 
 function refreshToken(next, req, res) {
-  console.log('refreshToken.options : ' + this);
-  console.log('refreshToken.options : ' + JSON.stringify(this));
+  console.log('refreshToken.options.pre : ' + JSON.stringify(this));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
@@ -73,8 +72,9 @@ function refreshToken(next, req, res) {
       if (error){
         next(new Error());
       }
-      this.access_token = results.access_token;
-      this.refresh_token = results.refresh_token;
+      this.options.access_token = results.access_token;
+      this.options.refresh_token = results.refresh_token;
+      console.log('refreshToken.options : ' + JSON.stringify(this));
       next(req, res);
     }
   );

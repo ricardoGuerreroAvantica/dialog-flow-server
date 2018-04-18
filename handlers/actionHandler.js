@@ -17,7 +17,7 @@ async function parseAction(req, res){
 
   switch (this.options.action) {
     case 'calendar_user_available' :
-      console.log('parseAction.options : ' + JSON.stringify(this.options));
+      console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
       //HOOK
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE

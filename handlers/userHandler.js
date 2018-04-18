@@ -9,7 +9,7 @@ function searchUser(req, res){
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
       ((userData.lastname) ? ((filter) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
       ((userData.email) ? ((filter) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
-
+  console.log('searchUser.options.pre : ' + JSON.stirngify(this));
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',
@@ -18,6 +18,7 @@ function searchUser(req, res){
     }
   })
   .then((response) => {
+    console.log('searchUser.response : ' + JSON.stirngify(response));
     if (response.data.value.length > 1){
       next(new Error());
     }
@@ -30,9 +31,11 @@ function searchUser(req, res){
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
     }
+    console.log('searchUser.options : ' + JSON.stirngify(this.options));
     next(req, res);
   })
   .catch((error) => {
+    console.log('searchUser.error : ' + JSON.stirngify(error));
     next(new Error());
   });
 
