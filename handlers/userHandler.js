@@ -36,7 +36,7 @@ function searchUser(next, options, callback){
     next(options, callback);
   })
   .catch((error) => {
-    console.log('searchUser.error : ' + JSON.stringify(error));
+    console.log('searchUser.error : ' + error);
     next(new Error());
   });
 
