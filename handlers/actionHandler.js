@@ -31,7 +31,7 @@ function parseAction(req, res, callback){
         .pre('findMeetingTimes', authenticate.refreshToken);
 
       var action = new Action();
-      action.findMeetingTimes.call(options, callback);
+      action.findMeetingTimes(options, callback);
 
       break;
 
