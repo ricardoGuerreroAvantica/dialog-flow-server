@@ -14,7 +14,7 @@ for (var k in hooks) {
 async function parseAction(req, res){
   this.options.contexts = req.body.result.contexts;
   this.options.action = req.body.result.action;
-
+  console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
   switch (this.options.action) {
     case 'calendar_user_available' :
       console.log('parseAction.options.pre : ' + JSON.stringify(this.options));

@@ -50,7 +50,7 @@ function validUser(next, req, res){
 }
 
 
-function refreshToken(next, req, res) {
+async function refreshToken(next, req, res) {
   console.log('refreshToken.options.pre : ' + JSON.stringify(this));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
@@ -60,8 +60,7 @@ function refreshToken(next, req, res) {
     credentials.authorize_endpoint,
     credentials.token_endpoint
   );
-
-  oauth2.getOAuthAccessToken(
+  await oauth2.getOAuthAccessToken(
     this.options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
     {
       grant_type: 'refresh_token',
@@ -70,6 +69,7 @@ function refreshToken(next, req, res) {
     },
     function(error, access_token, refresh_token, results){
       if (error){
+        console.log('refreshToken.error : ' + JSON.stringify(error));
         next(new Error());
       }
       this.options.access_token = results.access_token;
@@ -86,11 +86,11 @@ function signIn(req, res){
   var code = req.query.code;
 
   if (!code) {
-    console.log("Code error");
+    console.log('signIn.error : Missing code');
     return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
   }
   if (!state) {
-    console.log("Id error");
+    console.log('signIn.error : Missing state');
     return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
   }
   getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
