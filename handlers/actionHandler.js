@@ -12,11 +12,11 @@ for (var k in hooks) {
 }
 
 function parseAction(req, res, callback){
-  var options = {
-    contexts : req.body.result.contexts,
-    action : req.body.result.action,
-    parameters : req.body.result.parameters
-  }
+  var options = this.options;
+  options.contexts : req.body.result.contexts;
+  options.action : req.body.result.action;
+  options.parameters : req.body.result.parameters;
+
   console.log('parseAction.options.pre.httpCall : ' + JSON.stringify(options));
 
   switch (options.action) {
