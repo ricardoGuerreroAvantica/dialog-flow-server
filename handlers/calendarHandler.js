@@ -13,7 +13,7 @@ function findMeetingTimes(req, res){
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-
+  console.log('findMeetingTimes.options.pre : ' + JSON.stirngify(this));
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', this.options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.options : ' + JSON.stirngify(error));
@@ -29,6 +29,7 @@ function findMeetingTimes(req, res){
       ${meetings.map(meeting => `${meeting.start.dateTime} - ${meeting.end.dateTime} \n\n`)}
       `;
     this.speech = 'I found some space, look at these';
+    console.log('findMeetingTimes.options : ' + JSON.stirngify(this));
   });
 
 }
