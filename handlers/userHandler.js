@@ -1,7 +1,10 @@
 var axios = require('axios');
 
 function searchUser(req, res){
+  console.log('searchUser.req.pre.http : ' + req);
+  console.log('searchUser.req.pre.http : ' + JSON.stringify(req));
   console.log('searchUser.req.pre.http : ' + JSON.stringify(req.body));
+  console.log('searchUser.res.pre.http : ' + JSON.stringify(res));
   var parameters = req.body.result.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
