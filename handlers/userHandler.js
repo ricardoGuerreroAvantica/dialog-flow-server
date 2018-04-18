@@ -1,6 +1,6 @@
 var axios = require('axios');
 
-function searchUser(options, callback){
+function searchUser(next, options, callback){
   console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
   var userData = { name : parameters.name,
