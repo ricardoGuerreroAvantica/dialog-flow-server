@@ -22,7 +22,7 @@ function searchUser(next, options, callback){
     }
   })
   .then((response) => {
-    console.log('searchUser.response : ' + JSON.stringify(response));
+    console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length > 1){
       next(new Error());
     }
