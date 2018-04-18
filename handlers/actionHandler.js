@@ -2,6 +2,7 @@ var authenticate = require('../microsoftGraph/authenticate.js');
 
 var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
+var actionHandler = require('../handlers/actionHandler.js');
 
 var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
