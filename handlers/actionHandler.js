@@ -50,7 +50,6 @@ function parseAction(req, res, callback){
       this.message = 'Could you repeat that?';
       this.speech = 'Could you repeat that?';
   }
-  console.log('parseAction.options : ' + JSON.stringify(this.options));
 
 }
 
