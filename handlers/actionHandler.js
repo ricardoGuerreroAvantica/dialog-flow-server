@@ -17,15 +17,14 @@ function parseAction(req, res){
 
   switch (this.options.action) {
     case 'calendar_user_available' :
-      console.log('--CHECK--');
       console.log('parseAction.options : ' + JSON.stringify(this.options));
-      Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes.bind(this, this.options);
+      Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser)
         .pre('findMeetingTimes', authenticate.refreshToken);
 
       var action = new Action();
-      action.findMeetingTimes(req, res);
+      action.findMeetingTimes.call(this, req, res);
 
       break;
 

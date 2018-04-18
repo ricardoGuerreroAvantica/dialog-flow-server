@@ -52,9 +52,7 @@ function validUser(next, req, res){
 
 function refreshToken(next, req, res) {
   console.log('refreshToken.options : ' + this);
-  console.log(this);
-  console.log('refreshToken.options : ' + this[0]);
-  console.log('refreshToken.options : ' + JSON.stringify(this[0]));
+  console.log('refreshToken.options : ' + JSON.stringify(this));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
