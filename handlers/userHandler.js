@@ -11,6 +11,9 @@ function searchUser(next, options, callback){
       ((userData.lastname) ? ((filter) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
       ((userData.email) ? ((filter) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
   console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  console.log('searchUser.filter.pre.httpCall : ' + filter);
+  console.log('searchUser.filter.pre.httpCall : ' + 'https://graph.microsoft.com/v1.0/users?$filter=' + filter);
+
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',
