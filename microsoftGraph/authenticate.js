@@ -17,7 +17,7 @@ var tokens = {};
 
 
 //CHECK FOR VALID DEVICES
-function validSession(next, req, res){
+function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
   if (session && session.parameters && session.parameters.id){
@@ -33,12 +33,12 @@ function validSession(next, req, res){
     next(new Error());
   }
   console.log('validSession.options : ' + JSON.stringify(this.options));
-  next(req, res);
+  next(req, res, callback);
 }
 
 
 //CHECK IF USER LOGED IN
-function validUser(next, req, res){
+function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
 
@@ -46,12 +46,15 @@ function validUser(next, req, res){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
   console.log('validUser.options : ' + JSON.stringify(this.options));
-  next(req, res);
+  next(req, res, callback);
 }
 
 
-function refreshToken(next, req, res) {
+function refreshToken(next, req, res, callback) {
   console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(this));
+  console.log('refreshToken.req.pre.httpCall : ' + req);
+  console.log('refreshToken.res.pre.httpCall : ' + res);
+  console.log('refreshToken.callback.pre.httpCall : ' + callback);
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
@@ -75,7 +78,7 @@ function refreshToken(next, req, res) {
       console.log('refreshToken.options : ' + JSON.stringify(this.options));
       this.options.access_token = access_token;
       this.options.refresh_token = refresh_token;
-      next(req, res);
+      next(req, res, callback);
 
     }.bind(this)
   );
