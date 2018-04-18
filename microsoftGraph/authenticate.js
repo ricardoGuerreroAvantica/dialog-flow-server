@@ -67,7 +67,7 @@ function refreshToken(next, req, res) {
       redirect_uri: credentials.redirect_uri,
       resource: credentials.resouce
     },
-    (error, access_token, refresh_token, results) => {
+    function(error, access_token, refresh_token, results){
       if (error){
         console.log('refreshToken.error : ' + JSON.stringify(error));
         next(new Error());
