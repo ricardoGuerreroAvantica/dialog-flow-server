@@ -67,20 +67,18 @@ function refreshToken(next, req, res) {
       redirect_uri: credentials.redirect_uri,
       resource: credentials.resouce
     },
-    function(error, access_token, refresh_token, results){
+    (error, access_token, refresh_token, results) => {
       if (error){
         console.log('refreshToken.error : ' + JSON.stringify(error));
         next(new Error());
       }
       console.log('refreshToken.options : ' + JSON.stringify(this.options));
-      console.log('refreshToken.results : ' + JSON.stringify(results));
-      console.log('refreshToken.access_token : ' + access_token);
       this.options.access_token = access_token;
       this.options.refresh_token = refresh_token;
       next(req, res);
+
     }.bind(this)
   );
-  console.log('refreshToken.end');
 }
 
 

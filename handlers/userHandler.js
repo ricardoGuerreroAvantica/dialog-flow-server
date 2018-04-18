@@ -1,6 +1,7 @@
 var axios = require('axios');
 
 function searchUser(req, res){
+  console.log('searchUser.req.pre.http : ' + JSON.stirngify(req.body));
   var parameters = req.body.result.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
