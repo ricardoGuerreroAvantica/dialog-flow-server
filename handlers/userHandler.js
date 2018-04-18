@@ -1,7 +1,7 @@
 var axios = require('axios');
 
 function searchUser(req, res){
-  console.log('searchUser.req.pre.http : ' + JSON.stirngify(req.body));
+  console.log('searchUser.req.pre.http : ' + JSON.stringify(req.body));
   var parameters = req.body.result.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
@@ -10,7 +10,7 @@ function searchUser(req, res){
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
       ((userData.lastname) ? ((filter) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
       ((userData.email) ? ((filter) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
-  console.log('searchUser.options.pre.httpCall : ' + JSON.stirngify(this));
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(this));
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ function searchUser(req, res){
     }
   })
   .then((response) => {
-    console.log('searchUser.response : ' + JSON.stirngify(response));
+    console.log('searchUser.response : ' + JSON.stringify(response));
     if (response.data.value.length > 1){
       next(new Error());
     }
@@ -32,11 +32,11 @@ function searchUser(req, res){
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
     }
-    console.log('searchUser.options : ' + JSON.stirngify(this.options));
+    console.log('searchUser.options : ' + JSON.stringify(this.options));
     next(req, res);
   })
   .catch((error) => {
-    console.log('searchUser.error : ' + JSON.stirngify(error));
+    console.log('searchUser.error : ' + JSON.stringify(error));
     next(new Error());
   });
 
