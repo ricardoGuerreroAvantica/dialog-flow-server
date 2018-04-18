@@ -52,6 +52,7 @@ function validUser(next, req, res){
 
 function refreshToken(next, req, res) {
   console.log('refreshToken.options : ' + JSON.stringify(this));
+  console.log('refreshToken.options : ' + this);
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
