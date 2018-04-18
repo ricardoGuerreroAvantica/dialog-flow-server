@@ -1,22 +1,22 @@
 var request = require('../microsoftGraph/request.js');
 var commons = require('../utils/commons.js');
 
-function findMeetingTimes(req, res, options, callback){
+function findMeetingTimes(options, callback){
   var parameters = options.parameters;
   var duration = parameters.duration;
   var date = parameters.date;
   var time = parameters.time;
   var user = options.user;
-  
+
   var postBody = {
     attendees: commons.getAttendees([user]),
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-  console.log('findMeetingTimes.options.pre.httpCall : ' + JSON.stirngify(options));
+  console.log('findMeetingTimes.options.pre.httpCall : ' + JSON.stringify(options));
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
-      console.log('findMeetingTimes.options : ' + JSON.stirngify(error));
+      console.log('findMeetingTimes.options : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
 

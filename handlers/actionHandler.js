@@ -17,7 +17,7 @@ function parseAction(req, res, callback){
     action : req.body.result.action,
     parameters : req.body.result.parameters
   }
-  console.log('parseAction.options.pre.httpCall : ' + JSON.stringify(this.options));
+  console.log('parseAction.options.pre.httpCall : ' + JSON.stringify(options));
 
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
