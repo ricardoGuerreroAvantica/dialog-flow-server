@@ -18,7 +18,7 @@ function parseAction(req, res){
   switch (this.options.action) {
     case 'calendar_user_available' :
       console.log('--CHECK--');
-      Action.prototype.findMeetingTimes = actionHandler.findMeetingTimes;
+      Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser)
         .pre('findMeetingTimes', authenticate.refreshToken);

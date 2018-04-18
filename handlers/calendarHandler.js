@@ -33,3 +33,5 @@ function findMeetingTimes(req, res){
   });
 
 }
+
+exports.findMeetingTimes = findMeetingTimes;
