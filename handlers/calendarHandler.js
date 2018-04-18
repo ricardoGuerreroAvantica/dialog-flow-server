@@ -1,5 +1,4 @@
 var request = require('../microsoftGraph/request.js');
-var userHandler = require('./userHandler.js');
 var commons = require('../utils/commons.js');
 
 function findMeetingTimes(req, res){
