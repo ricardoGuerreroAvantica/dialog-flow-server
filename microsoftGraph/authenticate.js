@@ -50,7 +50,7 @@ function validUser(next, req, res, callback){
 }
 
 
-function refreshToken(next, req, res, options, callback) {
+function refreshToken(next, options, callback) {
   console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
@@ -75,7 +75,7 @@ function refreshToken(next, req, res, options, callback) {
       console.log('refreshToken.options : ' + JSON.stringify(options));
       options.access_token = access_token;
       options.refresh_token = refresh_token;
-      next(req, res, options, callback);
+      next(options, callback);
 
     }
   );

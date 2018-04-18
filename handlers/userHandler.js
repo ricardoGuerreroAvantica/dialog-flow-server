@@ -1,8 +1,8 @@
 var axios = require('axios');
 
-function searchUser(req, res, options, callback){
-  console.log('searchUser.req.pre.httpCall : ' + JSON.stringify(options));
-  var parameters = req.body.result.parameters;
+function searchUser(options, callback){
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  var parameters = options.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
     email : parameters.email }
@@ -33,7 +33,7 @@ function searchUser(req, res, options, callback){
       surname : response.data.value[0].surname,
     }
     console.log('searchUser.options : ' + JSON.stringify(options));
-    next(req, res, options, callback);
+    next(options, callback);
   })
   .catch((error) => {
     console.log('searchUser.error : ' + JSON.stringify(error));
