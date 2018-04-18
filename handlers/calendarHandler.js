@@ -16,7 +16,7 @@ function findMeetingTimes(req, res){
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', this.options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
-      console.log('validSession.options : ' + JSON.stirngify(error));
+      console.log('findMeetingTimes.options : ' + JSON.stirngify(error));
       errorHandler.actionError(error);
     }
     var options = {

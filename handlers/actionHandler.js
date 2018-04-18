@@ -11,21 +11,22 @@ for (var k in hooks) {
   Action[k] = hooks[k];
 }
 
-function parseAction(req, res){
+async function parseAction(req, res){
   this.options.contexts = req.body.result.contexts;
   this.options.action = req.body.result.action;
 
   switch (this.options.action) {
     case 'calendar_user_available' :
       console.log('parseAction.options : ' + JSON.stringify(this.options));
+      //HOOK
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
+      //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser)
         .pre('findMeetingTimes', authenticate.refreshToken);
 
       var action = new Action();
-      action.findMeetingTimes.call(this, req, res);
-
+      await action.findMeetingTimes.call(this, req, res);
       break;
 
     default:
