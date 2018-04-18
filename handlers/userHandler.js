@@ -1,9 +1,7 @@
 var axios = require('axios');
 
-function searchUser(req, res, callback){
-  console.log('searchUser.req.pre.httpCall : ' + req);
-  console.log('searchUser.res.pre.httpCall : ' + res);
-  console.log('searchUser.callback.pre.httpCall : ' + callback);
+function searchUser(req, res, options, callback){
+  console.log('searchUser.req.pre.httpCall : ' + JSON.stringify(options));
   var parameters = req.body.result.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
@@ -12,12 +10,12 @@ function searchUser(req, res, callback){
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
       ((userData.lastname) ? ((filter) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
       ((userData.email) ? ((filter) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
-  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(this));
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: 'Bearer ' + this.options.access_token
+      Authorization: 'Bearer ' + options.access_token
     }
   })
   .then((response) => {
@@ -28,14 +26,14 @@ function searchUser(req, res, callback){
     if (response.data.value.length === 0){
       next(new Error());
     }
-    this.options.user = {
+    options.user = {
       displayName : response.data.value[0].displayName,
       givenName : response.data.value[0].givenName,
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
     }
-    console.log('searchUser.options : ' + JSON.stringify(this.options));
-    next(req, res, callback);
+    console.log('searchUser.options : ' + JSON.stringify(options));
+    next(req, res, options, callback);
   })
   .catch((error) => {
     console.log('searchUser.error : ' + JSON.stringify(error));

@@ -12,15 +12,17 @@ for (var k in hooks) {
 }
 
 function parseAction(req, res, callback){
-  this.options.contexts = req.body.result.contexts;
-  this.options.action = req.body.result.action;
-  
+  var options = {
+    contexts : req.body.result.contexts,
+    action : req.body.result.action,
+    parameters : req.body.result.parameters
+  }
   console.log('parseAction.options.pre.httpCall : ' + JSON.stringify(this.options));
 
-  switch (this.options.action) {
+  switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
-      console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
+      console.log('parseAction.options.pre : ' + JSON.stringify(options));
       //HOOK
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
@@ -29,27 +31,15 @@ function parseAction(req, res, callback){
         .pre('findMeetingTimes', authenticate.refreshToken);
 
       var action = new Action();
-      action.findMeetingTimes.call(this, req, res, callback);
+      action.findMeetingTimes.call(req, res, options, callback);
 
       break;
-    ///////////////FIND MEETING TIME///////////////
-    case 'calendar_user_available' :
-      console.log('parseAction.options.pre : ' + JSON.stringify(this.options));
-      //HOOK
-      Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
-      //PRE
-      Action.pre('findMeetingTimes', authenticate.refreshToken)
-        .pre('findMeetingTimes', userHandler.searchUser)
-        .pre('findMeetingTimes', authenticate.refreshToken);
 
-      var action = new Action();
-      action.findMeetingTimes.call(this, req, res, callback);
-
-      break;
     ///////////////DEFAULT ANSWER///////////////
     default:
-      this.message = 'Could you repeat that?';
-      this.speech = 'Could you repeat that?';
+      this.options.message = 'Could you repeat that?';
+      this.options. = 'Could you repeat that?';
+      callback(this.options);
   }
 
 }

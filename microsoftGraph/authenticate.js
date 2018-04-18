@@ -50,11 +50,8 @@ function validUser(next, req, res, callback){
 }
 
 
-function refreshToken(next, req, res, callback) {
-  console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(this));
-  console.log('refreshToken.req.pre.httpCall : ' + req);
-  console.log('refreshToken.res.pre.httpCall : ' + res);
-  console.log('refreshToken.callback.pre.httpCall : ' + callback);
+function refreshToken(next, req, res, options, callback) {
+  console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
     credentials.client_id,
@@ -64,7 +61,7 @@ function refreshToken(next, req, res, callback) {
     credentials.token_endpoint
   );
   oauth2.getOAuthAccessToken(
-    this.options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
+    options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
     {
       grant_type: 'refresh_token',
       redirect_uri: credentials.redirect_uri,
@@ -75,12 +72,12 @@ function refreshToken(next, req, res, callback) {
         console.log('refreshToken.error : ' + JSON.stringify(error));
         next(new Error());
       }
-      console.log('refreshToken.options : ' + JSON.stringify(this.options));
-      this.options.access_token = access_token;
-      this.options.refresh_token = refresh_token;
-      next(req, res, callback);
+      console.log('refreshToken.options : ' + JSON.stringify(options));
+      options.access_token = access_token;
+      options.refresh_token = refresh_token;
+      next(req, res, options, callback);
 
-    }.bind(this)
+    }
   );
 }
 
