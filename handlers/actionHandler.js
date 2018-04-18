@@ -38,7 +38,7 @@ function parseAction(req, res, callback){
     ///////////////DEFAULT ANSWER///////////////
     default:
       this.options.message = 'Could you repeat that?';
-      this.options. = 'Could you repeat that?';
+      this.options.speech = 'Could you repeat that?';
       callback(this.options);
   }
 
