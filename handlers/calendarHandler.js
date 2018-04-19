@@ -77,6 +77,8 @@ function showEvents(options, callback){
         options.message += 'Location    : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced' + '\n\n')
         options.message += 'Organizer   : '  + event.organizer.emailAddress.name + '\n\n';
       });
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
     }else{
       console.log('showEvents.meetings : empty response' );
       options.message = options.speech = 'There is nothing on your agenda';
