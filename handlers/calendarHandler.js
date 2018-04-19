@@ -25,6 +25,7 @@ function findMeetingTimes(options, callback){
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
       options.message = options.speech = `I found some space, look at these: \n\n`;
+      options.message += '------------------------------------' + '\n\n';
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
@@ -46,20 +47,24 @@ function showEvents(options, callback){
   var name = parameters.name;
   var period = parameters.period;
   var filter = '';
+  var url = '';
 
   if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
+    url = 'https://graph.microsoft.com/v1.0/me/events?';
   }else if (period){
     period = period.split("/");
     filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
             '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+    url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }else{
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
             '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+    url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
 
-  axios.get('https://graph.microsoft.com/v1.0/me/calendarview?' + filter, {
+  axios.get(url + filter, {
     headers : {
       'Content-Type':
       'application/json',
@@ -87,7 +92,7 @@ function showEvents(options, callback){
     }
   })
   .catch((error) => {
-    console.log('showEvents.error : ' + JSON.stringify(error));
+    console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
 
