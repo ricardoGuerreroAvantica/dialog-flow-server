@@ -1,4 +1,5 @@
 var request = require('../microsoftGraph/request.js');
+var moment = require('moment');
 var commons = require('../utils/commons.js');
 
 function findMeetingTimes(options, callback){
