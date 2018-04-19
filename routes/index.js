@@ -25,8 +25,8 @@ router.post("/request", (req, res) => {
 
   action.parseAction(req, res, (result) => {
     var contexts  = result.contexts;
-    var message   = result.message;
-    var speech    = result.speech;
+    var message   = result.speech;
+    var speech    = result.message;
 
     return res.json({
       speech: speech,
