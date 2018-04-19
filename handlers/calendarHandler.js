@@ -32,7 +32,7 @@ function findMeetingTimes(options, callback){
       callback(options);
     }else{
       console.log('findMeetingTimes.meetings : empty response' );
-      options.message, options.speech = "Sorry couldn't find any space";
+      options.message = options.speech = "Sorry couldn't find any space";
       callback(options);
     }
 
