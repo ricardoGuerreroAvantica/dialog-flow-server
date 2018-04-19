@@ -57,9 +57,9 @@ function showEvents(options, callback){
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
             '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
   }
-  console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/events?' + filter);
+  console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
 
-  axios.get('https://graph.microsoft.com/v1.0/me/events?' + filter, {
+  axios.get('https://graph.microsoft.com/v1.0/me/calendarview?' + filter, {
     headers : {
       'Content-Type':
       'application/json',
@@ -69,13 +69,13 @@ function showEvents(options, callback){
   .then((response) => {
     var events = response.data.value;
     if (events.length > 0){
-      options.message = options.speech = 'Found these events \n\n';
+      options.message = options.speech = 'Found these events: \n\n';
       events.forEach((event) => {
         options.message += '------------------------------------' + '\n\n';
         options.message += 'Subject        : '    + event.subject + '\n\n';
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) + '\n\n';
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) + '\n\n';
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced' + '\n\n')
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name + '\n\n';
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
