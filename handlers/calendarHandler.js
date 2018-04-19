@@ -7,18 +7,18 @@ function findMeetingTimes(options, callback){
   var date = parameters.date;
   var time = parameters.time;
   var user = options.user;
-
   var postBody = {
     attendees: commons.getAttendees([user]),
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-  console.log('findMeetingTimes.options.pre.httpCall : ' + JSON.stringify(options));
+
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.options : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
+
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length === 0){
@@ -30,10 +30,11 @@ function findMeetingTimes(options, callback){
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
+      options.speech = 'I found some space, look at these';
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
     }
-    options.speech = 'I found some space, look at these';
-    console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-    callback(options);
+    
   });
 }
 
