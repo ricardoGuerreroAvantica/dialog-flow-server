@@ -20,16 +20,22 @@ function findMeetingTimes(options, callback){
       errorHandler.actionError(error);
     }
     var meetings = response.meetingTimeSuggestions;
-    
-    options.message = `
-      I found some space, look at these \n\n
-      --------------------------------- \n\n
-      ${meetings.map(meeting => `${meeting.start.dateTime} - ${meeting.end.dateTime} \n\n`)}
-      `;
+    if (meetings.length === 0){
+      options.message, options.speech = "Sorry couldn't find any space";
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
+    }else{
+      options.message = `
+        I found some space, look at these \n\n
+        --------------------------------- \n\n
+        ${meetings.map(meeting => `${meeting.start.dateTime} - ${meeting.end.dateTime} \n\n`)}
+        `;
 
-    options.speech = 'I found some space, look at these';
-    console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-    callback(options);
+      options.speech = 'I found some space, look at these';
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
+    }
+
   });
 
 }
