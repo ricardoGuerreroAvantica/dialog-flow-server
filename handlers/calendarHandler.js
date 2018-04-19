@@ -19,14 +19,14 @@ function findMeetingTimes(options, callback){
       console.log('findMeetingTimes.options : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
-
+    var meetings = response.meetingTimeSuggestions;
     options.message = `
       I found some space, look at these \n\n
       --------------------------------- \n\n
       ${meetings.map(meeting => `${meeting.start.dateTime} - ${meeting.end.dateTime} \n\n`)}
       `;
     options.speech = 'I found some space, look at these';
-
+    console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
     callback(options);
   });
 
