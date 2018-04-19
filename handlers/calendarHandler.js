@@ -29,7 +29,8 @@ function findMeetingTimes(options, callback){
       options.message = `
         I found some space, look at these \n\n
         --------------------------------- \n\n
-        ${meetings.map(meeting => `${commons.parseDate(meeting.start.dateTime)} - ${commons.parseDate(meeting.end.dateTime)} \n\n`)}
+        ${meetings.map(meeting => `${commons.parseDate(meeting.meetingTimeSlot.start.dateTime)} -
+        ${commons.parseDate(meeting.meetingTimeSlot.end.dateTime)} \n\n`)}
         `;
 
       options.speech = 'I found some space, look at these';
