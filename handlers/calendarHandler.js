@@ -15,19 +15,18 @@ function findMeetingTimes(options, callback){
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
-      console.log('findMeetingTimes.options : ' + JSON.stringify(error));
+      console.log('findMeetingTimes.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
 
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
-      options.message = `I found some space, look at these: \n\n`;
+      options.message = options.speech = `I found some space, look at these: \n\n`;
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
-      options.speech = 'I found some space, look at these';
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
@@ -39,4 +38,55 @@ function findMeetingTimes(options, callback){
   });
 }
 
+
+function showEvents(options, callback){
+  var parameters = options.parameters;
+  var name = parameters.name;
+  var period = parameters.period.split("/");;
+  var fiter = '';
+
+  if (name){
+    filter = "$filter=startswith(subject,'" + name + "')";
+  }else if (period){
+    filter = 'startdatetime=' + moment(periods[0], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+            '&enddatetime=' + moment(periods[1], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+  }else{
+    filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+            '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+  }
+
+  axios.get('https://graph.microsoft.com/v1.0/me/events?' + filter, {
+    headers : {
+      'Content-Type':
+      'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + options.access_token }
+  })
+  .then((response) => {
+    var events = response.data.value;
+    if (events.lenght > 0){
+      options.message = options.speech = 'Found these events \n\n';
+      events.forEach((event) => {
+        options.message += 'Subject     : '    + event.subject + '\n\n';
+        options.message += 'Starts at   : '  + commons.parseDate(event.start.dateTime) + '\n\n';
+        options.message += 'Ends at     : '    + commons.parseDate(event.end.dateTime) + '\n\n';
+        options.message += 'Location    : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced' + '\n\n')
+        options.message += 'Organizer   : '  + event.organizer.emailAddress.name + '\n\n';
+      });
+    }else{
+      console.log('showEvents.meetings : empty response' );
+      options.message = options.speech = 'There is nothing on your agenda';
+      callback(options);
+    }
+  })
+  .catch((error) => {
+    console.log('showEvents.error : ' + JSON.stringify(error));
+    errorHandler.actionError(error);
+  });
+
+}
+
+
+
+exports.showEvents = showEvents;
 exports.findMeetingTimes = findMeetingTimes;

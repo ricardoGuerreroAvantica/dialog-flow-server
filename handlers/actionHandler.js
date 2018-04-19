@@ -17,12 +17,11 @@ function parseAction(req, res, callback){
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
 
-  console.log('parseAction.options.pre.httpCall : ' + JSON.stringify(options));
-
+  console.log('parseAction.options.pre : ' + JSON.stringify(options));
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
-      console.log('parseAction.options.pre : ' + JSON.stringify(options));
+
       //HOOK
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
@@ -36,7 +35,13 @@ function parseAction(req, res, callback){
 
     ///////////////SHOW EVENTS///////////////
     case 'show_events' :
+      //HOOK
+      Action.prototype.showEvents = calendarHandler.showEvents;
+      //PRE
+      Action.pre('showEvents', authenticate.refreshToken);
 
+      var action = new Action();
+      action.showEvents(options, callback);
       break;
 
     ///////////////DEFAULT ANSWER///////////////
