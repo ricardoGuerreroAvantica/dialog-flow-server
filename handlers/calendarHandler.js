@@ -42,18 +42,20 @@ function findMeetingTimes(options, callback){
 function showEvents(options, callback){
   var parameters = options.parameters;
   var name = parameters.name;
-  var period = parameters.period.split("/");;
-  var fiter = '';
+  var period = parameters.period;
+  var filter = '';
 
   if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
   }else if (period){
-    filter = 'startdatetime=' + moment(periods[0], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment(periods[1], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+    period = period.split("/");
+    filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
   }else{
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
             '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
   }
+  console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/events?' + filter);
 
   axios.get('https://graph.microsoft.com/v1.0/me/events?' + filter, {
     headers : {
