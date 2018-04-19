@@ -27,7 +27,7 @@ function findMeetingTimes(options, callback){
     }else{
       options.message = `I found some space, look at these: \n\n`;
       meetings.forEach((meeting) => {
-        options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + '-' +
+        options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
     }
