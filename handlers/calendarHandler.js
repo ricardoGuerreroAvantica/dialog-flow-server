@@ -68,7 +68,7 @@ function showEvents(options, callback){
   })
   .then((response) => {
     var events = response.data.value;
-    if (events.lenght > 0){
+    if (events.length > 0){
       options.message = options.speech = 'Found these events \n\n';
       events.forEach((event) => {
         options.message += 'Subject     : '    + event.subject + '\n\n';
