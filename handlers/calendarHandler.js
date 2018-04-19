@@ -20,6 +20,7 @@ function findMeetingTimes(options, callback){
       errorHandler.actionError(error);
     }
     var meetings = response.meetingTimeSuggestions;
+    console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length === 0){
       options.message, options.speech = "Sorry couldn't find any space";
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
