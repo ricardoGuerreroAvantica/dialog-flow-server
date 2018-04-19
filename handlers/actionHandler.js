@@ -35,6 +35,11 @@ function parseAction(req, res, callback){
 
       break;
 
+    ///////////////SHOW EVENTS///////////////
+    case 'show_events' :
+
+      break;
+
     ///////////////DEFAULT ANSWER///////////////
     default:
       this.options.message = 'Could you repeat that?';
