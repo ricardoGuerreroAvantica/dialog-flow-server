@@ -68,7 +68,14 @@ function parseAction(req, res, callback){
       break;
     ///////////////SCHEDULE A MEETING - INVITE USER ///////////////
     case 'create_event_invite' :
-      eventHandler.inviteUser(options, callback);
+      Action.prototype.inviteUser = eventHandler.inviteUser;
+      //PRE
+      Action.pre('inviteUser', authenticate.refreshToken)
+        .pre('inviteUser', userHandler.searchUser);
+
+      var action = new Action();
+      action.inviteUser(options, callback);
+
       break;
     ///////////////SCHEDULE A MEETING - UNINVITE USER ///////////////
     case 'create_event_uninvite' :
