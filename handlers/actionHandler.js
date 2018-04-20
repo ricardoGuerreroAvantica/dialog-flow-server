@@ -3,6 +3,8 @@ var authenticate = require('../microsoftGraph/authenticate.js');
 var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
 var actionHandler = require('../handlers/actionHandler.js');
+var eventHandler = require('../handlers/eventHandler.js');
+var locationHandler = require('../handlers/locationHandler.js');
 
 var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
@@ -21,8 +23,6 @@ function parseAction(req, res, callback){
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
-
-      //HOOK
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
@@ -44,13 +44,43 @@ function parseAction(req, res, callback){
       action.showEvents(options, callback);
       break;
 
-    ///////////////SCHEDULE A MEETING - INVITE USER(s) ///////////////
-    case 'create_event_invites' :
+    ///////////////SHOW LOCATIONS///////////////
+    case 'show_locations' :
       //HOOK
-      Action.prototype.showEvents = calendarHandler.generateInvites;
+      Action.prototype.showLocations = locationHandler.showLocations;
+      //PRE
+      Action.pre('showLocations', authenticate.refreshToken);
 
       var action = new Action();
-      action.generateInvites(options, callback);
+      action.showLocations(options, callback);
+      break;
+
+
+    ///////////////SCHEDULE A MEETING - INVITE USER ///////////////
+    case 'create_event_finish' :
+      //HOOK
+      Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
+      //PRE
+      Action.pre('scheduleMeeting', authenticate.refreshToken);
+
+      var action = new Action();
+      action.scheduleMeeting(options, callback);
+      break;
+    ///////////////SCHEDULE A MEETING - INVITE USER ///////////////
+    case 'create_event_invite' :
+      eventHandler.inviteUser(options, callback);
+      break;
+    ///////////////SCHEDULE A MEETING - UNINVITE USER ///////////////
+    case 'create_event_uninvite' :
+      eventHandler.deleteInvite(options, callback);
+      break;
+    ///////////////SCHEDULE A MEETING - SHOW INVITES USER ///////////////
+    case 'create_event_show_invites' :
+      eventHandler.showInvites(options, callback);
+      break;
+    ///////////////SCHEDULE A MEETING - SHOW INVITES USER ///////////////
+    case 'create_event_uninvite' :
+      eventHandler.showInvites(options, callback);
       break;
 
     ///////////////DEFAULT ANSWER///////////////

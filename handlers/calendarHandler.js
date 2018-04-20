@@ -4,47 +4,49 @@ var axios = require('axios');
 var commons = require('../utils/commons.js');
 
 
-
-
-function generateInvites(options, callback){
-  var parameters = options.parameters;
-
-
-
-}
-
-function showInvites(options, callback){
-  var parameters = options.parameters;
+function scheduleMeeting(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
+  var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = invitesContext.parameters.invites;
-  options.message = options.speech = `These are your current attendees \n\n`;
-  options.message += '------------------------------------' + '\n\n';
-  invites.forEach((invite) => {
-    message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+  var name = eventContext.parameters.eventName;
+  var duration = eventContext.parameters.duration;
+  var date = eventContext.parameters.date;
+  var time = eventContext.parameters.time;
+  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, ((duration.unit === 'min') ? 'minutes' : 'hours'))
+      .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+
+  var body = {
+    "subject": name,
+    "attendees": invites,
+    "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
+    "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
+  }
+  console.log(JSON.stringify(body, null, 2));
+
+  requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (error, response) => {
+    if (error){
+      console.log('scheduleMeeting.error : ' + JSON.stringify(error));
+      errorHandler.actionError(error);
+    }
+
+    console.log('createEvent.response : ' + response);
+    options.message = options.speech = response.subject + ' created' + '\n\n';
+    options.message += '------------------------------------' + '\n\n';
+    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
+          ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n\n' +
+          'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
+    if (response.attendees && response.attendees.length > 0){
+      message += 'Invites: \n\n';
+      options.message += '-----------------' + '\n\n';
+      response.attendees.forEach((attendee) => {
+        message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
+      });
+    }
+    callback(options);
   });
-  callback(options);
 }
-
-
-function deleteInvite(options, callback){
-  var parameters = options.parameters;
-
-
-
-}
-
-
-
-function createEvent(options, callback){
-  var parameters = options.parameters;
-
-
-
-}
-
-
-
-
 
 
 
@@ -143,7 +145,6 @@ function showEvents(options, callback){
 
 }
 
-
-
-exports.showEvents = showEvents;
 exports.findMeetingTimes = findMeetingTimes;
+exports.scheduleMeeting = scheduleMeeting;
+exports.showEvents = showEvents;
