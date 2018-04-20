@@ -3,6 +3,51 @@ var moment = require('moment');
 var axios = require('axios');
 var commons = require('../utils/commons.js');
 
+
+
+
+function generateInvites(options, callback){
+  var parameters = options.parameters;
+
+
+
+}
+
+function showInvites(options, callback){
+  var parameters = options.parameters;
+  var invitesContext = commons.getContext(options.contexts, 'invites');
+  var invites = invitesContext.parameters.invites;
+  options.message = options.speech = `These are your current attendees \n\n`;
+  options.message += '------------------------------------' + '\n\n';
+  invites.forEach((invite) => {
+    message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+  });
+  callback(options);
+}
+
+
+function deleteInvite(options, callback){
+  var parameters = options.parameters;
+
+
+
+}
+
+
+
+function createEvent(options, callback){
+  var parameters = options.parameters;
+
+
+
+}
+
+
+
+
+
+
+
 function findMeetingTimes(options, callback){
   var parameters = options.parameters;
   var duration = parameters.duration;

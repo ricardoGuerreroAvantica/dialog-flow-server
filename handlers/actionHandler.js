@@ -44,6 +44,15 @@ function parseAction(req, res, callback){
       action.showEvents(options, callback);
       break;
 
+    ///////////////SCHEDULE A MEETING - INVITE USER(s) ///////////////
+    case 'create_event_invites' :
+      //HOOK
+      Action.prototype.showEvents = calendarHandler.generateInvites;
+
+      var action = new Action();
+      action.generateInvites(options, callback);
+      break;
+
     ///////////////DEFAULT ANSWER///////////////
     default:
       this.options.message = 'Could you repeat that?';
