@@ -20,7 +20,7 @@ function inviteUser(options, callback){
 function showInvites(options, callback){
   var parameters = options.parameters;
   var invitesContext = commons.getContext(options.contexts, 'invites');
-  var invites = invitesContext.parameters.invites);
+  var invites = invitesContext.parameters.invites;
   options.message = options.speech = `These are your current attendees \n\n`;
   options.message += '------------------------------------' + '\n\n';
   invites.forEach((invite) => {
