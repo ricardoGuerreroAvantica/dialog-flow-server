@@ -38,6 +38,7 @@ function showInvites(options, callback){
 
 function deleteInvite(options, callback){
   var parameters = options.parameters;
+  console.log('deleteInvite.options : ' + JSON.stringify(options, null, 2) );
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
     options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
@@ -48,17 +49,25 @@ function deleteInvite(options, callback){
   var invites = invitesContext.parameters.invites;
 
   invites.forEach((invite) => {
-    if (invite.emailAddress.name.includes(userData.name + ' ' + userData.lastname)){
+    if (userData.name && userData.lastname && invite.emailAddress.name.includes(userData.name)
+      && invite.emailAddress.name.includes(userData.lastname)){
+      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      options.message = options.speech = userData.email + ' was uninvited ' + '\n\n';
       callback(options);
-    }else if (invite.emailAddress.address === userData.email){
+    }else if (userData.email && invite.emailAddress.address === userData.email){
+      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      options.message = options.speech = userData.email + ' was uninvited ' + '\n\n';
+      callback(options);
+    }else if (userData.lastname && invite.emailAddress.name.includes(userData.lastname)){
+      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+      invites.splice(i, 1);
+      callback(options);
+    }else if (userData.name && invite.emailAddress.name.includes(userData.name)){
+      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+      invites.splice(i, 1);
       callback(options);
     }
   })
-
   options.message = options.speech = userData.email + 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
   callback(options);
 }
