@@ -10,12 +10,22 @@ function inviteUser(options, callback){
 
   options.contexts.forEach((context) => {
     console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
-    if (context.name === 'invites')
+    if (context.name === 'invites'){
+      context.parameters.invites.forEach((invite) => {
+        if (user.email === invite.emailAddress.address){
+          options.message = options.speech = user.displayName + ' is already invited \n\n';
+          console.log(user.displayName + ' is already invited \n\n');
+          callback(options);
+        }
+      })
+      options.message = options.speech = user.displayName + ' was invited \n\n';
       context.parameters.invites.push(invite);
+      console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
+      callback(options);
+    }
   });
-
-  options.message = options.speech = user.displayName + ' was invited \n\n';
-  console.log('inviteUser.options : ' + JSON.stringify(options, null, 2) );
+  options.message = options.speech = " Couldn't uninvite " + user.displayName + ' \n\n';
+  console.log("Couldn't uninvite " + user.displayName + ' \n\n');
   callback(options);
 }
 

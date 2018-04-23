@@ -24,7 +24,7 @@ function scheduleMeeting(options, callback){
   }
   console.log(JSON.stringify(body, null, 2));
 
-  requestUtil.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (error, response) => {
+  request.postData('graph.microsoft.com','/v1.0/me/events', results.access_token, JSON.stringify(body), (error, response) => {
     if (error){
       console.log('scheduleMeeting.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
