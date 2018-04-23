@@ -30,7 +30,7 @@ function showInvites(options, callback){
   options.message = options.speech = `These are your current attendees \n\n`;
   options.message += '------------------------------------' + '\n\n';
   invites.forEach((invite) => {
-    message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+    options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
   });
   callback(options);
 }
