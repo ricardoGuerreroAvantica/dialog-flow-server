@@ -48,26 +48,27 @@ function deleteInvite(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
 
-  invites.forEach((invite) => {
-    if (userData.name && userData.lastname && invite.emailAddress.name.includes(userData.name)
-      && invite.emailAddress.name.includes(userData.lastname)){
-      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+  for (var i in invites){
+    if (userData.name && userData.lastname && invites[i].emailAddress.name.includes(userData.name)
+      && invites[i].emailAddress.name.includes(userData.lastname)){
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
-    }else if (userData.email && invite.emailAddress.address === userData.email){
-      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+    }else if (userData.email && invites[i].emailAddress.address === userData.email){
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
-    }else if (userData.lastname && invite.emailAddress.name.includes(userData.lastname)){
-      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+    }else if (userData.lastname && invites[i].emailAddress.name.includes(userData.lastname)){
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
-    }else if (userData.name && invite.emailAddress.name.includes(userData.name)){
-      options.message = options.speech = invite.emailAddress.name + ' was uninvited ' + '\n\n';
+    }else if (userData.name && invites[i].emailAddress.name.includes(userData.name)){
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
     }
-  })
+  }
+
   options.message = options.speech = userData.email + 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
   callback(options);
 }
