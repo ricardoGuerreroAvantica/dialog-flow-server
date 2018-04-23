@@ -27,6 +27,7 @@ router.post("/request", (req, res) => {
     var contexts  = result.contexts;
     var message   = result.speech;
     var speech    = result.message;
+    console.log('findMeetingTimes.meetings : ' + JSON.stringify(result, null, 2));
 
     return res.json({
       speech: speech,
