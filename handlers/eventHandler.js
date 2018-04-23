@@ -6,7 +6,7 @@ function inviteUser(options, callback){
   var user = options.user;
   var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
   if (!commons.getContext(options.contexts, 'invites'))
-    options.context = [{ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 }];
+    options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
   options.contexts.forEach((context) => {
     if (context.name === 'invites')
@@ -39,7 +39,7 @@ function deleteInvite(options, callback){
   var parameters = options.parameters;
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
-    options.context = [{ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 }];
+    options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
     options.message = options.speech = 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
     callback(options);
   }

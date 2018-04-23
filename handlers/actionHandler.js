@@ -15,7 +15,7 @@ for (var k in hooks) {
 
 function parseAction(req, res, callback){
   var options = this.options;
-  options.contexts = req.body.result.contexts;
+  options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
 
