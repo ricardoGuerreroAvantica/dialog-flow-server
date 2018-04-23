@@ -14,12 +14,18 @@ function inviteUser(options, callback){
   });
 
   options.message = options.speech = user.displayName + ' was invited \n\n';
+  console.log('inviteUser.options : ' + JSON.stringify(options, null, 2) );
   callback(options);
 }
 
 function showInvites(options, callback){
   var parameters = options.parameters;
+  console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
+  if (!invitesContext){
+    options.message = options.speech = `There are no invitations yet \n\n`;
+    callback(options);
+  }
   var invites = invitesContext.parameters.invites;
   options.message = options.speech = `These are your current attendees \n\n`;
   options.message += '------------------------------------' + '\n\n';
