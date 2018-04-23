@@ -11,6 +11,7 @@ function inviteUser(options, callback){
   options.contexts.forEach((context) => {
     console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
     if (context.name === 'invites'){
+      
       console.log('inviteUser.Invite : Invite' );
       console.log('inviteUser.Invite : ' + context.parameters.invites );
       context.parameters.invites.forEach((invite) => {
