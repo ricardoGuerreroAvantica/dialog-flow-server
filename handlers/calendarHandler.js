@@ -37,10 +37,10 @@ function scheduleMeeting(options, callback){
           ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
     if (response.attendees && response.attendees.length > 0){
-      message += 'Invites: \n\n';
+      options.message += 'Invites: \n\n';
       options.message += '-----------------' + '\n\n';
       response.attendees.forEach((attendee) => {
-        message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
+        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
       });
     }
     callback(options);
