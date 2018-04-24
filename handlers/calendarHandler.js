@@ -9,13 +9,12 @@ function scheduleMeeting(options, callback){
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = invitesContext.parameters.invites;
   var name = eventContext.parameters.eventName;
-  var duration = eventContext.parameters.duration;
+  var duration = eventContext.parameters.duration || {amount '1': , unit : 'hours'};
   var date = eventContext.parameters.date;
   var time = eventContext.parameters.time;
   var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, ((duration.unit === 'min') ? 'minutes' : 'hours'))
       .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-
   var body = {
     "subject": name,
     "attendees": invites,
@@ -30,7 +29,7 @@ function scheduleMeeting(options, callback){
       errorHandler.actionError(error);
     }
 
-    console.log('createEvent.response : ' + response);
+    console.log('scheduleMeeting.response : ' + response);
     options.message = options.speech = response.subject + ' created' + '\n\n';
     options.message += '------------------------------------' + '\n\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
