@@ -43,6 +43,9 @@ function scheduleMeeting(options, callback){
         options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
       });
     }
+
+    eventContext.lifespan = 0;
+    invitesContext.lifespan = 0;
     callback(options);
   });
 }
