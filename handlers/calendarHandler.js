@@ -9,7 +9,7 @@ function scheduleMeeting(options, callback){
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = invitesContext.parameters.invites;
   var name = eventContext.parameters.eventName;
-  var duration = eventContext.parameters.duration || {amount '1': , unit : 'hours'};
+  var duration = eventContext.parameters.duration || {amount : '1', unit : 'hours'};
   var date = eventContext.parameters.date;
   var time = eventContext.parameters.time;
   var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
