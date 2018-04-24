@@ -10,12 +10,9 @@ function scheduleMeeting(options, callback){
   var invites = invitesContext.parameters.invites;
   var name = eventContext.parameters.eventName;
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
-  var date = eventContext.parameters.date;
-  var time = eventContext.parameters.time;
-  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   console.log('scheduleMeeting.duration : ' + duration);
-  console.log('scheduleMeeting.duration.amount : ' + duration.amount);
-  console.log('scheduleMeeting.duration.unit : ' + duration.duration.unit);
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours')
       .utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   var body = {
