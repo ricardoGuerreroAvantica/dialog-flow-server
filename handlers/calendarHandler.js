@@ -7,7 +7,7 @@ var commons = require('../utils/commons.js');
 function scheduleMeeting(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
-  var invites = invitesContext.parameters.invites;
+  var invites = invitesContext.parameters.invites || [];
   var name = eventContext.parameters.eventName;
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
