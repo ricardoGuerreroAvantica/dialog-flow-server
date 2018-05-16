@@ -45,7 +45,8 @@ function scheduleMeeting(options, callback){
     }
 
     eventContext.lifespan = 0;
-    invitesContext.lifespan = 0;
+    if (invitesContext)
+      invitesContext.lifespan = 0;
     callback(options);
   });
 }
