@@ -21,9 +21,9 @@ app.use(session({
 }));
 
 app.use(express.static(__dirname + '/public'));
-app.set('views', __dirname + '/views');
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+// app.set('views', __dirname + '/views');
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
 
 app.use('/', routes);
 
