@@ -7,8 +7,8 @@ var credentials = {
   authorize_endpoint: '/oauth2/authorize',
   token_endpoint: '/oauth2/token',
   logout_endpoint: '/oauth2/logout',
-  client_id: '9cdaac8d-e575-4b5e-a2ce-bfb911710bae',
-  client_secret: 'bixkJN105!;gxeROFFV83+-',
+  client_id: 'c93a93c8-e0bd-4066-8550-845bf844bea3',
+  client_secret: 'iOGRYK9563+=orvbuiMM9?_',
   scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
   redirect_uri: 'https://dialog-flow-server-testing.herokuapp.com/signIn',
   resouce: 'https://graph.microsoft.com/'
