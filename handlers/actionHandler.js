@@ -42,13 +42,6 @@ function parseAction(req, res, callback){
       Console.log("BODY")
       console.log(JSON.stringify(postBody));
       console.log("------------------------------");
-      Console.log("Data info:")
-      console.log(JSON.stringify(options));      
-      console.log("------------------------------");
-      console.log(" Json del Body");
-      console.log(JSON.stringify(postBody));
-
-      console.log("------------------------------");
 
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
