@@ -18,12 +18,12 @@ function parseAction(req, res, callback){
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
-
-  console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
+  
+  console.log("Viejo Token:"+ options.access_token);
+  //console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
-    console.log("Entrada del problema:")
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
       console.log("VIEJO TOKEN: " + options.access_token);
