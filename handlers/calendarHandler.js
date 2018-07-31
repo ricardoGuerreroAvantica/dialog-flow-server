@@ -102,7 +102,7 @@ function showEvents(options, callback){
   var filter = '';
   var url = '';
 
-  if (name){
+  /* if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
     url = 'https://graph.microsoft.com/v1.0/me/events?';
   }else if (period){
@@ -116,8 +116,8 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
-  console.log("SHOW EVENT TOKEN: " + options.access_token);
-  axios.get(url + filter, {
+  console.log("SHOW EVENT TOKEN: " + options.access_token); */
+  axios.get("https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,\'Ricardo\') and startswith(surname,\'Guerrero\')", {
     headers : {
       'Content-Type':
       'application/json',
@@ -125,7 +125,8 @@ function showEvents(options, callback){
       Authorization: 'Bearer ' + options.access_token }
   })
   .then((response) => {
-    var events = response.data.value;
+    console.log("Si funco"+ response);
+    /* var events = response.data.value;
     if (events.length > 0){
       options.message = options.speech = 'Found these events: \n\n';
       events.forEach((event) => {
@@ -142,50 +143,13 @@ function showEvents(options, callback){
       console.log('showEvents.meetings : empty response' );
       options.message = options.speech = 'There is nothing on your agenda';
       callback(options);
-    }
+    } */
   })
   .catch((error) => {
     console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
-
-
-
-console.log("ENTERS EXTERNAL TEST:");
-
-var url = 'https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,\'Ricardo\') and startswith(surname,\'Guerrero\')';
-  
-axios.get(url, {
-  headers : {
-    'Content-Type': 
-    'application/json',
-    Accept: 'application/json',
-    Authorization: 'Bearer ' + options.access_token
-  }
-})
-.then((response) => {
-  console.log('searchUser.response : ' + JSON.stringify(response.data));
-  if (response.data.value.length > 1){
-    next(new Error());
-  }
-  if (response.data.value.length === 0){
-    next(new Error());
-  }
-  var user = {
-    displayName : response.data.value[0].displayName,
-    givenName : response.data.value[0].givenName,
-    mail : response.data.value[0].mail,
-    surname : response.data.value[0].surname,
-  }
-  console.log(JSON.stringify(user));
-})
-.catch((error) => {
-  console.log('searchUser.error : ' + error);
-  next(new Error());
-});
-
 }
-
 
 exports.findMeetingTimes = findMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
