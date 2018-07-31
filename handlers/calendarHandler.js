@@ -116,7 +116,7 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
-
+  console.log("SHOW EVENT TOKEN: " + options.access_token);
   axios.get(url + filter, {
     headers : {
       'Content-Type':

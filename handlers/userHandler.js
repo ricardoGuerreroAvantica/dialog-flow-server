@@ -8,16 +8,19 @@ function searchUser(next, options, callback){
     email : parameters.email }
 
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
-      ((userData.lastname) ? ((userData.name) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
-      ((userData.email) ? ((userData.lastname || userData.name) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
+  ((userData.lastname) ? ((userData.name) ? ' and ' : '') + "startswith(surname,'" + userData.lastname + "')" : '') +
+  ((userData.email) ? ((userData.lastname || userData.name) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
+      
+  //var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
   console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   console.log('searchUser.filter.pre.httpCall : ' + filter);
-  console.log('searchUser.filter.pre.httpCall : ' + 'https://graph.microsoft.com/v1.0/users?$filter=' + filter);
-
-  console.log("NUEVO TOKEN: " + options.access_token);
-  axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
+  console.log('searchUser.filter.pre.httpCall : ' + url + filter);
+  
+  console.log("NEW USER TOKEN: " + options.access_token);
+  axios.get(url + filter, {
     headers : {
-      'Content-Type': 'application/json',
+      'Content-Type': 
+      'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + options.access_token
     }
