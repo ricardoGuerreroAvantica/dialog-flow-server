@@ -23,6 +23,7 @@ function parseAction(req, res, callback){
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
+    console.log("Entrada del problema:")
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
