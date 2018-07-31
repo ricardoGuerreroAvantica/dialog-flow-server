@@ -31,11 +31,27 @@ function parseAction(req, res, callback){
         timeConstraint : commons.getTimeConstraint(date, time),
         meetingDuration : 'PT1H'
       };
-      Console.log("Data info:"+options.access_token +" Json del Body"+ JSON.stringify(postBody))
+
+
+      var postBody = {
+        attendees: commons.getAttendees([user]),
+        timeConstraint : commons.getTimeConstraint(date, time),
+        meetingDuration : 'PT1H'
+      };
+
+      Console.log("BODY")
+      console.log(JSON.stringify(postBody));
+      console.log("------------------------------");
+      Console.log("Data info:")
+      console.log(JSON.stringify(options));      
+      console.log("------------------------------");
+      console.log(" Json del Body");
+      console.log(JSON.stringify(postBody));
+
+      console.log("------------------------------");
 
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
-      console.log("LAS OPCIONES SON:" + options.access_token);
       var action = new Action();
       action.findMeetingTimes(options, callback);
 
