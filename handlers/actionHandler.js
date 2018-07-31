@@ -27,7 +27,7 @@ function parseAction(req, res, callback){
       //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
-
+      console.log(options);
       var action = new Action();
       action.findMeetingTimes(options, callback);
 
