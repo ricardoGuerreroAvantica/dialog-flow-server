@@ -16,7 +16,7 @@ function searchUser(next, options, callback){
   console.log('searchUser.filter.pre.httpCall : ' + filter);
   console.log('searchUser.filter.pre.httpCall : ' + url + filter);
   
-  console.log("NEW USER TOKEN: " + options.access_token);
+  console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
   axios.get(url + filter, {
     headers : {
       'Content-Type': 
@@ -28,9 +28,11 @@ function searchUser(next, options, callback){
   .then((response) => {
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length > 1){
+      console.log("error: response.data.value.length > 1");
       next(new Error());
     }
     if (response.data.value.length === 0){
+      console.log("error: response.data.value.length === 0");
       next(new Error());
     }
     options.user = {
@@ -46,6 +48,8 @@ function searchUser(next, options, callback){
     console.log('searchUser.error : ' + error);
     next(new Error());
   });
+
+  
 
 }
 

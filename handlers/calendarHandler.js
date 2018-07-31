@@ -102,7 +102,7 @@ function showEvents(options, callback){
   var filter = '';
   var url = '';
 
-  /* if (name){
+  if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
     url = 'https://graph.microsoft.com/v1.0/me/events?';
   }else if (period){
@@ -116,8 +116,8 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
-  console.log("SHOW EVENT TOKEN: " + options.access_token); */
-  axios.get("https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,\'Ricardo\') and startswith(surname,\'Guerrero\')", {
+  console.log("SHOW EVENT TOKEN: " + options.access_token);
+  axios.get(url + filter, {
     headers : {
       'Content-Type':
       'application/json',
@@ -125,8 +125,7 @@ function showEvents(options, callback){
       Authorization: 'Bearer ' + options.access_token }
   })
   .then((response) => {
-    console.log("Si funco"+ response);
-    /* var events = response.data.value;
+    var events = response.data.value;
     if (events.length > 0){
       options.message = options.speech = 'Found these events: \n\n';
       events.forEach((event) => {
@@ -143,12 +142,13 @@ function showEvents(options, callback){
       console.log('showEvents.meetings : empty response' );
       options.message = options.speech = 'There is nothing on your agenda';
       callback(options);
-    } */
+    }
   })
   .catch((error) => {
     console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
+
 }
 
 exports.findMeetingTimes = findMeetingTimes;
