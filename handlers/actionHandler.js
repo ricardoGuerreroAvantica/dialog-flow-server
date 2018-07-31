@@ -25,9 +25,17 @@ function parseAction(req, res, callback){
     case 'calendar_user_available' :
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
+
+      var postBody = {
+        attendees: commons.getAttendees([user]),
+        timeConstraint : commons.getTimeConstraint(date, time),
+        meetingDuration : 'PT1H'
+      };
+      Console.log("Data info:"+options.access_token +" Json del Body"+ JSON.stringify(postBody))
+
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
-      console.log("LAS OPCIONES SON:" + options);
+      console.log("LAS OPCIONES SON:" + options.access_token);
       var action = new Action();
       action.findMeetingTimes(options, callback);
 
