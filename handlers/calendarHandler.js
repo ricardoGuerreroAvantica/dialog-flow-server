@@ -149,7 +149,43 @@ function showEvents(options, callback){
     errorHandler.actionError(error);
   });
 
+
+
+console.log("ENTERS EXTERNAL TEST:");
+
+var url = 'https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,\'Ricardo\') and startswith(surname,\'Guerrero\')';
+  
+axios.get(url, {
+  headers : {
+    'Content-Type': 
+    'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + options.access_token
+  }
+})
+.then((response) => {
+  console.log('searchUser.response : ' + JSON.stringify(response.data));
+  if (response.data.value.length > 1){
+    next(new Error());
+  }
+  if (response.data.value.length === 0){
+    next(new Error());
+  }
+  var user = {
+    displayName : response.data.value[0].displayName,
+    givenName : response.data.value[0].givenName,
+    mail : response.data.value[0].mail,
+    surname : response.data.value[0].surname,
+  }
+  console.log(JSON.stringify(user));
+})
+.catch((error) => {
+  console.log('searchUser.error : ' + error);
+  next(new Error());
+});
+
 }
+
 
 exports.findMeetingTimes = findMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
