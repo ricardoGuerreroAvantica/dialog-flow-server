@@ -14,7 +14,7 @@ function searchUser(next, options, callback){
   console.log('searchUser.filter.pre.httpCall : ' + filter);
   console.log('searchUser.filter.pre.httpCall : ' + 'https://graph.microsoft.com/v1.0/users?$filter=' + filter);
 
-  console.log(options.access_token);
+  console.log("NUEVO TOKEN: " + options.access_token);
   axios.get('https://graph.microsoft.com/v1.0/users?$filter=' + filter, {
     headers : {
       'Content-Type': 'application/json',

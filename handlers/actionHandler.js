@@ -26,6 +26,7 @@ function parseAction(req, res, callback){
     console.log("Entrada del problema:")
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
+      console.log("VIEJO TOKEN: " + options.access_token);
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
 
