@@ -33,7 +33,7 @@ app.use('/', routes);
 //   next(err);
 // });
 
-if (app.get('env') === 'development') {
+/* if (app.get('env') === 'development') {
   app.use(function (err, req, res) {
     res.status(err.status || 500);
     return res.json('error', {
@@ -49,7 +49,7 @@ app.use(function (err, req, res) {
     message: err.message,
     error: {}
   });
-});
+}); */
 
 module.exports = app;
 
