@@ -27,7 +27,7 @@ function validSession(next, req, res, callback){
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
-  }else if (session.parameters.source === "ios"){
+  }else if (session && session.parameters && session.parameters.source === "ios"){
     console.log("ios");
     this.options.sessionId = session.parameters.id;
     this.options.source = 'ios';
