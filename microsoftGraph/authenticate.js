@@ -23,14 +23,17 @@ function validSession(next, req, res, callback){
   console.log('SESSION : ' + JSON.stringify(this.req));
   console.log("Valdation Start");
   if (session && session.parameters && session.parameters.source === "android"){
+    console.log("Android");
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
   }else if (session && session.parameters && session.parameters.source === "ios"){
+    console.log("ios");
     this.options.sessionId = session.parameters.id;
     this.options.source = 'ios';
 
   }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
+    console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
     this.options.source = 'skype';
 
