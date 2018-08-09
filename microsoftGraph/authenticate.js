@@ -20,13 +20,14 @@ var tokens = {};
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
+  console.log("Valdation Start");
   if (session && session.parameters && session.parameters.source === "android"){
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
   }else if (session && session.parameters && session.parameters.source === "ios"){
     this.options.sessionId = session.parameters.id;
-    this.options.source = 'android';
+    this.options.source = 'ios';
 
   }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     this.options.sessionId = req.body.originalRequest.data.user.id;
