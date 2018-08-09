@@ -20,6 +20,8 @@ var tokens = {};
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
+  console.log('SESSION : ' + JSON.stringify(this.session));
+  console.log('session.parameters.source : ' + JSON.stringify(this.session.parameters.source));
   console.log("Valdation Start");
   if (session && session.parameters && session.parameters.source === "android"){
     this.options.sessionId = session.parameters.id;
@@ -37,7 +39,7 @@ function validSession(next, req, res, callback){
   }else{
     next(new Error());
   }
-  console.log('session.parameters.source : ' + JSON.stringify(this.session.parameters.source));
+  
   console.log('validSession.options : ' + JSON.stringify(this.options));
 
   next(req, res, callback);
