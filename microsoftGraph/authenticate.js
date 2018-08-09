@@ -37,7 +37,7 @@ function validSession(next, req, res, callback){
   }else{
     next(new Error());
   }
-  console.log('Session : ' + JSON.stringify(this.session));
+  console.log('session.parameters.source : ' + JSON.stringify(this.session.parameters.source));
   console.log('validSession.options : ' + JSON.stringify(this.options));
 
   next(req, res, callback);
