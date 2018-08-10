@@ -25,7 +25,6 @@ function validSession(next, req, res, callback){
   console.log("Request URL:" + req.url);
 
   console.log("Body:" + JSON.stringify(req.body));
-
   if (session && session.parameters && session.parameters.source === "android"){
     console.log("Android");
     this.options.sessionId = session.parameters.id;
@@ -57,6 +56,7 @@ function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
 
+  console.log('tokens[sessionId] : ' + tokens[sessionId]);
   if (!this.options.sessionTokens){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
