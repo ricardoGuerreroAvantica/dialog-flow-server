@@ -23,7 +23,7 @@ function validSession(next, req, res, callback){
   console.log('SESSION : ' + JSON.stringify(this.req));
   console.log("Valdation Start");
   console.log("Request URL:" + req.url);
-  console.log("Request URL:" + req.access_token);
+
   console.log("Body:" + JSON.stringify(req.body));
 
   if (session && session.parameters && session.parameters.source === "android"){
@@ -47,7 +47,7 @@ function validSession(next, req, res, callback){
   }
   
   console.log('validSession.options : ' + JSON.stringify(this.options));
-
+  console.log(tokens);
   next(req, res, callback);
 }
 
