@@ -22,6 +22,10 @@ function validSession(next, req, res, callback){
   this.options = {};
   console.log('SESSION : ' + JSON.stringify(this.req));
   console.log("Valdation Start");
+  console.log("Request URL:" + req.url);
+  console.log("Request URL:" + req.access_token);
+  console.log("Body:" + req.body);
+
   if (session && session.parameters && session.parameters.source === "android"){
     console.log("Android");
     this.options.sessionId = session.parameters.id;
