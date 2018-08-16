@@ -18,22 +18,21 @@ var tokens = {};
 
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
-  var iosSession = req.result.parameters.any ;
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
   console.log('SESSION : ' + JSON.stringify(this.req));
   console.log("Valdation Start");
   console.log("Request URL:" + req.url);
 
-  console.log("INICIA AUTENTIFICACION:" + JSON.stringify(req.body));
+  console.log("Body:" + JSON.stringify(req.body));
   if (session && session.parameters && session.parameters.source === "android"){
     console.log("Android");
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
-  }else if (iosSession){
-    console.log("ios" + iosSession);
-    this.options.sessionId = iosSession;
+  }else if (session && session.parameters && session.parameters.source === "ios"){
+    console.log("ios");
+    this.options.sessionId = session.parameters.id;
     this.options.source = 'ios';
 
   }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
