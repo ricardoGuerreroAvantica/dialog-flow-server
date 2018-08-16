@@ -20,8 +20,7 @@ var tokens = {};
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
   var sessionIOS = JSON.stringify(this.req);
-  sessionIOS = JSON.parse(this.sessionIOS);
-  sessionIOS = this.sessionIOS.body.result.contexts.name;
+
   this.options = {};
   console.log("------------------------------------------------------------------------------")
   console.log("session IOS: " + this.sessionIOS);
@@ -39,7 +38,7 @@ function validSession(next, req, res, callback){
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
-  }else if (sessionIOS){
+  }else if (false){
     console.log("ios");
     this.options.sessionId = session.parameters.id;
     this.options.source = 'ios';
