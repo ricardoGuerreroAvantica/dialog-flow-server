@@ -18,6 +18,7 @@ var tokens = {};
 
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
+  var iosSession = req.result.parameters.any ;
   var session = commons.getContext(req.body.result.contexts, 'session');
   this.options = {};
   console.log('SESSION : ' + JSON.stringify(this.req));
@@ -30,9 +31,9 @@ function validSession(next, req, res, callback){
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
-  }else if (session && session.parameters && session.parameters.source === "ios"){
-    console.log("ios");
-    this.options.sessionId = session.parameters.id;
+  }else if (iosSession){
+    console.log("ios" + iosSession);
+    this.options.sessionId = iosSession;
     this.options.source = 'ios';
 
   }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
