@@ -21,21 +21,9 @@ function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
   var sessionIOS = commons.getContext(req.body.result, 'contexts');
 
-  //var test = JSON.parse(req.body);
-  var test2= JSON.stringify(req.body);
-  var test3= JSON.parse(test2);
+  var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};
-  console.log("------------------------------------------------------------------------------")
-  //console.log(test);
-  console.log(test2);
-  console.log("------------------------------------------FULL BODY------------------------------------")
-  console.log(JSON.parse(test2))
-  console.log("----------------------------------------CONTEXTS--------------------------------------")
-
-  console.log(test3.result.contexts);
-  console.log("-------------------------------ARRARY CONTEXT-----------------------------------------------")
-
-  console.log(test3.result.contexts[0]);
+  var IOSId = reqJSONBody.result.contexts[0].name;
 
 
   console.log("------------------------------------------------------------------------------")
@@ -46,9 +34,9 @@ function validSession(next, req, res, callback){
     this.options.sessionId = session.parameters.id;
     this.options.source = 'android';
 
-  }else if (false){
+  }else if (IOSId){
     console.log("ios");
-    this.options.sessionId = session.parameters.id;
+    this.options.sessionId = IOSId;
     this.options.source = 'ios';
 
   }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
