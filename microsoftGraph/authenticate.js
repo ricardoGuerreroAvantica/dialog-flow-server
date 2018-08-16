@@ -19,9 +19,10 @@ var tokens = {};
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
+
   this.options = {};
   console.log('SESSION : ' + JSON.stringify(this.req));
-  console.log("Valdation Start");
+  console.log("Valdation Start: " + JSON.stringify(this.session));
   console.log("Request URL:" + req.url);
 
   console.log("Body:" + JSON.stringify(req.body));
