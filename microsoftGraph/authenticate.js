@@ -24,7 +24,7 @@ function validSession(next, req, res, callback){
   
 
 
-  console.log("------------------------------------------------------------------------------")
+
 
   console.log("Body:" + JSON.stringify(req.body));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
@@ -33,7 +33,10 @@ function validSession(next, req, res, callback){
     this.options.source = 'skype';
 
   }else {
-    var IOSId = reqJSONBody.result.contexts[1].name;
+    console.log("------------------------------------------------------------------------------");
+    console.log(reqJSONBody.result.contexts[1].name);
+    console.log("------------------------------------------------------------------------------");
+    var IOSId = reqJSONBody.result.contexts[0].name;
     if (IOSId){
     console.log("ios");
     this.options.sessionId = IOSId;
