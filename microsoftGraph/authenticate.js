@@ -22,11 +22,12 @@ function validSession(next, req, res, callback){
   var sessionIOS = commons.getContext(req.body.result, 'contexts');
 
   var test = JSON.parse(req.body);
+  var test2= JSON.stringify(req.body);
 
   this.options = {};
   console.log("------------------------------------------------------------------------------")
   console.log(test);
-  debugger;
+  console.log(test2);
 
   console.log("------------------------------------------------------------------------------")
 
