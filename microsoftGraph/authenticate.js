@@ -28,9 +28,13 @@ function validSession(next, req, res, callback){
   console.log("------------------------------------------------------------------------------")
   //console.log(test);
   console.log(test2);
-  console.log("------------------------------------------------------------------------------")
+  console.log("------------------------------------------FULL BODY------------------------------------")
   console.log(JSON.parse(test2))
+  console.log("----------------------------------------CONTEXTS--------------------------------------")
+
   console.log(test3.result.contexts);
+  console.log("-------------------------------ARRARY CONTEXT-----------------------------------------------")
+
   console.log(test3.result.contexts[0]);
 
 
