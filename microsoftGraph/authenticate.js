@@ -29,10 +29,11 @@ function validSession(next, req, res, callback){
     this.options.source = 'skype';
 
   }else {
-    var IOSId = reqJSONBody.result.contexts[0].name;
-    if (IOSId){
+    var IOSId = reqJSONBody.result.contexts;
+    var IOSName=IOSId[IOSId.length-1].name;
+    if (IOSName){
     console.log("ios");
-    this.options.sessionId = IOSId;
+    this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
     }else if (session && session.parameters && session.parameters.source === "android"){
