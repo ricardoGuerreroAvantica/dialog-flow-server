@@ -33,11 +33,12 @@ function validSession(next, req, res, callback){
     this.options.source = 'skype';
 
   }else {
-    var IOSId = reqJSONBody.result.contexts[0].name;
+    var IOSId = reqJSONBody.result.contexts[1].name;
     if (IOSId){
     console.log("ios");
     this.options.sessionId = IOSId;
     this.options.source = 'ios';
+    this.options.sessionTokens.ACCESS_TOKEN_CACHE_KEY=reqJSONBody.result.contexts[0].name;
 
     }else if (session && session.parameters && session.parameters.source === "android"){
       console.log("Android");
