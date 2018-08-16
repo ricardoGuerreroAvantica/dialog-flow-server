@@ -19,41 +19,40 @@ var tokens = {};
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
-  var sessionIOS = commons.getContext(req.body.result, 'contexts');
-
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};
-  var IOSId = reqJSONBody.result.contexts[0].name;
+  
 
 
   console.log("------------------------------------------------------------------------------")
 
   console.log("Body:" + JSON.stringify(req.body));
-  if (session && session.parameters && session.parameters.source === "android"){
-    console.log("Android");
-    this.options.sessionId = session.parameters.id;
-    this.options.source = 'android';
-
-  }else if (IOSId){
-    console.log("ios");
-    this.options.sessionId = IOSId;
-    this.options.source = 'ios';
-
-  }else if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
+  if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
     this.options.source = 'skype';
 
+  }else {
+    var IOSId = reqJSONBody.result.contexts[0].name;
+    if (IOSId){
+    console.log("ios");
+    this.options.sessionId = IOSId;
+    this.options.source = 'ios';
+
+    }else if (session && session.parameters && session.parameters.source === "android"){
+      console.log("Android");
+      this.options.sessionId = session.parameters.id;
+      this.options.source = 'android';
+
   //NON SUPPORTED DEVICE
-  }else{
-    next(new Error());
+    }else{
+      next(new Error());
+    }
   }
-  
   console.log('validSession.options : ' + JSON.stringify(this.options));
   console.log(tokens);
   next(req, res, callback);
 }
-
 
 //CHECK IF USER LOGED IN
 function validUser(next, req, res, callback){
