@@ -24,7 +24,7 @@ function validSession(next, req, res, callback){
   console.log("Valdation Start");
   console.log("Request URL:" + req.url);
 
-  console.log("Body:" + JSON.stringify(req.body));
+  console.log("INICIA AUTENTIFICACION:" + JSON.stringify(req.body));
   if (session && session.parameters && session.parameters.source === "android"){
     console.log("Android");
     this.options.sessionId = session.parameters.id;
