@@ -38,6 +38,7 @@ function validSession(next, req, res, callback){
     console.log("-------------------------------1-----------------------------------------");
     console.log(reqJSONBody.result.contexts[1].name);
     console.log("-------------------------------2----------------------------------------------");
+    console.log(reqJSONBody.result.contexts[0].name);
     var IOSId = reqJSONBody.result.contexts[0].name;
     if (IOSId){
     console.log("ios");
