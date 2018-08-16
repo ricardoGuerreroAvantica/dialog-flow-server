@@ -26,6 +26,7 @@ function validSession(next, req, res, callback){
   this.options = {};
   console.log("------------------------------------------------------------------------------")
   console.log(test);
+  debugger;
 
   console.log("------------------------------------------------------------------------------")
 
