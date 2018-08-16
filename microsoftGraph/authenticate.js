@@ -44,7 +44,8 @@ function validSession(next, req, res, callback){
     console.log("ios");
     this.options.sessionId = IOSId;
     this.options.source = 'ios';
-    this.options.sessionTokens.ACCESS_TOKEN_CACHE_KEY=reqJSONBody.result.contexts[0].name;
+    this.options.sessionTokens= {};
+    this.options.sessionTokens.ACCESS_TOKEN_CACHE_KEY = reqJSONBody.result.contexts[0].name;
 
     }else if (session && session.parameters && session.parameters.source === "android"){
       console.log("Android");
