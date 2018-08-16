@@ -23,7 +23,6 @@ function validSession(next, req, res, callback){
 
   //var test = JSON.parse(req.body);
   var test2= JSON.stringify(req.body);
-  var test= JSON.stringify(req);
   this.options = {};
   console.log("------------------------------------------------------------------------------")
   //console.log(test);
