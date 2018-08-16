@@ -20,10 +20,12 @@ var tokens = {};
 function validSession(next, req, res, callback){
   var session = commons.getContext(req.body.result.contexts, 'session');
 
+  var sessionIOS = commons.getContext(req.body.result.contexts, 'name');
   this.options = {};
   console.log('SESSION : ' + JSON.stringify(this.req));
-  console.log("Valdation Start: " + JSON.stringify(this.session));
+  console.log("Valdation Start: " + JSON.stringify(this.sessionIOS));
   console.log("Request URL:" + req.url);
+
 
   console.log("Body:" + JSON.stringify(req.body));
   if (session && session.parameters && session.parameters.source === "android"){
