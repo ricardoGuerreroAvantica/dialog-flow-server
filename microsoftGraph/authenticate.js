@@ -23,9 +23,15 @@ function validSession(next, req, res, callback){
   sessionIOS = JSON.parse(this.sessionIOS);
   sessionIOS = this.sessionIOS.body.result.contexts.name;
   this.options = {};
+  console.log("------------------------------------------------------------------------------")
   console.log("session IOS: " + this.sessionIOS);
   console.log("Request URL:" + req.url);
+  console.log(this.req.result);
+  console.log(this.req.result.contexts);
+  console.log(this.req.result.contexts[0]);
+  console.log(this.req.result.contexts.name);
 
+  console.log("------------------------------------------------------------------------------")
 
   console.log("Body:" + JSON.stringify(req.body));
   if (session && session.parameters && session.parameters.source === "android"){
