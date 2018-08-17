@@ -105,25 +105,29 @@ function signIn(req, res){
     console.log("---------------------ENTRO------------------------------")
     tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
     console.log(tokens[req.query.session_state])
+    return res.json({ error : { name : "Log In IOS", description : "Login Successful in ios mobile" } });
   }
-  if (!code) {
-    console.log('signIn.error : Missing code');
-    return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
-  }
-  if (!state) {
-    console.log('signIn.error : Missing state');
-    return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
-  }
-  getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
-    if (!error) {
-      tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
-      return res.json({ response : { description : "Login Successful" } });
-    }else{
-      console.log(JSON.parse(error.data).error_description);
-      res.status(500);
-      return res.json({ error : { name : 'State error', description : error.data } });
+  else{
+    if (!code) {
+      console.log('signIn.error : Missing code');
+      return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
     }
-  });
+    if (!state) {
+      console.log('signIn.error : Missing state');
+      return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
+    }
+    getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
+      if (!error) {
+        tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
+        return res.json({ response : { description : "Login Successful" } });
+      }else{
+        console.log(JSON.parse(error.data).error_description);
+        res.status(500);
+        return res.json({ error : { name : 'State error', description : error.data } });
+      }
+    });
+  }
+  
 
 }
 
