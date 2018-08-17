@@ -68,6 +68,8 @@ function validUser(next, req, res, callback){
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
     console.log("IOS dont need refresh token");
+    options.access_token = access_token;
+    options.refresh_token = refresh_token;
     next(options, callback);
   }
   else{
@@ -96,7 +98,6 @@ function refreshToken(next, options, callback) {
         options.access_token = access_token;
         options.refresh_token = refresh_token;
         next(options, callback);
-
       }
     );
   }
