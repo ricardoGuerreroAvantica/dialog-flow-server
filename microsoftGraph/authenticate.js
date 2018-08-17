@@ -102,9 +102,11 @@ function signIn(req, res){
   var code = req.query.code;
 
   if (state="IOS"){
-    console.log("---------------------ENTRO------------------------------")
     tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
-    console.log(tokens[req.query.session_state])
+    console.log("---------------------TOKENS------------------------------")
+    console.log(JSON.stringify(tokens))
+    console.log("---------------------END------------------------------")
+
     return res.json({ error : { name : "Log In IOS", description : "Login Successful in ios mobile" } });
   }
   else{
