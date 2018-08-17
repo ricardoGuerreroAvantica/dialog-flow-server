@@ -68,6 +68,7 @@ function validUser(next, req, res, callback){
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
     console.log("IOS dont need refresh token");
+    next(options, callback);
   }
   else{
     console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
