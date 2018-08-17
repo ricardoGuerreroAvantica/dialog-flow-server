@@ -66,34 +66,40 @@ function validUser(next, req, res, callback){
 
 
 function refreshToken(next, options, callback) {
-  console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
-  var OAuth2 = OAuth.OAuth2;
-  var oauth2 = new OAuth2(
-    credentials.client_id,
-    credentials.client_secret,
-    credentials.authority,
-    credentials.authorize_endpoint,
-    credentials.token_endpoint
-  );
-  oauth2.getOAuthAccessToken(
-    options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
-    {
-      grant_type: 'refresh_token',
-      redirect_uri: credentials.redirect_uri,
-      resource: credentials.resouce
-    },
-    function(error, access_token, refresh_token, results){
-      if (error){
-        console.log('refreshToken.error : ' + JSON.stringify(error));
-        next(new Error());
-      }
-      console.log('refreshToken.options : ' + JSON.stringify(options));
-      options.access_token = access_token;
-      options.refresh_token = refresh_token;
-      next(options, callback);
+  if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
+    console.log("IOS dont need refresh token");
+  }
+  else{
+    console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
+    var OAuth2 = OAuth.OAuth2;
+    var oauth2 = new OAuth2(
+      credentials.client_id,
+      credentials.client_secret,
+      credentials.authority,
+      credentials.authorize_endpoint,
+      credentials.token_endpoint
+    );
+    oauth2.getOAuthAccessToken(
+      options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
+      {
+        grant_type: 'refresh_token',
+        redirect_uri: credentials.redirect_uri,
+        resource: credentials.resouce
+      },
+      function(error, access_token, refresh_token, results){
+        if (error){
+          console.log('refreshToken.error : ' + JSON.stringify(error));
+          next(new Error());
+        }
+        console.log('refreshToken.options : ' + JSON.stringify(options));
+        options.access_token = access_token;
+        options.refresh_token = refresh_token;
+        next(options, callback);
 
-    }
-  );
+      }
+    );
+  }
+  
 }
 
 
