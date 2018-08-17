@@ -101,6 +101,11 @@ function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
 
+  if (state="IOS"){
+    console.log("---------------------ENTRO------------------------------")
+    tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
+    console.log(tokens[req.query.session_state])
+  }
   if (!code) {
     console.log('signIn.error : Missing code');
     return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
