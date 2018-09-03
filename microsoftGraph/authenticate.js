@@ -57,8 +57,15 @@ function validUser(next, req, res, callback){
   console.log('THE TOKENS: ' + JSON.stringify(tokens));
   console.log("SESSION_ID: " +sessionId)
   console.log("SESSION: " + !this.options.sessionTokens)
+  console.log("options.source" + options.source)
   if (!this.options.sessionTokens){
-    return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
+    if(this.options.source == "ios"){
+      return res.json({ speech: 'After this... Can you tell me if you want to complete your event creation or cancel it?', displayText: 'Confirmation', source: "dialog-server-flow" });
+    }
+    else{
+      return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
+    }
+    
   }
   console.log('validUser.options : ' + JSON.stringify(this.options));
   next(req, res, callback);
