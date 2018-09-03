@@ -46,8 +46,6 @@ function validSession(next, req, res, callback){
       next(new Error());
     }
   }
-  console.log('validSession.options : ' + JSON.stringify(this.options));
-  console.log(tokens);
   next(req, res, callback);
 }
 
@@ -57,6 +55,7 @@ function validUser(next, req, res, callback){
   this.options.sessionTokens = tokens[sessionId];
 
   console.log('THE TOKENS: ' + JSON.stringify(tokens));
+  console.log("SESSION: " + !this.options.sessionTokens)
   if (!this.options.sessionTokens){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
   }
