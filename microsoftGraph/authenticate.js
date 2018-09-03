@@ -55,6 +55,7 @@ function validUser(next, req, res, callback){
   this.options.sessionTokens = tokens[sessionId];
 
   console.log('THE TOKENS: ' + JSON.stringify(tokens));
+  console.log("SESSION_ID: " +sessionId)
   console.log("SESSION: " + !this.options.sessionTokens)
   if (!this.options.sessionTokens){
     return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
