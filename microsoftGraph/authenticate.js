@@ -57,7 +57,7 @@ function validUser(next, req, res, callback){
   console.log('THE TOKENS: ' + JSON.stringify(tokens));
   console.log("SESSION_ID: " +sessionId)
   console.log("SESSION: " + !this.options.sessionTokens)
-  console.log("options.source" + options.source)
+  console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
       return res.json({ speech: 'After this... Can you tell me if you want to complete your event creation or cancel it?', displayText: 'Confirmation', source: "dialog-server-flow" });
