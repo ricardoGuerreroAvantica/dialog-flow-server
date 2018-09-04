@@ -30,7 +30,7 @@ function validSession(next, req, res, callback){
 
   }else {
     var IOSId = reqJSONBody.result.contexts;
-    print("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
+    console.log("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
     var IOSName=IOSId[IOSId.length-1].name;
     if (IOSName){
     console.log("ios");
