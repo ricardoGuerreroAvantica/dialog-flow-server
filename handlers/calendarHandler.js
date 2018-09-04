@@ -78,7 +78,7 @@ function findMeetingTimes(options, callback){
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
       options.message = options.speech = `I found some space, look at these: \n\n`;
-      options.message += '------------------------------------' + '\n\n';
+      options.message += '-----------------------' + '\n\n';
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
