@@ -31,7 +31,9 @@ function validSession(next, req, res, callback){
   }else {
     var IOSId = reqJSONBody.result.contexts;
     console.log("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
-    var IOSName=IOSId[IOSId.length-1].name;
+    IOSFiltered = IOSId.filter(filter)
+    console.log("IOS PARAMETERS!:" + JSON.stringify(IOSFiltered))
+    var IOSName=IOSFiltered[0].name;
     if (IOSName){
     console.log("ios");
     this.options.sessionId = IOSName;
@@ -48,6 +50,10 @@ function validSession(next, req, res, callback){
     }
   }
   next(req, res, callback);
+}
+
+function filter(jsonObject) {
+  return jsonObject.name != "createevent";
 }
 
 //CHECK IF USER LOGED IN
