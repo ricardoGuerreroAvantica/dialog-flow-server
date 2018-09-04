@@ -30,6 +30,7 @@ function validSession(next, req, res, callback){
 
   }else {
     var IOSId = reqJSONBody.result.contexts;
+    print("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
     var IOSName=IOSId[IOSId.length-1].name;
     if (IOSName){
     console.log("ios");
@@ -60,7 +61,7 @@ function validUser(next, req, res, callback){
   console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
-      return res.json({ speech: 'After this... Can you tell me if you want to complete your event creation or cancel it?', displayText: 'Confirmation', source: "dialog-server-flow" });
+      return res.json({ speech: 'We have other requests from you, you wan to cancel it?', displayText: 'Confirmation', source: "dialog-server-flow" });
     }
     else{
       return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
