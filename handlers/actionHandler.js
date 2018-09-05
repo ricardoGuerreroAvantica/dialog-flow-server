@@ -21,7 +21,9 @@ function parseAction(req, res, callback){
   
 
   //console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
+  console.log("////////////////////////////////"+options.action+"////////////////////////////////")
   console.log(options.action)
+
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
