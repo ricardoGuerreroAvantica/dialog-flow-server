@@ -26,7 +26,6 @@ function parseAction(req, res, callback){
     case 'calendar_user_available' :
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
-      console.log("VIEJO TOKEN: " + options.access_token);
       Action.pre('findMeetingTimes', authenticate.refreshToken)
         .pre('findMeetingTimes', userHandler.searchUser);
 

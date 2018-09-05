@@ -129,7 +129,7 @@ function showEvents(options, callback){
     if (events.length > 0){
       options.message = options.speech = 'Found these events: \n\n';
       events.forEach((event) => {
-        options.message += '------------------------------------' + '\n\n';
+        options.message += '--------------------------' + '\n\n';
         options.message += 'Subject        : '    + event.subject + '\n\n';
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) + '\n\n';
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) + '\n\n';
