@@ -23,15 +23,15 @@ function scheduleMeeting(options, callback){
     "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
-  console.log('scheduleMeeting.body :' + JSON.stringify(body, null, 2));
+  //console.log('scheduleMeeting.body :' + JSON.stringify(body, null, 2));
 
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     if (error){
-      console.log('scheduleMeeting.error : ' + JSON.stringify(error));
+      //console.log('scheduleMeeting.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
 
-    console.log('scheduleMeeting.response : ' + response);
+    //console.log('scheduleMeeting.response : ' + response);
     options.message = options.speech = response.subject + ' created' + '\n\n';
     options.message += '-----------------------' + '\n\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
@@ -70,12 +70,12 @@ function findMeetingTimes(options, callback){
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
-      console.log('findMeetingTimes.error : ' + JSON.stringify(error));
+      //console.log('findMeetingTimes.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
 
     var meetings = response.meetingTimeSuggestions;
-    console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
+    //console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
       options.message = options.speech = `I found some space, look at these: \n\n`;
       options.message += '-----------------------' + '\n\n';
@@ -83,10 +83,10 @@ function findMeetingTimes(options, callback){
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
-      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
-      console.log('findMeetingTimes.meetings : empty response' );
+      //console.log('findMeetingTimes.meetings : empty response' );
       options.message = options.speech = "Sorry couldn't find any space";
       callback(options);
     }
@@ -115,8 +115,8 @@ function showEvents(options, callback){
             '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
-  console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
-  console.log("SHOW EVENT TOKEN: " + options.access_token);
+  //console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
+  //console.log("SHOW EVENT TOKEN: " + options.access_token);
   axios.get(url + filter, {
     headers : {
       'Content-Type':
@@ -136,16 +136,15 @@ function showEvents(options, callback){
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name + '\n\n';
       });
-      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
-      console.log('showEvents.meetings : empty response' );
       options.message = options.speech = 'There is nothing on your agenda';
       callback(options);
     }
   })
   .catch((error) => {
-    console.log('showEvents.error : ' + error);
+    //console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
 

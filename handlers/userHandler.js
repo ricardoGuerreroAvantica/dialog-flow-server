@@ -1,7 +1,7 @@
 var axios = require('axios');
 
 function searchUser(next, options, callback){
-  //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  ////console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
@@ -12,11 +12,11 @@ function searchUser(next, options, callback){
   ((userData.email) ? ((userData.lastname || userData.name) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
       
   var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
-  console.log('searchUser.filter.pre.httpCall : ' + filter);
-  console.log('searchUser.filter.pre.httpCall : ' + url + filter);
+  //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  //console.log('searchUser.filter.pre.httpCall : ' + filter);
+  //console.log('searchUser.filter.pre.httpCall : ' + url + filter);
   
-  console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
+  //console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
   axios.get(url + filter, {
     headers : {
       'Content-Type': 
@@ -26,13 +26,13 @@ function searchUser(next, options, callback){
     }
   })
   .then((response) => {
-    console.log('searchUser.response : ' + JSON.stringify(response.data));
+    //console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length > 1){
-      console.log("error: response.data.value.length > 1");
+      //console.log("error: response.data.value.length > 1");
       next(new Error());
     }
     if (response.data.value.length === 0){
-      console.log("error: response.data.value.length === 0");
+      //console.log("error: response.data.value.length === 0");
       next(new Error());
     }
     options.user = {
@@ -41,11 +41,11 @@ function searchUser(next, options, callback){
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
     }
-    console.log('searchUser.options : ' + JSON.stringify(options));
+    //console.log('searchUser.options : ' + JSON.stringify(options));
     next(options, callback);
   })
   .catch((error) => {
-    console.log('searchUser.error : ' + error);
+    //console.log('searchUser.error : ' + error);
     next(new Error());
   });
 

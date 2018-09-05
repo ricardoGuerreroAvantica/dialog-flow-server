@@ -24,7 +24,7 @@ function showLocations(options, callback){
     }
   })
   .catch((error) => {
-    console.log('showLocations.error : ' + error);
+    //console.log('showLocations.error : ' + error);
     errorHandler.actionError(error);
   });
 
