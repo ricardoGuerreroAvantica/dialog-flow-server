@@ -22,25 +22,25 @@ function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};
   
-  console.log("Body:" + JSON.stringify(req.body));
+  //console.log("Body:" + JSON.stringify(req.body));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
-    console.log("skype");
+    //console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
     this.options.source = 'skype';
 
   }else {
     var IOSId = reqJSONBody.result.contexts;
-    console.log("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
+    //console.log("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
     IOSFiltered = IOSId.filter(filter)
-    console.log("IOS PARAMETERS!:" + JSON.stringify(IOSFiltered))
+    //console.log("IOS PARAMETERS!:" + JSON.stringify(IOSFiltered))
     var IOSName=IOSFiltered[0].name;
     if (IOSName){
-    console.log("ios");
+    //console.log("ios");
     this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
     }else if (session && session.parameters && session.parameters.source === "android"){
-      console.log("Android");
+      //console.log("Android");
       this.options.sessionId = session.parameters.id;
       this.options.source = 'android';
 
@@ -61,10 +61,10 @@ function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
 
-  console.log('THE TOKENS: ' + JSON.stringify(tokens));
-  console.log("SESSION_ID: " +sessionId)
-  console.log("SESSION: " + !this.options.sessionTokens)
-  console.log("options.source" + this.options.source)
+  //console.log('THE TOKENS: ' + JSON.stringify(tokens));
+  //console.log("SESSION_ID: " +sessionId)
+  //console.log("SESSION: " + !this.options.sessionTokens)
+  //console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
       return res.json({ speech: 'We have other requests from you, you wan to cancel it?', displayText: 'Confirmation', source: "dialog-server-flow" });
@@ -74,20 +74,20 @@ function validUser(next, req, res, callback){
     }
     
   }
-  console.log('validUser.options : ' + JSON.stringify(this.options));
+  //console.log('validUser.options : ' + JSON.stringify(this.options));
   next(req, res, callback);
 }
 
 
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
-    console.log("IOS dont need refresh token");
+    //console.log("IOS dont need refresh token");
     options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
     options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
     next(options, callback);
   }
   else{
-    console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
+    //console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
     var OAuth2 = OAuth.OAuth2;
     var oauth2 = new OAuth2(
       credentials.client_id,
@@ -105,10 +105,10 @@ function refreshToken(next, options, callback) {
       },
       function(error, access_token, refresh_token, results){
         if (error){
-          console.log('refreshToken.error : ' + JSON.stringify(error));
+          //console.log('refreshToken.error : ' + JSON.stringify(error));
           next(new Error());
         }
-        console.log('refreshToken.options : ' + JSON.stringify(options));
+        //console.log('refreshToken.options : ' + JSON.stringify(options));
         options.access_token = access_token;
         options.refresh_token = refresh_token;
         next(options, callback);
@@ -125,19 +125,19 @@ function signIn(req, res){
 
   if (state=="IOS"){
     tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
-    console.log("---------------------TOKENS------------------------------")
-    console.log(JSON.stringify(tokens))
-    console.log("---------------------END------------------------------")
+    //console.log("---------------------TOKENS------------------------------")
+    //console.log(JSON.stringify(tokens))
+    //console.log("---------------------END------------------------------")
 
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
     if (!code) {
-      console.log('signIn.error : Missing code');
+      //console.log('signIn.error : Missing code');
       return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
     }
     if (!state) {
-      console.log('signIn.error : Missing state');
+      //console.log('signIn.error : Missing state');
       return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
@@ -145,7 +145,7 @@ function signIn(req, res){
         tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
         return res.json({ response : { description : "Login Successful" } });
       }else{
-        console.log(JSON.parse(error.data).error_description);
+        //console.log(JSON.parse(error.data).error_description);
         res.status(500);
         return res.json({ error : { name : 'State error', description : error.data } });
       }
