@@ -26,12 +26,14 @@ function searchUser(next, options, callback){
     }
   })
   .then((response) => {
+    options.message = "";
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length === 0){
       next(new Error());
     }
     if (response.data.value.length > 1){
       console.log("JSON VALUE = " + JSON.stringify(response.data.value))
+      
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
         options.message += response.data.value[i].displayName + '\n';
