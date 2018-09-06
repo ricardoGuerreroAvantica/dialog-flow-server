@@ -27,7 +27,6 @@ function searchUser(next, options, callback){
   })
   .then((response) => {
     console.log('searchUser.response : ' + JSON.stringify(response.data));
-    print("User length = " + response.data.value.length)
     if (response.data.value.length > 1){
       console.log("error: response.data.value.length > 1");
       next(new Error());
@@ -44,7 +43,7 @@ function searchUser(next, options, callback){
       surname : response.data.value[0].surname,
       }
     }
-    //console.log('searchUser.options : ' + JSON.stringify(options));
+    console.log('searchUser.options : ' + JSON.stringify(options));
     next(options, callback);
   })
   .catch((error) => {
