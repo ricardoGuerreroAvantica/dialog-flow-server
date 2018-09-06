@@ -29,25 +29,21 @@ function validSession(next, req, res, callback){
     this.options.source = 'skype';
 
   }else {
+    //LOGIN IN IOS
     var IOSId = reqJSONBody.result.contexts;
-    //console.log("IOS PARAMETERS!:" + JSON.stringify(reqJSONBody.result.contexts))
     IOSFiltered = IOSId.filter(filter)
-    //console.log("IOS PARAMETERS!:" + JSON.stringify(IOSFiltered))
     var IOSName=IOSFiltered[0].name;
-    if (IOSName){
+    if (IOSName && IOSName != "session"){
     console.log("SESSION = " + IOSName);
     console.log("FILTERED = " + JSON.stringify(IOSFiltered));
     this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
-    }else if (session && session.parameters && session.parameters.source === "android"){
-      //console.log("Android");
-      this.options.sessionId = session.parameters.id;
-      this.options.source = 'android';
-
-  //NON SUPPORTED DEVICE
-    }else{
-      next(new Error());
+    }
+    else if (IOSId.name == "session"){
+        //console.log("Android");
+        this.options.sessionId = session.parameters.id;
+        this.options.source = 'android';
     }
   }
   next(req, res, callback);
