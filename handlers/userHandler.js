@@ -36,7 +36,13 @@ function searchUser(next, options, callback){
       
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
-        options.message += response.data.value[i].displayName + '\n';
+        options.message = "There is more than one employee with this description, maybe you are searching for:\n"
+        if ( i!= response.data.value.length-1){
+          options.message += response.data.value[i].displayName + '\n';
+        }
+        else{
+          options.message += response.data.value[i].displayName;
+        }
       }
       console.log(options.message)
     }
