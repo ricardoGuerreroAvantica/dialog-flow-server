@@ -21,8 +21,7 @@ function parseAction(req, res, callback){
   
 
   //console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
-  console.log("////////////////////////////////"+options.action+"////////////////////////////////")
-  console.log(options.action)
+  console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
 
   switch (options.action) {
     ///////////////FIND MEETING TIME///////////////
@@ -76,7 +75,7 @@ function parseAction(req, res, callback){
       //PRE
       Action.pre('inviteUser', authenticate.refreshToken)
         .pre('inviteUser', userHandler.searchUser);
-
+      console.log("Procced to invite user")
       var action = new Action();
       action.inviteUser(options, callback);
 
