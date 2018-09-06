@@ -9,7 +9,7 @@ function inviteUser(options, callback){
     options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
   options.contexts.forEach((context) => {
-    //console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
+    console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
     if (context.name === 'invites'){
       
       //console.log('inviteUser.Invite : Invite' );
