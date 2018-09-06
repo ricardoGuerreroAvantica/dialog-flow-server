@@ -53,7 +53,7 @@ function validSession(next, req, res, callback){
 }
 
 function filter(jsonObject) {
-  return jsonObject.name != "createevent";
+  return jsonObject.name != "createevent" && jsonObject.name != "invites";
 }
 
 //CHECK IF USER LOGED IN
