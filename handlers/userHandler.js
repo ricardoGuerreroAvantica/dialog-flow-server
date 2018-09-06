@@ -37,7 +37,7 @@ function searchUser(next, options, callback){
     if (response.data.value.length > 1){
       console.log("more than one user finded : response.data.value.length > 1");
       options.message += "there are more than 1 employee with that name can you be more especific? \n"
-      options.message += response.data.value.forEach(myFunction)
+      options.message += response.data.value.forEach(forEachUser)
     }
     else{
       options.user = {
