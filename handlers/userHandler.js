@@ -31,9 +31,10 @@ function searchUser(next, options, callback){
       next(new Error());
     }
     if (response.data.value.length > 1){
-      for(var item in response.data.value){
-        console.log(JSON.stringify(item))
-        options.message += item.displayName + '\n';
+      console.log("JSON VALUE = " + JSON.stringify(response.data.value))
+      for(i = 0; i < response.data.value.length; i++ ){
+        console.log(response.data.value[i])
+        options.message += response.data.value[i].displayName + '\n';
       }
       console.log(options.message)
     }
