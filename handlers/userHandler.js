@@ -29,12 +29,13 @@ function searchUser(next, options, callback){
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length > 1){
       console.log("error: response.data.value.length > 1");
-      options.message += "there are more than 1 employee with that name can you be more especific?"
+      options.message += "there are more than 1 employee with that name can you be more especific? \n"
+      options.message += response.data.value.forEach(myFunction)
       next(new Error());
     }
     if (response.data.value.length === 0){
       console.log("response.data.value.length === 0");
-      options.message += response.data.value.forEach(myFunction)
+      
     }
     else{
       options.user = {
@@ -53,7 +54,7 @@ function searchUser(next, options, callback){
   });
 }
 function forEachUser(item) {
-  users = users +  item.displayName + "/n"; 
+  users = users +  item.displayName + "\n"; 
 }
 
 
