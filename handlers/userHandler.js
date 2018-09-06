@@ -35,6 +35,7 @@ function searchUser(next, options, callback){
       for(var item in response.data.value){
         options.message += item.displayName + '\n';
       }
+      console.log(options.message)
     }
     else{
       options.user = {
