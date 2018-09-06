@@ -1,5 +1,5 @@
 var axios = require('axios');
-
+var users = ""
 function searchUser(next, options, callback){
   ////console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
@@ -32,14 +32,15 @@ function searchUser(next, options, callback){
       next(new Error());
     }
     if (response.data.value.length === 0){
-      //console.log("error: response.data.value.length === 0");
-      next(new Error());
+      options.message = response.data.value.forEach(myFunction)
     }
-    options.user = {
+    else{
+      options.user = {
       displayName : response.data.value[0].displayName,
       givenName : response.data.value[0].givenName,
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
+      }
     }
     //console.log('searchUser.options : ' + JSON.stringify(options));
     next(options, callback);
@@ -48,9 +49,10 @@ function searchUser(next, options, callback){
     //console.log('searchUser.error : ' + error);
     next(new Error());
   });
-
-  
-
 }
+function forEachUser(item) {
+  users = users +  item.displayName + "/n"; 
+}
+
 
 exports.searchUser = searchUser;
