@@ -27,15 +27,15 @@ function searchUser(next, options, callback){
   })
   .then((response) => {
     console.log('searchUser.response : ' + JSON.stringify(response.data));
+    if (response.data.value.length === 0){
+      next(new Error());
+    }
     if (response.data.value.length > 1){
       for(var item in response.data.value){
+        console.log(JSON.stringify(item))
         options.message += item.displayName + '\n';
       }
       console.log(options.message)
-      
-    }
-    if (response.data.value.length === 0){
-      next(new Error());
     }
     else{
       options.user = {
