@@ -3,33 +3,36 @@ var commons = require('../utils/commons.js');
 
 
 function inviteUser(options, callback){
-  console.log("USER INVITED + " + options.user)
-  var user = options.user;
-  var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-  if (!commons.getContext(options.contexts, 'invites'))
-    options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
+  if (options.message == ""){
+    console.log("USER INVITED + " + options.user)
+    var user = options.user;
+    var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
+    if (!commons.getContext(options.contexts, 'invites'))
+      options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
-  options.contexts.forEach((context) => {
-    console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
-    if (context.name === 'invites'){
-      //console.log('inviteUser.Invite : Invite' );
-      //console.log('inviteUser.Invite : ' + context.parameters.invites );
-      context.parameters.invites.forEach((invite) => {
-        if (user.email === invite.emailAddress.address){
-          options.message = options.speech = user.displayName + ' is already invited \n\n';
-          //console.log(user.displayName + ' is already invited \n\n');
-          callback(options);
-        }
-      })
+    options.contexts.forEach((context) => {
+      console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
+      if (context.name === 'invites'){
+        //console.log('inviteUser.Invite : Invite' );
+        //console.log('inviteUser.Invite : ' + context.parameters.invites );
+        context.parameters.invites.forEach((invite) => {
+          if (user.email === invite.emailAddress.address){
+            options.message = options.speech = user.displayName + ' is already invited \n\n';
+            //console.log(user.displayName + ' is already invited \n\n');
+            callback(options);
+          }
+        })
 
-      options.message = options.speech = user.displayName + ' was invited \n\n';
-      context.parameters.invites.push(invite);
-      //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
-      callback(options);
-    }
-  });
-  options.message = options.speech = " Couldn't uninvite " + user.displayName + ' \n\n';
-  //console.log("Couldn't uninvite " + user.displayName + ' \n\n');
+        options.message = options.speech = user.displayName + ' was invited \n\n';
+        context.parameters.invites.push(invite);
+        //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
+        callback(options);
+      }
+    });
+    options.message = options.speech = " Couldn't uninvite " + user.displayName + ' \n\n';
+    //console.log("Couldn't uninvite " + user.displayName + ' \n\n');
+    callback(options);
+  }
   callback(options);
 }
 

@@ -1,5 +1,7 @@
 var axios = require('axios');
 var users = ""
+function isUserEmpty()
+
 function searchUser(next, options, callback){
   ////console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
@@ -26,13 +28,14 @@ function searchUser(next, options, callback){
     }
   })
   .then((response) => {
+    options.message = "";
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length === 0){
       console.log("response.data.value.length === 0");
       next(new Error());
     }
     if (response.data.value.length > 1){
-      console.log("error: response.data.value.length > 1");
+      console.log("more than one user finded : response.data.value.length > 1");
       options.message += "there are more than 1 employee with that name can you be more especific? \n"
       options.message += response.data.value.forEach(myFunction)
     }
