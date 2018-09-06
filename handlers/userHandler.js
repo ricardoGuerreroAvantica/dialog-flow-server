@@ -29,12 +29,12 @@ function searchUser(next, options, callback){
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length > 1){
       console.log("error: response.data.value.length > 1");
-      response.message = "there are more than 1 employee with that name can you be more especific?"
+      options.message += "there are more than 1 employee with that name can you be more especific?"
       next(new Error());
     }
     if (response.data.value.length === 0){
       console.log("response.data.value.length === 0");
-      options.message = response.data.value.forEach(myFunction)
+      options.message += response.data.value.forEach(myFunction)
     }
     else{
       options.user = {
