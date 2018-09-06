@@ -75,9 +75,12 @@ function parseAction(req, res, callback){
       //PRE
       Action.pre('inviteUser', authenticate.refreshToken)
         .pre('inviteUser', userHandler.searchUser);
-      console.log("Procced to invite user")
+        console.log("Currente message:   " + options.message)
+      if(options.message == ""){
+        console.log("Procced to invite user")
       var action = new Action();
       action.inviteUser(options, callback);
+      }
 
       break;
     ///////////////SCHEDULE A MEETING - UNINVITE USER ///////////////

@@ -27,15 +27,14 @@ function searchUser(next, options, callback){
   })
   .then((response) => {
     console.log('searchUser.response : ' + JSON.stringify(response.data));
+    if (response.data.value.length === 0){
+      console.log("response.data.value.length === 0");
+      next(new Error());
+    }
     if (response.data.value.length > 1){
       console.log("error: response.data.value.length > 1");
       options.message += "there are more than 1 employee with that name can you be more especific? \n"
       options.message += response.data.value.forEach(myFunction)
-      next(new Error());
-    }
-    if (response.data.value.length === 0){
-      console.log("response.data.value.length === 0");
-      
     }
     else{
       options.user = {
