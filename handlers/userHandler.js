@@ -1,7 +1,5 @@
 var axios = require('axios');
 var users = ""
-function isUserEmpty()
-
 function searchUser(next, options, callback){
   ////console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
@@ -28,16 +26,15 @@ function searchUser(next, options, callback){
     }
   })
   .then((response) => {
-    options.message = "";
     console.log('searchUser.response : ' + JSON.stringify(response.data));
-    if (response.data.value.length === 0){
-      console.log("response.data.value.length === 0");
+    if (response.data.value.length > 1){
+      //console.log("error: response.data.value.length > 1");
       next(new Error());
     }
-    if (response.data.value.length > 1){
-      console.log("more than one user finded : response.data.value.length > 1");
-      options.message += "there are more than 1 employee with that name can you be more especific? \n"
-      options.message += response.data.value.forEach(forEachUser)
+    if (response.data.value.length === 0){
+      for(var item in response.data.value){
+        options.message += item.displayName + '\n';
+      }
     }
     else{
       options.user = {
@@ -47,7 +44,7 @@ function searchUser(next, options, callback){
       surname : response.data.value[0].surname,
       }
     }
-    console.log('searchUser.options : ' + JSON.stringify(options));
+    //console.log('searchUser.options : ' + JSON.stringify(options));
     next(options, callback);
   })
   .catch((error) => {
@@ -55,9 +52,5 @@ function searchUser(next, options, callback){
     next(new Error());
   });
 }
-function forEachUser(item) {
-  users = users +  item.displayName + "\n"; 
-}
-
 
 exports.searchUser = searchUser;
