@@ -3,6 +3,7 @@ var commons = require('../utils/commons.js');
 
 
 function inviteUser(options, callback){
+  console.log("USER INVITED + " + options.user)
   var user = options.user;
   var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
   if (!commons.getContext(options.contexts, 'invites'))
@@ -11,7 +12,6 @@ function inviteUser(options, callback){
   options.contexts.forEach((context) => {
     console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
     if (context.name === 'invites'){
-      
       //console.log('inviteUser.Invite : Invite' );
       //console.log('inviteUser.Invite : ' + context.parameters.invites );
       context.parameters.invites.forEach((invite) => {
