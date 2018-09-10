@@ -12,10 +12,12 @@ function searchUser(next, options, callback){
   ((userData.email) ? ((userData.lastname || userData.name) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
       
   var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-  //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  
   //console.log('searchUser.filter.pre.httpCall : ' + filter);
   console.log('searchUser.filter.pre.httpCall : ' + url + filter);
   
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(url + filter, {    headers : { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: 'Bearer ' + options.access_token}}));
+
   //console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
   axios.get(url + filter, {
     headers : {
