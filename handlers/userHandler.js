@@ -8,8 +8,8 @@ function searchUser(next, options, callback){
     email : parameters.email }
 
   var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
-  ((userData.lastname) ? ((userData.name) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" : '') +
-  ((userData.email) ? ((unescape(encodeURIComponent(userData.lastname)) || unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(mail,'" + userData.email + "')" : '');
+  ((userData.lastname) ? ((unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" : '') +
+  ((userData.email) ? ((unescape(encodeURIComponent(userData.lastname)) || unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(mail,'" + unescape(encodeURIComponent(userData.email)) + "')" : '');
       
   var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
   
