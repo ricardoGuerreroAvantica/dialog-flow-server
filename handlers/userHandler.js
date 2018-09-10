@@ -14,7 +14,7 @@ function searchUser(next, options, callback){
   var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
   //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   //console.log('searchUser.filter.pre.httpCall : ' + filter);
-  //console.log('searchUser.filter.pre.httpCall : ' + url + filter);
+  console.log('searchUser.filter.pre.httpCall : ' + url + filter);
   
   //console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
   axios.get(url + filter, {
