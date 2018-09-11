@@ -70,12 +70,10 @@ function findMeetingTimes(options, callback){
       timeConstraint : commons.getTimeConstraint(date, time),
       meetingDuration : 'PT1H'
     };
-    options.message ="Todo va okay"
-    callback(options);
+    console.log(JSON.stringify(postBody));
     request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
       if (error){
         console.log('findMeetingTimes.error : ' + JSON.stringify(error));
-        options.message ="Todo va okay#2"
         errorHandler.actionError(error);
       }
 
