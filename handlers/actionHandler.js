@@ -22,7 +22,6 @@ function parseAction(req, res, callback){
 
   //console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
   console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
-  options.message = "";
   switch (options.action) {
     
     ///////////////FIND MEETING TIME///////////////
@@ -34,7 +33,7 @@ function parseAction(req, res, callback){
       console.log("Procced to check if user is available")
       var action = new Action();
       action.findMeetingTimes(options, callback);
-
+      console.log("THE END")
       break;
 
     ///////////////SHOW EVENTS///////////////
