@@ -57,6 +57,7 @@ function scheduleMeeting(options, callback){
 
 
 function findMeetingTimes(options, callback){
+  callback(options);
   console.log("Enter the find meeting times" + options.message)
   var parameters = options.parameters;
   var duration = parameters.duration;
@@ -91,7 +92,7 @@ function findMeetingTimes(options, callback){
       options.message = options.speech = "Sorry couldn't find any space";
       callback(options);
     }
-
+    callback(options);
   });
 }
 
