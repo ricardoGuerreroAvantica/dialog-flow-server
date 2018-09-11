@@ -31,7 +31,6 @@ function searchUser(next, options, callback){
     options.message = "";
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length === 0){
-      options.isLoading = false;
       next(new Error());
     }
     if (response.data.value.length > 1){
@@ -46,7 +45,7 @@ function searchUser(next, options, callback){
           options.message += response.data.value[i].displayName;
         }
       }
-      console.log('searchUser.message : ' + options.message)
+      next(options, callback);
     }
     else{
       options.user = {
@@ -57,16 +56,12 @@ function searchUser(next, options, callback){
       }
     }
     //console.log('searchUser.options : ' + JSON.stringify(options));
-    options.isLoading = false;
     next(options, callback);
   })
   .catch((error) => {
     //console.log('searchUser.error : ' + error);
-    options.isLoading = false;
     next(new Error());
   });
-  options.isLoading = false;
-  next(options, callback);
 }
 
 exports.searchUser = searchUser;
