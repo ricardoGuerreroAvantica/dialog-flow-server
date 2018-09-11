@@ -95,7 +95,11 @@ function findMeetingTimes(options, callback){
 
     });
   }
-  callback(options);
+  else{
+    console.log("Empty statement")
+    callback(options);
+  }
+  
 }
 
 
