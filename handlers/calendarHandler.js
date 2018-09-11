@@ -57,7 +57,8 @@ function scheduleMeeting(options, callback){
 
 
 function findMeetingTimes(options, callback){
-  if(options.message ==""){
+  console.log("the message from findmeetingtimes: " + options.message);
+  if(options.message == ""){
     var parameters = options.parameters;
     var duration = parameters.duration;
     var date = parameters.date;
