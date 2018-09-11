@@ -39,10 +39,10 @@ function searchUser(next, options, callback){
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
         if ( i!= response.data.value.length-1){
-          options.message += response.data.value[i].displayName + '\n';
+          options.message += response.data.value[i].displayName + '.\n';
         }
         else{
-          options.message += response.data.value[i].displayName;
+          options.message += response.data.value[i].displayName + '.';
         }
       }
       console.log("New Message = " + options.message)
