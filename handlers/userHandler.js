@@ -34,7 +34,7 @@ function searchUser(next, options, callback){
       next(new Error());
     }
     if (response.data.value.length > 1){
-      console.log("JSON VALUE = " + JSON.stringify(response.data.value))
+      console.log("Evaluating the new message")
       options.message = "There is more than one employee with this description, maybe you are searching for:\n"
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
@@ -45,6 +45,7 @@ function searchUser(next, options, callback){
           options.message += response.data.value[i].displayName;
         }
       }
+      console.log("New Message = " + options.message)
       next(options, callback);
     }
     else{
