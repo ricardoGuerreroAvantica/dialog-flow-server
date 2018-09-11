@@ -29,15 +29,12 @@ function parseAction(req, res, callback){
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
       //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
-        .pre('findMeetingTimes', userHandler.searchUser)
-        .pre('whatever', () => {
-          console.log("Procced to check if user is available")
-          var action = new Action();
-          action.findMeetingTimes(options, callback);
-          console.log("THE END")
-        })
-      
-      break;
+        .pre('findMeetingTimes', userHandler.searchUser);
+        console.log("Procced to check if user is available")
+        var action = new Action();
+        action.findMeetingTimes(options, callback);
+        console.log("THE END")
+        break;
 
     ///////////////SHOW EVENTS///////////////
     case 'show_events' :
