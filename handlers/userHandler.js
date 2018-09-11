@@ -45,7 +45,7 @@ function searchUser(next, options, callback){
           options.message += response.data.value[i].displayName;
         }
       }
-      console.log(options.message)
+      console.log('searchUser.message : ' + options.message)
     }
     else{
       options.user = {
@@ -62,6 +62,7 @@ function searchUser(next, options, callback){
     //console.log('searchUser.error : ' + error);
     next(new Error());
   });
+  next(options, callback);
 }
 
 exports.searchUser = searchUser;
