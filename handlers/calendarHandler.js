@@ -57,7 +57,8 @@ function scheduleMeeting(options, callback){
 
 
 function findMeetingTimes(options, callback){
-  if (options.message == ""){
+  console.log("TESTING" + JSON.stringify(options))
+  
     var parameters = options.parameters;
     var duration = parameters.duration;
     var date = parameters.date;
@@ -70,6 +71,9 @@ function findMeetingTimes(options, callback){
     };
 
     request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+      if (options.message != ""){
+        callback(options);
+      }
       if (error){
         //console.log('findMeetingTimes.error : ' + JSON.stringify(error));
         errorHandler.actionError(error);
@@ -93,8 +97,7 @@ function findMeetingTimes(options, callback){
       }
 
     });
-  }
-  callback(options);
+  
 }
 
 
