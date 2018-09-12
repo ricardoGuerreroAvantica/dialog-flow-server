@@ -46,7 +46,7 @@ function searchUser(next, options, callback){
         }
       }
       console.log("New Message = " + options.message)
-      next(options, callback);
+      callback(options);
     }
     else{
       options.user = {
