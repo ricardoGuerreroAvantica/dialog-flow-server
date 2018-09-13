@@ -17,19 +17,19 @@ function inviteUser(options, callback){
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
         context.parameters.invites.forEach((invite) => {
           if (user.email === invite.emailAddress.address){
-            options.message = options.speech = user.displayName + ' is already invited \n\n';
+            options.message = options.speech = user.displayName + ' is already invited';
             //console.log(user.displayName + ' is already invited \n\n');
             callback(options);
           }
         })
 
-        options.message = options.speech = user.displayName + ' was invited \n\n';
+        options.message = options.speech = user.displayName + ' was invited';
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
       }
     });
-    options.message = options.speech = " Couldn't uninvite " + user.displayName + ' \n\n';
+    options.message = options.speech = " Couldn't uninvite " + user.displayName;
     //console.log("Couldn't uninvite " + user.displayName + ' \n\n');
     callback(options);
   }
