@@ -23,7 +23,7 @@ function inviteUser(options, callback){
           }
         })
 
-        options.message = options.speech = user.displayName + ' was invited';
+        options.message = options.speech = user.displayName + ' will be invited when the event creation is done.';
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
