@@ -4,7 +4,6 @@ var commons = require('../utils/commons.js');
 
 function inviteUser(options, callback){
   if (options.message == ""){
-    console.log("USER INVITED + " + options.user)
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
     if (!commons.getContext(options.contexts, 'invites'))
@@ -23,7 +22,7 @@ function inviteUser(options, callback){
           }
         })
 
-        options.message = options.speech = user.displayName + ' will be invited when the event creation is done.';
+        options.message = options.speech = 'This user will be added to the invitation list:\n' + user.displayName ;
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
