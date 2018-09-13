@@ -1,7 +1,7 @@
 var axios = require('axios');
 var users = ""
 function searchUser(next, options, callback){
-  ////console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+  console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
   var parameters = options.parameters;
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
@@ -13,12 +13,12 @@ function searchUser(next, options, callback){
       
   var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
   
-  //console.log('searchUser.filter.pre.httpCall : ' + filter);
+  console.log('searchUser.filter.pre.httpCall : ' + filter);
   console.log('searchUser.filter.pre.httpCall : ' + url + filter);
   
   console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(url + filter, {    headers : { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: 'Bearer ' + options.access_token}}));
 
-  //console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token);
+  console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token +'  end ');
   axios.get(url + filter, {
     headers : {
       'Content-Type': 
