@@ -31,7 +31,8 @@ function searchUser(next, options, callback){
     options.message = "";
     console.log('searchUser.response : ' + JSON.stringify(response.data));
     if (response.data.value.length === 0){
-      next(new Error());
+      options.message = "Sorry i couldn't find any user with this discription: \n"+ "Name: " + userData.name ? userData.name : "Empty" + userData.mail ? "\nemail: " + userData.mail : "Empty";
+      callback(options);
     }
     if (response.data.value.length > 1){
       console.log("Evaluating the new message")
@@ -39,7 +40,7 @@ function searchUser(next, options, callback){
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
         if ( i!= response.data.value.length-1){
-          options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
+          options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n ';
         }
         else{
           options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
