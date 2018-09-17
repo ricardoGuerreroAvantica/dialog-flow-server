@@ -32,18 +32,18 @@ function scheduleMeeting(options, callback){
     }
 
     //console.log('scheduleMeeting.response : ' + response);
-    options.message = options.speech = response.subject + ' created' + '\n\n';
-    options.message += '-----------------------' + '\n\n';
-    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
-          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
-          ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n\n' +
-          'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
+    options.message = options.speech = response.subject + ' created' + '\n';
+    options.message += '-----------------------' + '\n';
+    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
+          ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n' +
+          'Organizer: ' + response.organizer.emailAddress.name + '\n';
     if (response.attendees && response.attendees.length > 0){
-      options.message += '\n\n';
-      options.message += 'Invites: \n\n';
-      options.message += '-----------------' + '\n\n';
+      options.message += '\n';
+      options.message += 'Invites: \n';
+      options.message += '-----------------' + '\n';
       response.attendees.forEach((attendee) => {
-        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
+        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n';
       });
     }
 
@@ -77,11 +77,11 @@ function findMeetingTimes(options, callback){
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
-      options.message = options.speech = `I found some space, look at these: \n\n`;
-      options.message += '-----------------------' + '\n\n';
+      options.message = options.speech = `I found some space, look at these: \n`;
+      options.message += '-----------------------' + '\n';
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+                commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n';
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
@@ -132,14 +132,14 @@ function showEvents(options, callback){
   .then((response) => {
     var events = response.data.value;
     if (events.length > 0){
-      options.message = options.speech = 'Found these events: \n\n';
+      options.message = options.speech = 'Found these events: \n';
       events.forEach((event) => {
-        options.message += '-----------------------' + '\n\n';
-        options.message += 'Subject        : '    + event.subject + '\n\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) + '\n\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) + '\n\n';
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name + '\n\n';
+        options.message += '-----------------------' + '\n';
+        options.message += 'Subject        : '    + event.subject + '\n';
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) + '\n';
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) + '\n';
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n';
+        options.message += 'Organizer      : '  + event.organizer.emailAddress.name + '\n';
       });
       //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);

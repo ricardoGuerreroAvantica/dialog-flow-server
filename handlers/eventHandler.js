@@ -17,19 +17,19 @@ function inviteUser(options, callback){
         context.parameters.invites.forEach((invite) => {
           if (user.email === invite.emailAddress.address){
             options.message = options.speech = user.displayName + ' is already invited';
-            //console.log(user.displayName + ' is already invited \n\n');
+            //console.log(user.displayName + ' is already invited \n');
             callback(options);
           }
         })
 
         options.message = options.speech = 'This user will be added to the invitation list:\n' + user.displayName ;
         context.parameters.invites.push(invite);
-        //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
+        //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n');
         callback(options);
       }
     });
     options.message = options.speech = " Couldn't uninvite " + user.displayName;
-    //console.log("Couldn't uninvite " + user.displayName + ' \n\n');
+    //console.log("Couldn't uninvite " + user.displayName + ' \n');
     callback(options);
   }
   callback(options);
@@ -40,14 +40,14 @@ function showInvites(options, callback){
   //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
   if (!invitesContext){
-    options.message = options.speech = `There are no invitations yet \n\n`;
+    options.message = options.speech = `There are no invitations yet \n`;
     callback(options);
   }
   var invites = invitesContext.parameters.invites;
-  options.message = options.speech = `These are your current attendees \n\n`;
-  options.message += '-----------------------' + '\n\n';
+  options.message = options.speech = `These are your current attendees \n`;
+  options.message += '-----------------------' + '\n';
   invites.forEach((invite) => {
-    options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+    options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
   });
   callback(options);
 }
@@ -67,19 +67,19 @@ function deleteInvite(options, callback){
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name.includes(userData.name)
       && invites[i].emailAddress.name.includes(userData.lastname)){
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n';
       invites.splice(i, 1);
       callback(options);
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n';
       invites.splice(i, 1);
       callback(options);
     }else if (userData.lastname && invites[i].emailAddress.name.includes(userData.lastname)){
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n';
       invites.splice(i, 1);
       callback(options);
     }else if (userData.name && invites[i].emailAddress.name.includes(userData.name)){
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n';
       invites.splice(i, 1);
       callback(options);
     }

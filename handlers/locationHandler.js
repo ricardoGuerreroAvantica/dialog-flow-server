@@ -12,14 +12,14 @@ function showLocations(options, callback){
   .then((response) => {
     if (response.data.value.length > 0){
       var locations = response.data.value;
-      options.message = options.speech = "Found these locations: \n\n";
-      options.message += '-----------------------' + '\n\n';
+      options.message = options.speech = "Found these locations: \n";
+      options.message += '-----------------------' + '\n';
       locations.forEach((location) => {
-        message += location.name + '\n\n';
+        message += location.name + '\n';
       });
       callback(options);
     }else{
-      options.message = options.speech = "There aren't any location available \n\n";
+      options.message = options.speech = "There aren't any location available \n";
       callback(options);
     }
   })
