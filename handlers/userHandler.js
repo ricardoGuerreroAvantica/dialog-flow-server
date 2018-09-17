@@ -39,8 +39,8 @@ function searchUser(next, options, callback){
       console.log("No user found");
       console.log("Sorry i couldn't find any user with this discription: \n");
       console.log(JSON.stringify(userData));
-      console.log(userData.mail ? ("\nemail: " + userData.mail) : "Empty");
-      options.message = ("Sorry i couldn't find any user with this discription: \n") + ((("Name: ")+(userData.name)) ? (userData.name) : "Empty") + " " +(userData.lastname ? (userData.lastname)  : "") +(userData.email ? (("\nEmail: ") + (userData.email)) : "Empty");
+      options.message = ("Sorry i couldn't find any user with this discription: ") + ((("\nName: ")+(userData.name)) ? (userData.name) : "") 
+      + " " +(userData.lastname ? (userData.lastname)  : "") +(userData.email ? (("Email: ") + (userData.email)) : "");
       callback(options);
     }
     if (response.data.value.length > 1){
