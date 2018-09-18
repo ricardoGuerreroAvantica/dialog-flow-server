@@ -56,7 +56,6 @@ function verifyUser(options, callback){
           options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
         }
       }
-      console.log("New Message = " + options.message)
       callback(options);
     }
     else{
@@ -66,6 +65,7 @@ function verifyUser(options, callback){
       mail : response.data.value[0].mail,
       surname : response.data.value[0].surname,
       }
+      callback(options)
     }
     callback(options)
   })
