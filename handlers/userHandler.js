@@ -1,3 +1,7 @@
+function verifyUser(options, callback){
+  callback;
+}
+
 var axios = require('axios');
 var users = ""
 function searchUser(next, options, callback){
@@ -76,3 +80,4 @@ function searchUser(next, options, callback){
 }
 
 exports.searchUser = searchUser;
+exports.verifyUser = verifyUser

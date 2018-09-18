@@ -25,13 +25,15 @@ function parseAction(req, res, callback){
   switch (options.action) {
     
     case 'search_User':
-      Action.prototype.findMeetingTimes = userHandler.searchUser;
+      Action.prototype.findMeetingTimes = userHandler.verifyUser;
+      Action.pre('verifyUser', authenticate.refreshToken)
+      .pre('verifyUser', userHandler.searchUser);
       var action = new Action();
-      action.searchUser(options, callback);
+      action.verifyUser(options, callback);
       console.log("THE END")
       break;
 
-    break;
+
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
