@@ -25,7 +25,7 @@ function parseAction(req, res, callback){
   switch (options.action) {
     
     case 'search_User':
-      userHandler.searchUser(options, callback);
+      userHandler.verifyUser(options, callback);
       console.log("THE END")
       break;
 
