@@ -77,4 +77,4 @@ function searchUser(next, options, callback){
 }
 
 exports.searchUser = searchUser;
-exports.verifyUser = verifyUser
+
