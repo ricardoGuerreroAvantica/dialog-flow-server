@@ -25,11 +25,7 @@ function parseAction(req, res, callback){
   switch (options.action) {
     
     case 'search_User':
-      Action.prototype.findMeetingTimes = userHandler.verifyUser;
-      Action.pre('verifyUser', authenticate.refreshToken)
-      .pre('verifyUser', userHandler.searchUser);
-      var action = new Action();
-      action.verifyUser(options, callback);
+      userHandler.searchUser(options, callback);
       console.log("THE END")
       break;
 
