@@ -24,6 +24,14 @@ function parseAction(req, res, callback){
   console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
   switch (options.action) {
     
+    case 'search_User':
+      Action.prototype.findMeetingTimes = userHandler.searchUser;
+      var action = new Action();
+      action.searchUser(options, callback);
+      console.log("THE END")
+      break;
+
+    break;
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
