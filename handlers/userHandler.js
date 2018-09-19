@@ -50,7 +50,7 @@ function searchUser(next, options, callback){
       for(i = 0; i < response.data.value.length; i++ ){
         console.log(response.data.value[i])
         if ( i!= response.data.value.length-1){
-          options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n ';
+          options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
         }
         else{
           options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
