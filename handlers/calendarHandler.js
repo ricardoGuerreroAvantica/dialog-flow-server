@@ -56,6 +56,24 @@ function scheduleMeeting(options, callback){
 
 
 
+
+function PrefindMeetingTimes(next, options, callback){
+  var parameters = options.parameters;
+  var duration = parameters.duration;
+  var date = parameters.date;
+  var time = parameters.time;
+  var user = options.user;
+  var postBody = {
+    attendees: commons.getAttendees([user]),
+    timeConstraint : commons.getTimeConstraint(date, time),
+    meetingDuration : 'PT1H'
+  };
+  options.message = "HELLO there!"
+  next(options, callback);
+}
+
+
+
 function findMeetingTimes(options, callback){
   var parameters = options.parameters;
   var duration = parameters.duration;
@@ -77,7 +95,7 @@ function findMeetingTimes(options, callback){
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
-      options.message = options.speech = `I found some space, look at these: \n\n`;
+      options.message += options.speech = `I found some space, look at these: \n\n`;
       options.message += '-----------------------' + '\n\n';
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
@@ -87,17 +105,16 @@ function findMeetingTimes(options, callback){
       next(options,callback);
     }else{
       if (options.message != ""){
-        next(options,callback);
+        callback(options);
       }
       else{
         console.log('findMeetingTimes.meetings : empty response' );
         options.message = options.speech = "Sorry couldn't find any space";
-        next(options,callback);
+        callback(options);
       }
     }
 
   });
-  callback(options);
 }
 
 
