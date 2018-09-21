@@ -74,8 +74,11 @@ function findMeetingTimes(options, callback){
       errorHandler.actionError(error);
     }
 
+
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
+    console.log("meetingTimes.LENGth "+ meetings.length);
+    console.log("meetings.length > 0:  "+(meetings.length > 0));
     if (meetings.length > 0){
       options.message = options.speech = `I found some space, look at these: \n\n`;
       options.message += '-----------------------' + '\n\n';
