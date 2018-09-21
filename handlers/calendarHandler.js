@@ -58,7 +58,7 @@ function scheduleMeeting(options, callback){
 
 
 function PrefindMeetingTimes(next, options, callback){
-  options.message = "HELLO there!"
+  options.message += "HELLO there!"
   next(options, callback);
 }
 
@@ -75,7 +75,8 @@ function findMeetingTimes(options, callback){
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-
+  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIII II I I I I I I I I ");
+  options.message += "WELL, BYE THERE"
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.error : ' + JSON.stringify(error));
