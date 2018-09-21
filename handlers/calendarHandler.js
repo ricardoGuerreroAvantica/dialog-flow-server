@@ -58,16 +58,6 @@ function scheduleMeeting(options, callback){
 
 
 function PrefindMeetingTimes(next, options, callback){
-  var parameters = options.parameters;
-  var duration = parameters.duration;
-  var date = parameters.date;
-  var time = parameters.time;
-  var user = options.user;
-  var postBody = {
-    attendees: commons.getAttendees([user]),
-    timeConstraint : commons.getTimeConstraint(date, time),
-    meetingDuration : 'PT1H'
-  };
   options.message = "HELLO there!"
   next(options, callback);
 }
