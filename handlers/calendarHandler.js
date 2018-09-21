@@ -67,7 +67,7 @@ function findMeetingTimes(options, callback){
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-
+  console.log("Time Type" +typeof(parameters.time));
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.error : ' + JSON.stringify(error));
@@ -100,6 +100,10 @@ function findMeetingTimes(options, callback){
     }
 
   });
+}
+//This function is in charge of searching for more available options on the calendar for this employee
+function showMeetingTimes(options, callback){
+
 }
 
 
