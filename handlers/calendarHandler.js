@@ -84,19 +84,20 @@ function findMeetingTimes(options, callback){
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-      callback(options);
+      
     }else{
       if (options.message != ""){
-        callback(options);
+        
       }
       else{
         console.log('findMeetingTimes.meetings : empty response' );
         options.message = options.speech = "Sorry couldn't find any space";
-        callback(options);
+        
       }
     }
 
   });
+  callback(options);
 }
 
 
