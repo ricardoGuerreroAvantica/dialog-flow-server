@@ -133,7 +133,7 @@ function findMeetingTimes(options, callback){
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-      next(options,callback);
+      callback(options);
     }else{
       if (options.message != ""){
         callback(options);
