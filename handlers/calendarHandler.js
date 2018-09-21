@@ -62,51 +62,49 @@ function findMeetingTimes(options, callback){
   var date = parameters.date;
   var time = parameters.time;
   var user = options.user;
-  
+  var postBody = {
+    attendees: commons.getAttendees([user]),
+    timeConstraint : commons.getTimeConstraint(date, time),
+    meetingDuration : 'PT1H'
+  };
   var dateBody = parameters.time.split(":");
   console.log("ARRAY String: " +dateBody);
   console.log("Time Type" +typeof(parameters.time));
   console.log("RESULT: "+ (parseInt(dateBody[0]) + 1))
-  
-  options.message = options.speech = `I found some space, look at these: \n\n`;
+  options.message = options.speech = options.user + `is available at: \n\n`;
 
-  for(var i = 0 ; i++ ; i<3){
+  request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+    if (error){
+      console.log('findMeetingTimes.error : ' + JSON.stringify(error));
+      errorHandler.actionError(error);
+    }
 
-    var postBody = {
-      attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, (dateBody[0]+i)+":"+dateBody[1]+":"+dateBody[2]),
-      meetingDuration : 'PT1H'
-    };
 
-    request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
-      if (error){
-        console.log('findMeetingTimes.error : ' + JSON.stringify(error));
-        errorHandler.actionError(error);
+    var meetings = response.meetingTimeSuggestions;
+    console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
+    console.log("meetingTimes.LENGth "+ meetings.length);
+    console.log("meetings.length > 0:  "+(meetings.length > 0));
+    if (meetings.length > 0){
+      
+      options.message += '-----------------------' + '\n\n';
+      meetings.forEach((meeting) => {
+        options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
+                commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+      });
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
+    }else{
+      if (options.message != ""){
+        callback(options);
       }
-  
-  
-      var meetings = response.meetingTimeSuggestions;
-      if (meetings.length > 0){
-        
-        options.message += '-----------------------' + '\n\n';
-        meetings.forEach((meeting) => {
-          options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                  commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
-        });
-        console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-      }else{
-        if (options.message != ""){  
-        }
-        else{
-          console.log('findMeetingTimes.meetings : empty response' );
-          options.message = options.speech = "Sorry couldn't find any space";
-        }
+      else{
+        console.log('findMeetingTimes.meetings : empty response' );
+        options.message = options.speech = "Sorry couldn't find any space";
+        callback(options);
       }
-  
-    });
-  }
-  callback(options);
-  
+    }
+
+  });
 }
 //This function is in charge of searching for more available options on the calendar for this employee
 function showMeetingTimes(options, callback){
