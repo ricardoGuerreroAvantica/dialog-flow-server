@@ -73,7 +73,7 @@ function findMeetingTimes(options, callback){
       console.log('findMeetingTimes.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
-    console.log(JSON.stringify("RESPONSE :" + response))
+    console.log("RESPONSE :" + JSON.stringify(response))
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
