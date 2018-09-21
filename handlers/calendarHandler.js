@@ -176,3 +176,4 @@ function showEvents(options, callback){
 exports.findMeetingTimes = findMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;
+exports.PrefindMeetingTimes = PrefindMeetingTimes;
