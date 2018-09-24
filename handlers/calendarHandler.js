@@ -66,7 +66,7 @@ function PrefindMeetingTimes(next, options, callback){
 
   //Checks if the message is empty, then generate the standard message title:
   if(options.message == ""){
-    options.message += options.speech = options.user.givenName `Is available at: \n\n`;
+    options.message += options.speech = `Is available at: \n\n`;
     options.message += '-----------------------' + '\n\n';
   }
 
