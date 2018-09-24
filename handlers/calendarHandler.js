@@ -107,44 +107,14 @@ function PrefindMeetingTimes(next, options, callback){
 
 
 
-function findMeetingTimes(options, callback){
-  var parameters = options.parameters;
-  var duration = parameters.duration;
-  var date = parameters.date;
-  var time = parameters.time;
-  var user = options.user;
-  var postBody = {
-    attendees: commons.getAttendees([user]),
-    timeConstraint : commons.getTimeConstraint(date, time),
-    meetingDuration : 'PT1H'
-  };
-  request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
-    if (error){
-      console.log('findMeetingTimes.error : ' + JSON.stringify(error));
-      errorHandler.actionError(error);
-    }
-    var meetings = response.meetingTimeSuggestions;
-    console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
-    if (meetings.length > 0){
-      meetings.forEach((meeting) => {
-        options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
-      });
-      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
-      callback(options);
-    }else{
+function checkMeetingTimes(options, callback){
       if (options.message != "Is available at: \n\n-----------------------\n\n"){
         options.message = options.speech = "Sorry couldn't find any space";
         callback(options);
       }
       else{
-        console.log('findMeetingTimes.meetings : empty response' );
-        options.message = options.speech = "Sorry couldn't find any space";
         callback(options);
       }
-    }
-
-  });
 }
 
 
@@ -203,7 +173,7 @@ function showEvents(options, callback){
 
 }
 
-exports.findMeetingTimes = findMeetingTimes;
+exports.checkMeetingTimes = checkMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;
 exports.PrefindMeetingTimes = PrefindMeetingTimes;
