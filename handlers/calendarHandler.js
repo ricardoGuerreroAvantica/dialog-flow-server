@@ -96,9 +96,15 @@ function PrefindMeetingTimes(next, options, callback){
     }
     var meetings = response.meetingTimeSuggestions;
     if (meetings.length > 0){
+      let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
+                    commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       meetings.forEach((meeting) => {
-        options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+        Console.log(!options.message.includes(timeSet) +"New message =" + timeSet)
+        c
+        if(!options.message.includes(timeSet)){
+          options.message += timeSet
+        }
+        
       });
       console.log("Meeetings: " + JSON.stringify(meetings));
       next(options,callback);
