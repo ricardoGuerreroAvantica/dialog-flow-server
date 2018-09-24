@@ -96,11 +96,10 @@ function PrefindMeetingTimes(next, options, callback){
     }
     var meetings = response.meetingTimeSuggestions;
     if (meetings.length > 0){
-      
       meetings.forEach((meeting) => {
         let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                     commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
-        Console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
+        console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
         if(!options.message.includes(timeSet)){
           options.message += timeSet
         }
