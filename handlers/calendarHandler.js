@@ -108,7 +108,7 @@ function PrefindMeetingTimes(next, options, callback){
 
 
 function checkMeetingTimes(options, callback){
-      if (options.message != "Is available at: \n\n-----------------------\n\n"){
+      if (options.message == "Is available at: \n\n-----------------------\n\n"){
         options.message += options.speech = "Sorry couldn't find any space";
         callback(options);
       }
