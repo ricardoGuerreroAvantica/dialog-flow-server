@@ -72,7 +72,7 @@ function PrefindMeetingTimes(next, options, callback){
   options.message += '-----------------------' + '\n\n';
   //Here is created and changed the time for the request
   console.log("meetingTime: " + options.parameters.meetingTimer)
-  options.parameters.meetingTimer = options.parameters.meetingTimer++;
+  options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
   console.log("meetingTime plus: " + options.parameters.meetingTimer)
   var times = parameters.time.split(':');
   let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
