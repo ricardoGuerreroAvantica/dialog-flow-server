@@ -44,7 +44,6 @@ function parseAction(req, res, callback){
       .pre('findMeetingTimes', userHandler.searchUser)
       .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes);
 
-
       console.log("Procced to check if user is available")
       var action = new Action();
       action.findMeetingTimes(options, callback);
