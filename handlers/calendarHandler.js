@@ -74,7 +74,6 @@ function PrefindMeetingTimes(next, options, callback){
     options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
   }
 
-
   //Here is created and changed the time for the request
   console.log("meetingTime: " + options.parameters.meetingTimer)
   options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
@@ -88,7 +87,7 @@ function PrefindMeetingTimes(next, options, callback){
   var postBody = {
     attendees: commons.getAttendees([user]),
     timeConstraint : commons.getTimeConstraint(date, newTimeConstraing),
-    meetingDuration : 'PT1H'
+    meetingDuration : 'PT30M'
   };
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
@@ -109,8 +108,6 @@ function PrefindMeetingTimes(next, options, callback){
 
   });
 }
-
-
 
 function checkMeetingTimes(options, callback){
       if (options.message == "Is available at: \n\n-----------------------\n\n"){
