@@ -97,6 +97,7 @@ function PrefindMeetingTimes(next, options, callback){
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
+      console.log("Meeetings: " +JSON.stringify(meeting));
       next(options,callback);
     }else{
       if (options.message != ""){
