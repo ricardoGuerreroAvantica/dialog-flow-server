@@ -27,7 +27,7 @@ function parseAction(req, res, callback){
     case 'search_User':
     Action.prototype.searchUser = userHandler.searchUser;
     //PRE
-    Action.pre('findMeetingTimes', authenticate.refreshToken)
+    Action.pre('searchUser', authenticate.refreshToken)
 
     console.log("Procced to check if user is available")
     var action = new Action();
@@ -38,21 +38,19 @@ function parseAction(req, res, callback){
 
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
-      Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
-      options.message += options.speech = `Is available at: \n\n`;
-      options.message += '-----------------------' + '\n\n';
+      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       //PRE
       options.parameters.meetingTimer = -2;
-      Action.pre('findMeetingTimes', authenticate.refreshToken)
-      .pre('findMeetingTimes', userHandler.searchUser)
-      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
-      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
-      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
-      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes);
+      Action.pre('checkMeetingTimes', authenticate.refreshToken)
+      .pre('checkMeetingTimes', userHandler.searchUser)
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
 
       console.log("Procced to check if user is available")
       var action = new Action();
-      action.findMeetingTimes(options, callback);
+      action.checkMeetingTimes(options, callback);
       console.log("THE END")
       break;
 

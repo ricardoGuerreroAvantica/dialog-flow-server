@@ -66,8 +66,7 @@ function PrefindMeetingTimes(next, options, callback){
 
   //Checks if the message is empty, then generate the standard message title:
   if(options.message == ""){
-    options.message += options.speech = `Is available at: \n\n`;
-    options.message += '-----------------------' + '\n\n';
+    options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
   }
 
 
@@ -134,7 +133,8 @@ function findMeetingTimes(options, callback){
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
-      if (options.message != ""){
+      if (options.message != "Is available at: \n\n-----------------------\n\n"){
+        options.message = options.speech = "Sorry couldn't find any space";
         callback(options);
       }
       else{
