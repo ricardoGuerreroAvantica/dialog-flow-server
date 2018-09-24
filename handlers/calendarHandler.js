@@ -63,7 +63,14 @@ function PrefindMeetingTimes(next, options, callback){
   var date = parameters.date;
   var time = parameters.time;
   var user = options.user;
-  
+
+  //Checks if the message is empty, then generate the standard message title:
+  if(options.message == ""){
+    options.message += options.speech = `Is available at: \n\n`;
+    options.message += '-----------------------' + '\n\n';
+  }
+
+
   //Here is created and changed the time for the request
   console.log("meetingTime: " + options.parameters.meetingTimer)
   options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
@@ -118,19 +125,14 @@ function findMeetingTimes(options, callback){
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIII II I I I I I I I I ");
-  options.message += "WELL, BYE THERE"
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
-    console.log("RESPONSE :" + JSON.stringify(response))
     var meetings = response.meetingTimeSuggestions;
     console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
-      options.message += options.speech = `I found some space, look at these: \n\n`;
-      options.message += '-----------------------' + '\n\n';
       meetings.forEach((meeting) => {
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
