@@ -56,6 +56,11 @@ function scheduleMeeting(options, callback){
 
 
 
+function setTimer(next, options, callback){
+  console.log('TIMER SET TO: ' + options.parameters.meetingTimer)
+  options.parameters.meetingTimer = -2;
+  next(options, callback);
+}
 
 function PrefindMeetingTimes(next, options, callback){
   var parameters = options.parameters;
@@ -173,6 +178,7 @@ function showEvents(options, callback){
 
 }
 
+exports.setTimer = setTimer;
 exports.checkMeetingTimes = checkMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;

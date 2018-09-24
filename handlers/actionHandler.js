@@ -40,9 +40,10 @@ function parseAction(req, res, callback){
     case 'calendar_user_available' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       //PRE
-      options.parameters.meetingTimer = -2;
+      
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', userHandler.searchUser)
+      .pre('checkMeetingTimes', calendarHandler.setTimer)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
