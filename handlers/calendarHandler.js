@@ -100,14 +100,7 @@ function PrefindMeetingTimes(next, options, callback){
       console.log("Meeetings: " + JSON.stringify(meetings));
       next(options,callback);
     }else{
-      if (options.message != ""){
         next(options, callback);
-      }
-      else{
-        console.log('findMeetingTimes.meetings : empty response' );
-        options.message = options.speech = "Sorry couldn't find any space";
-        next(options, callback);
-      }
     }
 
   });
