@@ -74,8 +74,8 @@ function PrefindMeetingTimes(next, options, callback){
   options.parameters.meetingTimer = options.parameters.meetingTimer++;
   var times = parameters.time.split(':');
   let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
-
-  console.log(newTime + "NEWTIMER");
+  let newTimeConstraing = newTime + ':' + times[1] + ':' + times[2];
+  console.log(newTime + ", NEWTIMER: " + newTimeConstraing);
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
@@ -100,7 +100,6 @@ function PrefindMeetingTimes(next, options, callback){
     }
 
   });
-  
 }
 
 
