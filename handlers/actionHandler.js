@@ -42,7 +42,11 @@ function parseAction(req, res, callback){
       //PRE
       Action.pre('findMeetingTimes', authenticate.refreshToken)
       .pre('findMeetingTimes', userHandler.searchUser)
+      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes)
       .pre('findMeetingTimes', calendarHandler.PrefindMeetingTimes);
+
 
       console.log("Procced to check if user is available")
       var action = new Action();

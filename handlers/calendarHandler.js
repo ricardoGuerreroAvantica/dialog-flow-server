@@ -61,23 +61,27 @@ function PrefindMeetingTimes(next, options, callback){
   var parameters = options.parameters;
   var duration = parameters.duration;
   var date = parameters.date;
-  var time = parameters.time;
   var user = options.user;
+  if (options.meetingTimer == nil){
+    options.meetingTimer = -2;
+  }
+
+  var times = parameters.time.split(':');
+  var time = parameters.time;
+  let newTime = parseInt(times[0])+options.meetingTimer;
+  console.log(newTime);
   var postBody = {
     attendees: commons.getAttendees([user]),
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIII II I I I I I I I I ");
-  options.message += "WELL, HELLO THERE"
+  
+  console.log(options.meetingTimer);
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
-      console.log('findMeetingTimes.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
-    console.log("RESPONSE :" + JSON.stringify(response))
     var meetings = response.meetingTimeSuggestions;
-    console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings, null, 2));
     if (meetings.length > 0){
       options.message += options.speech = `I found some space, look at these: \n\n`;
       options.message += '-----------------------' + '\n\n';
@@ -85,7 +89,7 @@ function PrefindMeetingTimes(next, options, callback){
         options.message += commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                 commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
       });
-      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      console.log('findMeetingTimes.meetings : ' + JSON.stringify(meetings));
       next(options,callback);
     }else{
       if (options.message != ""){
