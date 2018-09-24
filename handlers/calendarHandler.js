@@ -68,8 +68,14 @@ function PrefindMeetingTimes(next, options, callback){
     timeConstraint : commons.getTimeConstraint(date, time),
     meetingDuration : 'PT1H'
   };
-  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIII II I I I I I I I I ");
-  options.message += "WELL, HELLO THERE"
+  if (options.meetingTimer == nil){
+    options.meetingTimer = -2;
+  }
+  var times = parameters.time.split(':');
+  console.log("START TIME #" + parameters.time);
+  let newTime = parseInt(times[0])+options.meetingTimer;
+  console.log(newTime);
+
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       console.log('findMeetingTimes.error : ' + JSON.stringify(error));
