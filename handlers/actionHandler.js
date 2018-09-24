@@ -39,6 +39,8 @@ function parseAction(req, res, callback){
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available' :
       Action.prototype.findMeetingTimes = calendarHandler.findMeetingTimes;
+      options.message += options.speech = `Is available at: \n\n`;
+      options.message += '-----------------------' + '\n\n';
       //PRE
       options.parameters.meetingTimer = -2;
       Action.pre('findMeetingTimes', authenticate.refreshToken)
