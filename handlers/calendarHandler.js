@@ -56,6 +56,7 @@ function scheduleMeeting(options, callback){
 
 
 function PrefindMeetingTimes(next, options, callback){
+  console.log("START FINDING MEETING FUNCTION:")
   if(!options.parameters["moreDateNeeded"]){
     //If the function didnt find the requested data-time as available, it will execute the function again with diferent times/
     var parameters = options.parameters;
