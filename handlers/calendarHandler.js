@@ -63,10 +63,14 @@ function setTimer(next, options, callback){
 }
 
 function PrefindMeetingTimes(next, options, callback){
+
+  if(!options.parameters["testing"]){
+    options.parameters.testing = "HELLOOOO"
+    console.log(options.parameters.testing)
+  }
+  
   var parameters = options.parameters;
-  var duration = parameters.duration;
   var date = parameters.date;
-  var time = parameters.time;
   var user = options.user;
 
   //Checks if the message is empty, then generate the standard message title:
