@@ -89,6 +89,7 @@ function PrefindMeetingTimes(next, options, callback){
     timeConstraint : commons.getTimeConstraint(date, newTimeConstraing)
   };
 
+  console.log(JSON.stringify(postBody))
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       errorHandler.actionError(error);
