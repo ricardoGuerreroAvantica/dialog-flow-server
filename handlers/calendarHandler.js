@@ -86,13 +86,13 @@ function PrefindMeetingTimes(next, options, callback){
   // The postBody is created with the new timerConstraing
   var postBody = {
     attendees: commons.getAttendees([user]),
-    timeConstraint: commons.getTimeConstraint(date, newTimeConstraing),
+    timeConstraint : commons.getTimeConstraint(date, newTimeConstraing),
     isOrganizerOptional: true
   };
 
   console.log("POST BODY: " + JSON.stringify(postBody))
   //The request to microsoft 365 is executed here:
-  request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+  request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       errorHandler.actionError(error);
     }
