@@ -43,7 +43,6 @@ function parseAction(req, res, callback){
       
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', userHandler.searchUser)
-      .pre('checkMeetingTimes', calendarHandler.setTimer)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)

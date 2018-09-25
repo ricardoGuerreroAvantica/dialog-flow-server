@@ -56,71 +56,61 @@ function scheduleMeeting(options, callback){
 
 
 function PrefindMeetingTimes(next, options, callback){
-  console.log("START FINDING MEETING FUNCTION:")
-  if(!options.parameters["moreDateNeeded"]){
-    //If the function didnt find the requested data-time as available, it will execute the function again with diferent times/
-    var parameters = options.parameters;
-    var date = parameters.date;
-    var user = options.user;
-    var time;
-   
-    if(!options.parameters["meetingTimer"]){
-       //if is the first execution of prefindMeetingTimes will enter here
-      console.log("FIRST RUN");
-      options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
-      time = options.parameters.time;
-      options.parameters.meetingTimer = -2;
-    }
-    else{
-      //if not will proceed to create test other times to find an available date/time
-      options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
-      var times = parameters.time.split(':');
-      let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
-      let time = newTime + ':' + times[1] + ':' + times[2];
-      console.log(newTime + ", NEWTIMER: " + time);
-    }
-    
-    console.log("THE TIME USED IS :" + time);
-    // The postBody is created with the new timerConstraing
-    var postBody = {
-      attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, time),
-      isOrganizerOptional: true
-    };
-    console.log("POST BODY: " + JSON.stringify(postBody))
 
-    //The request to microsoft 365 is executed here:
-    request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
-      if (error){
-        errorHandler.actionError(error);
-      }
-      var meetings = response.meetingTimeSuggestions;
-      console.log("MEETINGS: "+ JSON.stringify(meetings));
-      if (meetings.length > 0){
-        //Found open meeting times in the requested TimeConstrain
-        meetings.forEach((meeting) => {
-          let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                      commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
-          console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
-          if(!options.message.includes(timeSet)){
-            options.message += timeSet
-          }
-        });
-        console.log("Meeetings: " + JSON.stringify(meetings));
-        next(options,callback);
-      }else{
-        console.log("Didnt find any available time at:" + time);
-        //If didnt find any meeting time at this time just skip to the next time.
-          options.parameters.moreDateNeeded = true;
-          next(options, callback);
-      }
-    });
+  if(!options.parameters["meetingTimer"]){
+    console.log("FIRST RUN");
+    options.parameters.meetingTimer = -2;
   }
-  else{
-    //already found the time asked by the user
-    //no more request needed
-    next(options,callback);
+
+  var parameters = options.parameters;
+  var date = parameters.date;
+  var user = options.user;
+
+  //Checks if the message is empty, then generate the standard message title:
+  if(options.message == ""){
+    options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
   }
+
+  //Here is created and changed the time for the request
+  console.log("meetingTime: " + options.parameters.meetingTimer)
+  options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
+  console.log("meetingTime plus: " + options.parameters.meetingTimer)
+  var times = parameters.time.split(':');
+  let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
+  let newTimeConstraing = newTime + ':' + times[1] + ':' + times[2];
+  console.log(newTime + ", NEWTIMER: " + newTimeConstraing);
+
+  // The postBody is created with the new timerConstraing
+  var postBody = {
+    attendees: commons.getAttendees([user]),
+    timeConstraint : commons.getTimeConstraint(date, newTimeConstraing),
+    isOrganizerOptional: true
+  };
+
+  console.log("POST BODY: " + JSON.stringify(postBody))
+  //The request to microsoft 365 is executed here:
+  request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+    if (error){
+      errorHandler.actionError(error);
+    }
+    var meetings = response.meetingTimeSuggestions;
+    console.log("MEETINGS: "+ JSON.stringify(meetings));
+    if (meetings.length > 0){
+      meetings.forEach((meeting) => {
+        let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
+                    commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+        console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
+        if(!options.message.includes(timeSet)){
+          options.message += timeSet
+        }
+      });
+      console.log("Meeetings: " + JSON.stringify(meetings));
+      next(options,callback);
+    }else{
+      //If didnt find any meeting time at this time just skip to the next time.
+        next(options, callback);
+    }
+  });
 }
 
 function checkMeetingTimes(options, callback){
