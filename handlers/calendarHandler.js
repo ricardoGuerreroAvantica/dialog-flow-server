@@ -86,10 +86,12 @@ function PrefindMeetingTimes(next, options, callback){
   // The postBody is created with the new timerConstraing
   var postBody = {
     attendees: commons.getAttendees([user]),
-    timeConstraint : commons.getTimeConstraint(date, newTimeConstraing)
+    timeConstraint: commons.getTimeConstraint(date, newTimeConstraing),
+    isOrganizerOptional: true
   };
 
   console.log("POST BODY: " + JSON.stringify(postBody))
+  //The request to microsoft 365 is executed here:
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
     if (error){
       errorHandler.actionError(error);
@@ -104,14 +106,13 @@ function PrefindMeetingTimes(next, options, callback){
         if(!options.message.includes(timeSet)){
           options.message += timeSet
         }
-        
       });
       console.log("Meeetings: " + JSON.stringify(meetings));
       next(options,callback);
     }else{
+      //If didnt find any meeting time at this time just skip to the next time.
         next(options, callback);
     }
-
   });
 }
 
