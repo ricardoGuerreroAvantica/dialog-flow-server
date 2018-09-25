@@ -86,8 +86,7 @@ function PrefindMeetingTimes(next, options, callback){
   // The postBody is created with the new timerConstraing
   var postBody = {
     attendees: commons.getAttendees([user]),
-    timeConstraint : commons.getTimeConstraint(date, newTimeConstraing),
-    meetingDuration : 'PT30M'
+    timeConstraint : commons.getTimeConstraint(date, newTimeConstraing)
   };
 
   request.postData('graph.microsoft.com','/v1.0/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
