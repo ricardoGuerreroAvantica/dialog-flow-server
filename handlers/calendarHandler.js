@@ -95,6 +95,7 @@ function PrefindMeetingTimes(next, options, callback){
       errorHandler.actionError(error);
     }
     var meetings = response.meetingTimeSuggestions;
+    console.log("MEETINGS: "+ JSON.stringify(meetings));
     if (meetings.length > 0){
       meetings.forEach((meeting) => {
         let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
