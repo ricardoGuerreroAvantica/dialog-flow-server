@@ -57,8 +57,8 @@ function scheduleMeeting(options, callback){
 
 
 function setTimer(next, options, callback){
-  console.log('TIMER SET TO: ' + options.parameters.meetingTimer)
   options.parameters.meetingTimer = -2;
+  console.log('TIMER SET TO: ' + options.parameters.meetingTimer)
   next(options, callback);
 }
 
