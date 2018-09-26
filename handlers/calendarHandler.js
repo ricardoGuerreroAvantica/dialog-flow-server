@@ -117,7 +117,7 @@ function checkMeetingTimes(options, callback){
         // The postBody is created with the new timerConstraing
         var postBody = {
           attendees: commons.getAttendees([user]),
-          timeConstraint : commons.getTimeConstraint(date, time, 3),
+          timeConstraint : commons.getTimeConstraint(date, time, 4),
           isOrganizerOptional: true
         };
         console.log("POST BODY: " + JSON.stringify(postBody))

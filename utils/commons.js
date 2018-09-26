@@ -38,7 +38,7 @@ function getTimeConstraint(date, time, timeMargin){
   console.log("START TIMER: " + date + 'T' + startTime);
   console.log("END TIMER: " + date + 'T' + endTime);
 
-  var startDate = date + 'T' + time ;
+  var startDate = date + 'T' + startTime ;
   var endDate = date + 'T' + endTime ;
 
   var result = {
