@@ -77,8 +77,9 @@ function parseDate(date){
   /** CONVERT TO UTC
   moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
   */
-  return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("-05:00").format('MMM DD') + ' at ' +
-    moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("-05:00").format('kk:mm');
+ //.utcOffset("-05:00")
+  return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('MMM DD') + ' at ' +
+    moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('kk:mm');
 }
 
 
