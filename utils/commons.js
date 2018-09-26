@@ -40,7 +40,7 @@ function getTimeConstraint(date, time){
 
   var startDate = date + 'T' + time + '.000Z';
   var endDate = date + 'T' + endTime + '.000Z';
-  
+
   var result = {
     "timeslots": [
       {
@@ -49,7 +49,7 @@ function getTimeConstraint(date, time){
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate + '.000Z',
+          "dateTime": endDate,
           "timeZone": "UTC"
         }
       }
