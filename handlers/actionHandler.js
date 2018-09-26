@@ -44,8 +44,6 @@ function parseAction(req, res, callback){
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
-
-      console.log("Procced to check if user is available")
       var action = new Action();
       action.checkMeetingTimes(options, callback);
       console.log("THE END")

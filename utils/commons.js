@@ -27,7 +27,7 @@ function getAttendees(invites){
 }
 
 
-function getTimeConstraint(date, time, timeMargin){
+function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
   //var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   //var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
@@ -35,17 +35,17 @@ function getTimeConstraint(date, time, timeMargin){
   var times = time.split(':');
   var endTime;
   var startTime;
-  if(parseInt(times[0]) + timeMargin <10){
-    endTime = ("0" + (parseInt(times[0]) + timeMargin).toString() ) + ':00:00.000Z';
+  if(parseInt(times[0]) + endTimeMargin <10){
+    endTime = ("0" + (parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
   }
   else{
-    endTime = ((parseInt(times[0]) + timeMargin).toString() ) + ':00:00.000Z';
+    endTime = ((parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
   }
-  if(parseInt(times[0]) - timeMargin <10){
-    startTime   = ("0" + (parseInt(times[0]) - timeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
+  if(parseInt(times[0]) - startTimeMargin <10){
+    startTime   = ("0" + (parseInt(times[0]) - startTimeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
   }
   else{
-    startTime   = ((parseInt(times[0]) - timeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
+    startTime   = ((parseInt(times[0]) - startTimeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
   }
   
 

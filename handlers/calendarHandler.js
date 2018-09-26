@@ -71,7 +71,7 @@ function PrefindMeetingTimes(next, options, callback){
     // The postBody is created with the new timerConstraing
     var postBody = {
       attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, time, 1),
+      timeConstraint : commons.getTimeConstraint(date, time, 0, 2),
       isOrganizerOptional: true
     };
     console.log("POST BODY: " + JSON.stringify(postBody))
@@ -120,7 +120,7 @@ function checkMeetingTimes(options, callback){
         // The postBody is created with the new timerConstraing
         var postBody = {
           attendees: commons.getAttendees([user]),
-          timeConstraint : commons.getTimeConstraint(date, time, 4),
+          timeConstraint : commons.getTimeConstraint(date, time, 2, 4),
           isOrganizerOptional: true
         };
         console.log("POST BODY: " + JSON.stringify(postBody))
