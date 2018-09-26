@@ -32,8 +32,8 @@ function getTimeConstraint(date, time, timeMargin){
   //var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   var times = time.split(':');
-  let endTime     = ((parseInt(times[0])).toString() + timeMargin) + ':00:00.000Z';
-  let startTime   = ((parseInt(times[0])).toString() - timeMargin) + ':00:00.000Z';
+  let endTime     = ((parseInt(times[0]) + timeMargin).toString() ) + ':00:00.000Z';
+  let startTime   = ((parseInt(times[0]) - timeMargin).toString()) + ':00:00.000Z';
 
   console.log("START TIMER: " + date + 'T' + startTime);
   console.log("END TIMER: " + date + 'T' + endTime);
