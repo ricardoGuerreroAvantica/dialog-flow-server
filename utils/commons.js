@@ -27,9 +27,10 @@ function getAttendees(invites){
 }
 
 function getTimeConstraint(date, time){
-  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DDTHH:mm:ss');
-  var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
+  var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  console.log("TIIIIMEEEE" + date + 'T' + time + '.000Z');
   var result = {
     "timeslots": [
       {
