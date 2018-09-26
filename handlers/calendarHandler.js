@@ -58,29 +58,15 @@ function scheduleMeeting(options, callback){
 
 function PrefindMeetingTimes(next, options, callback){
   console.log("START FINDING MEETING FUNCTION:")
-  if(!options.parameters["moreDateNeeded"]){
     //If the function didnt find the requested data-time as available, it will execute the function again with diferent times/
     var parameters = options.parameters;
     var date = parameters.date;
     var user = options.user;
     var time = options.parameters.time;
-   
-    if(!options.parameters["meetingTimer"]){
-       //if is the first execution of prefindMeetingTimes will enter here
-      console.log("FIRST RUN");
-      options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
-      time = options.parameters.time;
-      options.parameters.meetingTimer = -2;
-    }
-    else{
-      //if not will proceed to create test other times to find an available date/time
-      options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
-      var times = parameters.time.split(':');
-      let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
-      time = newTime + ':' + times[1] + ':' + times[2];
-      console.log(newTime + ", NEWTIMER: " + time);
-    }
-    
+    console.log("FIRST RUN");
+    options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
+    time = options.parameters.time;
+
     console.log("THE TIME USED IS :" + time);
     // The postBody is created with the new timerConstraing
     var postBody = {
@@ -112,16 +98,9 @@ function PrefindMeetingTimes(next, options, callback){
       }else{
         console.log("Didnt find any available time at:" + time);
         //If didnt find any meeting time at this time just skip to the next time.
-          options.parameters.moreDateNeeded = true;
           next(options, callback);
       }
     });
-  }
-  else{
-    //already found the time asked by the user
-    //no more request needed
-    next(options,callback);
-  }
 }
 
 function checkMeetingTimes(options, callback){
