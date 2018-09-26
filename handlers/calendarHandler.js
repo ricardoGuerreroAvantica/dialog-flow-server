@@ -132,6 +132,7 @@ function checkMeetingTimes(options, callback){
           if (meetings.length > 0){
             //Found open meeting times in the requested TimeConstrain
             meetings.forEach((meeting) => {
+              console.log("THE MEETING: " + JSON.stringify(meeting))
               let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
                           commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
               console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
