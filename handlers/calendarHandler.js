@@ -63,7 +63,7 @@ function PrefindMeetingTimes(next, options, callback){
     var parameters = options.parameters;
     var date = parameters.date;
     var user = options.user;
-    var time;
+    var time = options.parameters.time;
    
     if(!options.parameters["meetingTimer"]){
        //if is the first execution of prefindMeetingTimes will enter here
@@ -77,7 +77,7 @@ function PrefindMeetingTimes(next, options, callback){
       options.parameters.meetingTimer = options.parameters.meetingTimer + 1;
       var times = parameters.time.split(':');
       let newTime = (parseInt(times[0])+options.parameters.meetingTimer).toString();
-      let time = newTime + ':' + times[1] + ':' + times[2];
+      time = newTime + ':' + times[1] + ':' + times[2];
       console.log(newTime + ", NEWTIMER: " + time);
     }
     
