@@ -42,10 +42,10 @@ function getTimeConstraint(date, time, timeMargin){
     endTime = ((parseInt(times[0]) + timeMargin).toString() ) + ':00:00.000Z';
   }
   if(parseInt(times[0]) - timeMargin <10){
-    startTime   = ("0" + (parseInt(times[0]) - timeMargin).toString()) + ':00:00.000Z';
+    startTime   = ("0" + (parseInt(times[0]) - timeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
   }
   else{
-    startTime   = ((parseInt(times[0]) - timeMargin).toString()) + ':00:00.000Z';
+    startTime   = ((parseInt(times[0]) - timeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
   }
   
 
@@ -77,7 +77,7 @@ function parseDate(date){
   /** CONVERT TO UTC
   moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
   */
- //.utcOffset("-05:00")
+ //
   return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('MMM DD') + ' at ' +
     moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('kk:mm');
 }
