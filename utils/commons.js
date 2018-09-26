@@ -26,17 +26,17 @@ function getAttendees(invites){
 
 }
 
-function getTimeConstraint(date, time){
+function getTimeConstraint(date, time, timeMargin){
 
   //var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
   //var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   var times = time.split(':');
-  let endTime = ((2+parseInt(times[0])).toString()) + ':' + times[1] + ':' + times[2];
-  let startTime = ((parseInt(times[0])).toString()-2) + ':' + times[1] + ':' + times[2];
+  let endTime     = ((parseInt(times[0])).toString() + timeMargin) + ':00:00.000Z';
+  let startTime   = ((parseInt(times[0])).toString() - timeMargin) + ':00:00.000Z';
 
-  console.log("START TIMER: " + date + 'T' + time + '.000Z');
-  console.log("END TIMER: " + date + 'T' + endTime + '.000Z');
+  console.log("START TIMER: " + date + 'T' + startTime);
+  console.log("END TIMER: " + date + 'T' + endTime);
 
   var startDate = date + 'T' + time + '.000Z';
   var endDate = date + 'T' + endTime + '.000Z';

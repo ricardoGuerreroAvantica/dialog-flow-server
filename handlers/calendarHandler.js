@@ -71,7 +71,7 @@ function PrefindMeetingTimes(next, options, callback){
     // The postBody is created with the new timerConstraing
     var postBody = {
       attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, time),
+      timeConstraint : commons.getTimeConstraint(date, time, 1),
       isOrganizerOptional: true
     };
     console.log("POST BODY: " + JSON.stringify(postBody))
@@ -105,8 +105,48 @@ function PrefindMeetingTimes(next, options, callback){
 
 function checkMeetingTimes(options, callback){
       if (options.message == "Is available at: \n\n-----------------------\n\n"){
-        options.message += options.speech = "Sorry couldn't find any space";
-        callback(options);
+        //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
+        //with more extense time margin:
+        var parameters = options.parameters;
+        var date = parameters.date;
+        var user = options.user;
+        var time = options.parameters.time;
+        time = options.parameters.time;
+        console.log("SECOND RUN");
+        console.log("THE TIME USED IS :" + time);
+        // The postBody is created with the new timerConstraing
+        var postBody = {
+          attendees: commons.getAttendees([user]),
+          timeConstraint : commons.getTimeConstraint(date, time, 3),
+          isOrganizerOptional: true
+        };
+        console.log("POST BODY: " + JSON.stringify(postBody))
+
+        //The request to microsoft 365 is executed here:
+        request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+          if (error){
+            errorHandler.actionError(error);
+          }
+          var meetings = response.meetingTimeSuggestions;
+          console.log("MEETINGS: "+ JSON.stringify(meetings));
+          if (meetings.length > 0){
+            //Found open meeting times in the requested TimeConstrain
+            meetings.forEach((meeting) => {
+              let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
+                          commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+              console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
+              if(!options.message.includes(timeSet)){
+                options.message += timeSet
+              }
+            });
+            console.log("Meeetings: " + JSON.stringify(meetings));
+            next(options,callback);
+          }else{
+            console.log("Didnt find any available time at:" + time);
+              options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
+              next(options, callback);
+          }
+        });
       }
       else{
         callback(options);
