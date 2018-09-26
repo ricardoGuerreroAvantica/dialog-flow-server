@@ -140,11 +140,11 @@ function checkMeetingTimes(options, callback){
               }
             });
             console.log("Meeetings: " + JSON.stringify(meetings));
-            next(options,callback);
+            callback(options);
           }else{
             console.log("Didnt find any available time at:" + time);
               options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
-              next(options, callback);
+              callback(options);
           }
         });
       }
