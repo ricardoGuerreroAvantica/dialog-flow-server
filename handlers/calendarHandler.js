@@ -66,7 +66,7 @@ function userData(next,options, callback){
   })
   .then((response) => {
     console.log("_________________________________________________")
-    console.log(json.stringify(response));
+    console.log(JSON.stringify(response));
     console.log("_________________________________________________")
 
     options.userName = request.displayName;
@@ -128,6 +128,9 @@ function PrefindMeetingTimes(next, options, callback){
         //If didnt find any meeting time at this time just skip to the next time.
           next(options, callback);
       }
+    }).catch((error) => {
+      console.log('showLocations.error : ' + error);
+      callback(options, callback);
     });
 }
 
@@ -173,8 +176,11 @@ function checkMeetingTimes(options, callback){
           }else{
             console.log("Didnt find any available time at:" + time);
               options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
-              callback(options);
+              (options);
           }
+        }).catch((error) => {
+          console.log('showLocations.error : ' + error);
+          callback(options, callback);
         });
       }
       else{
