@@ -66,7 +66,7 @@ function userData(next,options, callback){
   })
   .then((response) => {
     console.log("_________________________________________________")
-    console.log(JSON.stringify(response));
+    console.log(response);
     console.log("_________________________________________________")
 
     options.userName = request.displayName;
