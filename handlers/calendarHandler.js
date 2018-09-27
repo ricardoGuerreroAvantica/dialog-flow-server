@@ -54,7 +54,25 @@ function scheduleMeeting(options, callback){
   });
 }
 
-
+//This function is in charge of geeting the basic information of the user
+function userData(next,options, callback){
+  axios.get('https://graph.microsoft.com/v1.0/me', {
+    headers : {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + options.access_token
+    }
+  })
+  .then((response) => {
+    console.log(response);
+    options.userName = request.displayName;
+    next(options, callback);
+  })
+  .catch((error) => {
+    console.log('showLocations.error : ' + error);
+    next(options, callback);
+  });;
+}
 
 function PrefindMeetingTimes(next, options, callback){
   console.log("START FINDING MEETING FUNCTION:")
@@ -216,7 +234,7 @@ function showEvents(options, callback){
   });
 
 }
-
+exports.userData = userData
 exports.checkMeetingTimes = checkMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;

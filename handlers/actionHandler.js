@@ -42,6 +42,7 @@ function parseAction(req, res, callback){
       //PRE
       
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
+      .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();

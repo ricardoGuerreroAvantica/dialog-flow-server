@@ -30,24 +30,17 @@ function validSession(next, req, res, callback){
 
   }else {
     //LOGIN IN IOS
-    var entryContexts = reqJSONBody.result.contexts;
-    filteredContexts = entryContexts.filter(filter)
-    var mobileIdentifier=filteredContexts[0].name; // The id of the current IPHONE that sended the request
-    
-    if (mobileIdentifier && mobileIdentifier != "session"){
-    console.log("SESSION = " + mobileIdentifier);
-    console.log("FILTERED = " + JSON.stringify(filteredContexts));
-  
-
-    let iPhoneId  = mobileIdentifier.split("$")[0];
-    let username  = mobileIdentifier.split("$")[1];
-    this.options.sessionId = iPhoneId;// Iphone unique identifier
-    this.options.username = username;//Name of the user that created the Request
-    console.log("USERNAME" + username);
+    var IOSId = reqJSONBody.result.contexts;
+    IOSFiltered = IOSId.filter(filter)
+    var IOSName=IOSFiltered[0].name;
+    if (IOSName && IOSName != "session"){
+    console.log("SESSION = " + IOSName);
+    console.log("FILTERED = " + JSON.stringify(IOSFiltered));
+    this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
     }
-    else if (entryContexts.name == "session"){
+    else if (IOSId.name == "session"){
         //console.log("Android");
         this.options.sessionId = session.parameters.id;
         this.options.source = 'android';
@@ -57,7 +50,6 @@ function validSession(next, req, res, callback){
 }
 
 function filter(jsonObject) {
-  console.log("FILTERED INFORMATION:" + JSON.stringify(jsonObject))
   return jsonObject.name != "createevent" && jsonObject.name != "invites";
 }
 
