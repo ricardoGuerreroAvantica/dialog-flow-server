@@ -67,6 +67,7 @@ function PrefindMeetingTimes(next, options, callback){
     options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
     time = options.parameters.time;
 
+    
     console.log("THE TIME USED IS :" + time);
     // The postBody is created with the new timerConstraing
     var postBody = {
@@ -165,6 +166,7 @@ function showEvents(options, callback){
   var filter = '';
   var url = '';
 
+  console.log("THE NAME" + name);
   if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
     url = 'https://graph.microsoft.com/v1.0/me/events?';
