@@ -9,6 +9,16 @@ function getContext(contexts, name){
   return undefined;
 }
 
+function getChangeLine(source){
+  if (source == "ios"){
+    return '\n';
+  }
+  else{
+    return "\n\n"
+  }
+}
+
+
 function getAttendees(invites){
   var result = [];
 
@@ -82,7 +92,7 @@ function parseDate(date){
     moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('kk:mm');
 }
 
-
+exports.getChangeLine = getChangeLine;
 exports.getContext = getContext;
 exports.parseDate = parseDate;
 exports.getAttendees = getAttendees;

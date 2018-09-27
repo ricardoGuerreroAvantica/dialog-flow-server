@@ -88,7 +88,7 @@ function PrefindMeetingTimes(next, options, callback){
     var user = options.user;
     var time = options.parameters.time;
     console.log("FIRST RUN");
-    options.message += options.speech = `Is available at: \n\n-----------------------\n\n`;
+    options.message += options.speech = "Is available at: "+commons.getChangeLine(options.source)+"-----------------------"+commons.getChangeLine(options.source);
     time = options.parameters.time;
 
     
@@ -118,7 +118,7 @@ function PrefindMeetingTimes(next, options, callback){
             console.log(meeting.meetingTimeSlot.start.dateTime);
             console.log(meeting.meetingTimeSlot.end.dateTime);
             let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + commons.getChangeLine(options.source);
             console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
               options.message += timeSet
@@ -140,7 +140,7 @@ function PrefindMeetingTimes(next, options, callback){
 }
 
 function checkMeetingTimes(options, callback){
-      if (options.message == "Is available at: \n\n-----------------------\n\n"){
+      if (options.message == "Is available at: "+commons.getChangeLine(options.source)+"-----------------------"+commons.getChangeLine(options.source)){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
         var parameters = options.parameters;
