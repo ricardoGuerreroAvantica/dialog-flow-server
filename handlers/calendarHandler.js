@@ -65,7 +65,8 @@ function userData(next,options, callback){
     }
   })
   .then((response) => {
-    console.log(response);
+    console.log("THE CHOSEN NAME: " + request.displayName);
+
     options.userName = request.displayName;
     next(options, callback);
   })
