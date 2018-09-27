@@ -56,6 +56,7 @@ function scheduleMeeting(options, callback){
 
 //This function is in charge of geeting the basic information of the user
 function userData(next,options, callback){
+  console.log("START the user autentification:")
   axios.get('https://graph.microsoft.com/v1.0/me', {
     headers : {
       'Content-Type': 'application/json',
