@@ -50,6 +50,7 @@ function validSession(next, req, res, callback){
 }
 
 function filter(jsonObject) {
+  console.log("FILTERED INFORMATION:" + JSON.stringify(jsonObject))
   return jsonObject.name != "createevent" && jsonObject.name != "invites";
 }
 
