@@ -104,36 +104,39 @@ function PrefindMeetingTimes(next, options, callback){
     console.log("POST BODY: " + JSON.stringify(postBody))
 
     //The request to microsoft 365 is executed here:
-    request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
-      if (error){
-        errorHandler.actionError(error);
-      }
-      var meetings = response.meetingTimeSuggestions;
-      console.log("MEETINGS: "+ JSON.stringify(meetings));
-      if (meetings.length > 0){
-        //Found open meeting times in the requested TimeConstrain
-        meetings.forEach((meeting) => {
-          console.log("THE MEETING: " + JSON.stringify(meeting));
-          console.log(meeting.meetingTimeSlot.start.dateTime);
-          console.log(meeting.meetingTimeSlot.end.dateTime);
-          let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                      commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
-          console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
-          if(!options.message.includes(timeSet)){
-            options.message += timeSet
-          }
-        });
-        console.log("Meeetings: " + JSON.stringify(meetings));
-        next(options,callback);
-      }else{
-        console.log("Didnt find any available time at:" + time);
-        //If didnt find any meeting time at this time just skip to the next time.
-          next(options, callback);
-      }
-    }).catch((error) => {
-      console.log('showLocations.error : ' + error);
-      callback(options, callback);
-    });
+    try{
+      request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
+        if (error){
+          errorHandler.actionError(error);
+        }
+        var meetings = response.meetingTimeSuggestions;
+        console.log("MEETINGS: "+ JSON.stringify(meetings));
+        if (meetings.length > 0){
+          //Found open meeting times in the requested TimeConstrain
+          meetings.forEach((meeting) => {
+            console.log("THE MEETING: " + JSON.stringify(meeting));
+            console.log(meeting.meetingTimeSlot.start.dateTime);
+            console.log(meeting.meetingTimeSlot.end.dateTime);
+            let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
+                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n\n';
+            console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
+            if(!options.message.includes(timeSet)){
+              options.message += timeSet
+            }
+          });
+          console.log("Meeetings: " + JSON.stringify(meetings));
+          next(options,callback);
+        }else{
+          console.log("Didnt find any available time at:" + time);
+          //If didnt find any meeting time at this time just skip to the next time.
+            next(options, callback);
+        }
+      })
+    }
+    catch(error){
+      console.log("Error in server");
+      callback(options);
+    }
 }
 
 function checkMeetingTimes(options, callback){
