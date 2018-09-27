@@ -30,20 +30,24 @@ function validSession(next, req, res, callback){
 
   }else {
     //LOGIN IN IOS
-    var IOSId = reqJSONBody.result.contexts;
-    IOSFiltered = IOSId.filter(filter)
-    var IOSName=IOSFiltered[0].name;
-
-    if (IOSName && IOSName != "session"){
-    console.log("SESSION = " + IOSName);
-    console.log("FILTERED = " + JSON.stringify(IOSFiltered));
+    var entryContexts = reqJSONBody.result.contexts;
+    filteredContexts = entryContexts.filter(filter)
+    var mobileIdentifier=filteredContexts[0].name; // The id of the current IPHONE that sended the request
     
-    console.log(IOSName.split("&"))
-    this.options.sessionId = IOSName;
+    if (mobileIdentifier && mobileIdentifier != "session"){
+    console.log("SESSION = " + mobileIdentifier);
+    console.log("FILTERED = " + JSON.stringify(filteredContexts));
+  
+
+    let iPhoneId  = mobileIdentifier.split("$")[0];
+    let username  = mobileIdentifier.split("$")[1];
+    this.options.sessionId = iPhoneId;// Iphone unique identifier
+    this.options.username = username;//Name of the user that created the Request
+    console.log("USERNAME" + username);
     this.options.source = 'ios';
 
     }
-    else if (IOSId.name == "session"){
+    else if (entryContexts.name == "session"){
         //console.log("Android");
         this.options.sessionId = session.parameters.id;
         this.options.source = 'android';
