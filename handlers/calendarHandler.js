@@ -66,10 +66,10 @@ function userData(next,options, callback){
   })
   .then((response) => {
     console.log("_________________________________________________")
-    console.log(response);
+    console.log(JSON.stringify(response.data));
     console.log("_________________________________________________")
 
-    options.userName = request.displayName;
+    options.userName = response.data.displayName;
     next(options, callback);
   })
   .catch((error) => {
