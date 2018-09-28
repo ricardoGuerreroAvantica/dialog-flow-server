@@ -72,25 +72,29 @@ function deleteInvite(options, callback){
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       console.log("THE INVITES" + JSON.stringify(invites))
       invites.splice(i, 1);
+      console.log("NO SPLICED" + JSON.stringify(invites))
       callback(options);
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
       console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
+      console.log("NO SPLICED" + JSON.stringify(invites))
       callback(options);
     }else if (userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
       console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
+      console.log("NO SPLICED" + JSON.stringify(invites))
       callback(options);
     }else if (userData.name && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())){
-      console.log("THE INVITES" + JSON.stringify(invites))
+      console.log("NO SPLICE" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
+      console.log("NO SPLICED" + JSON.stringify(invites))
       callback(options);
     }
   }
-  console.log("THE INVITES" + JSON.stringify(invites))
+  console.log("NOT FOUND" + JSON.stringify(invites))
   options.message = options.speech = userData.email + 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
   callback(options);
 }
