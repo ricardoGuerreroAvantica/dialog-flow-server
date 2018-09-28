@@ -18,9 +18,9 @@ function parseAction(req, res, callback){
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
-  
+  console.log("////////////////////////////////////////////////////////////////////////////////////")
+  console.log("START CONTEXTS: " +JSON.stringify(options.contexts))
 
-  //console.log('parseAction.options.pre : ' + JSON.stringify(options, null, 2));
   console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
   switch (options.action) {
     
@@ -28,11 +28,8 @@ function parseAction(req, res, callback){
     Action.prototype.searchUser = userHandler.searchUser;
     //PRE
     Action.pre('searchUser', authenticate.refreshToken)
-
-    console.log("Procced to check if user is available")
     var action = new Action();
     action.searchUser(options, callback);
-    console.log("THE END")
     break;
 
 

@@ -174,8 +174,8 @@ function checkMeetingTimes(options, callback){
             meetings.forEach((meeting) => {
               console.log("THE MEETING: " + JSON.stringify(meeting));
               let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                          commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
-              console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
+                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
+              console.log(!options.message.includes(timeSet) +"New message =" + timeSet)       
               if(!options.message.includes(timeSet)){
                 options.message += timeSet
               }
