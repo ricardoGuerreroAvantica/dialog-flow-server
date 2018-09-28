@@ -38,13 +38,14 @@ function inviteUser(options, callback){
 function showInvites(options, callback){
   //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
-  console.log("THE INVITES" + JSON.stringify(invites))
+  
   console.log(invitesContext +" print invites")
   if (!invitesContext){
     options.message = options.speech = `There are no invitations yet \n\n`;
     callback(options);
   }
   var invites = invitesContext.parameters.invites;
+  console.log("THE INVITES" + JSON.stringify(invites))
   options.message = options.speech = `These are your current attendees \n\n`;
   options.message += '-----------------------' + '\n\n';
   invites.forEach((invite) => {
