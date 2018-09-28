@@ -6,6 +6,7 @@ function inviteUser(options, callback){
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
+    console.log("inviteUser.Context: " + JSON.stringify(options, null, 2) )
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
@@ -36,7 +37,7 @@ function inviteUser(options, callback){
 }
 
 function showInvites(options, callback){
-  //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
+  console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
   console.log("The contexts! here : "+ JSON.stringify(options.contexts));
   console.log(invitesContext +" print invites");
@@ -56,7 +57,7 @@ function showInvites(options, callback){
 
 function deleteInvite(options, callback){
   var parameters = options.parameters;
-  //console.log('deleteInvite.options : ' + JSON.stringify(options, null, 2) );
+  console.log('deleteInvite.options : ' + JSON.stringify(options, null, 2) );
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
     options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
