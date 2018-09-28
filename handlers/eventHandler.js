@@ -36,9 +36,9 @@ function inviteUser(options, callback){
 }
 
 function showInvites(options, callback){
-  var parameters = options.parameters;
   //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
+  console.log("THE INVITES" + JSON.stringify(invites))
   if (!invitesContext){
     options.message = options.speech = `There are no invitations yet \n\n`;
     callback(options);
@@ -77,10 +77,12 @@ function deleteInvite(options, callback){
       invites.splice(i, 1);
       callback(options);
     }else if (userData.lastname && invites[i].emailAddress.name.includes(userData.lastname)){
+      console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
     }else if (userData.name && invites[i].emailAddress.name.includes(userData.name)){
+      console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
