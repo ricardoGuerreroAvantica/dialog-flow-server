@@ -34,8 +34,6 @@ function validSession(next, req, res, callback){
     IOSFiltered = IOSId.filter(filter)
     var IOSName=IOSFiltered[0].name;
     if (IOSName && IOSName != "session"){
-    console.log("SESSION = " + IOSName);
-    console.log("FILTERED = " + JSON.stringify(IOSFiltered));
     this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
