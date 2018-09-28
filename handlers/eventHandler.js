@@ -68,9 +68,11 @@ function deleteInvite(options, callback){
     if (userData.name && userData.lastname && invites[i].emailAddress.name.includes(userData.name)
       && invites[i].emailAddress.name.includes(userData.lastname)){
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      console.log("THE INVITES" + JSON.stringify(invites))
       invites.splice(i, 1);
       callback(options);
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
+      console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
