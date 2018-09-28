@@ -67,8 +67,8 @@ function deleteInvite(options, callback){
   var invites = invitesContext.parameters.invites;
 
   for (var i in invites){
-    if (userData.name && userData.lastname && invites[i].emailAddress.name.includes(userData.name)
-      && invites[i].emailAddress.name.includes(userData.lastname)){
+    if (userData.name && userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())
+      && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       console.log("THE INVITES" + JSON.stringify(invites))
       invites.splice(i, 1);
@@ -78,12 +78,12 @@ function deleteInvite(options, callback){
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
-    }else if (userData.lastname && invites[i].emailAddress.name.includes(userData.lastname)){
+    }else if (userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
       console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
       callback(options);
-    }else if (userData.name && invites[i].emailAddress.name.includes(userData.name)){
+    }else if (userData.name && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())){
       console.log("THE INVITES" + JSON.stringify(invites))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
