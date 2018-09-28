@@ -38,8 +38,8 @@ function inviteUser(options, callback){
 function showInvites(options, callback){
   //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
-  
-  console.log(invitesContext +" print invites")
+  Console.log("The contexts! here : "+ JSON.stringify(options.contexts));
+  console.log(invitesContext +" print invites");
   if (!invitesContext){
     options.message = options.speech = `There are no invitations yet \n\n`;
     callback(options);
@@ -90,7 +90,7 @@ function deleteInvite(options, callback){
       callback(options);
     }
   }
-
+  console.log("THE INVITES" + JSON.stringify(invites))
   options.message = options.speech = userData.email + 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
   callback(options);
 }
