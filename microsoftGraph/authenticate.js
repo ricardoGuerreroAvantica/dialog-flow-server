@@ -31,7 +31,7 @@ function validSession(next, req, res, callback){
   }else {
     //LOGIN IN IOS
     console.log("Enter the IOS section: --------------------------------------");
-    console.log(JSON.stringify(options));
+    console.log(JSON.stringify(this.options));
     var IOSId = reqJSONBody.result.contexts;
     IOSFiltered = IOSId.filter(filter)
     var IOSName=IOSFiltered[0].name;
