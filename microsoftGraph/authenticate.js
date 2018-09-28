@@ -30,6 +30,8 @@ function validSession(next, req, res, callback){
 
   }else {
     //LOGIN IN IOS
+    console.log("Enter the IOS section: --------------------------------------");
+    console.log(json.stringify(options));
     var IOSId = reqJSONBody.result.contexts;
     IOSFiltered = IOSId.filter(filter)
     var IOSName=IOSFiltered[0].name;
@@ -40,9 +42,12 @@ function validSession(next, req, res, callback){
     }
     else if (IOSId.name == "session"){
         //console.log("Android");
+        console.log("Parameters :"+ session.parameters.id)
         this.options.sessionId = session.parameters.id;
         this.options.source = 'android';
     }
+    console.log("----------------end---------------------");
+
   }
   next(req, res, callback);
 }
