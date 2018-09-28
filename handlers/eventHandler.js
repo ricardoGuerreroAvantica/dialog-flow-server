@@ -38,7 +38,7 @@ function inviteUser(options, callback){
 function showInvites(options, callback){
   //console.log('showInvites.options : ' + JSON.stringify(options, null, 2) );
   var invitesContext = commons.getContext(options.contexts, 'invites');
-  Console.log("The contexts! here : "+ JSON.stringify(options.contexts));
+  console.log("The contexts! here : "+ JSON.stringify(options.contexts));
   console.log(invitesContext +" print invites");
   if (!invitesContext){
     options.message = options.speech = `There are no invitations yet \n\n`;
