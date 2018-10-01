@@ -26,10 +26,6 @@ function validSession(next, req, res, callback){
   this.options = {};
   console.log("#Empthy:"+ JSON.stringify(this.options));
   console.log("Body:" + JSON.stringify(req.body));
-  if(req.body.result.action =="helper"){
-    this.options.message = "THE END";
-    next(req, res, callback);
-  }
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;

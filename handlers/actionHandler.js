@@ -49,6 +49,7 @@ function parseAction(req, res, callback){
 
     ///////////////SHOW EVENTS///////////////
     case 'helper' :
+    console.log("enter helped");
       userHandler.helper(options, callback);
       break;
     ///////////////SHOW EVENTS///////////////
