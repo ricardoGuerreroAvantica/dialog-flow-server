@@ -1,5 +1,6 @@
 var axios = require('axios');
 var users = "";
+var commons = require('../utils/commons.js');
 
 function searchUser(next, options, callback){
   console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
