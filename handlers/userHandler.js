@@ -88,16 +88,31 @@ function helper(options, callback){
                       +space+"• How to check my events?!";         
   }
   if (options.parameters.helperId == "event"){
-    options.message = "HELP HERE!"
+    options.message = "Here are some examples of how can you create a event:"
+                      +space+space+"• Create new event example today at 3:00pm for 40 minutes."
+                      +space+"• Create a new event."
+                      +space+"• Create new event testing on 4 sep at 14:00."
+                      +space+space+"To complete the creation only say \"Done\"";  ;       
   }
   if (options.parameters.helperId == "available"){
-    options.message = "HELP HERE!"
+    options.message = "To check someone availability you can use their first name or their email:"
+                      +space+space+"• Is Ricardo Guerrrero Available today at now?"
+                      +space+"• Is Ricardo guerrero Available"
+                      +space+"• Can you see if ricardo.guerero@avantica.net is available 20 oct at 7am";   
   }
   if (options.parameters.helperId == "invite"){
-    options.message = "HELP HERE!"
+    options.message = "To invite or Uninvite someone to the event you can just write this:"
+                      +space+space+"• Invite ricardo.guerrero@avantica.net"
+                      +space+"• Add Ricardo Guerrero"
+                      +space+"• Uninvite ricardo.guerrero@avantica.net"
+                      +space+"• remove Ricardo Guerrero";                      ;   
   }
   if (options.parameters.helperId == "myEvents"){
-    options.message = "HELP HERE!"
+    options.message = "You can see your events from a date or a period using this:"
+                      +space+space+"• My events"
+                      +space+"• Show me my events"
+                      +space+"• Show me my events from monday to friday"
+                      +space+"• Show any events called wellness program";  
   }
   
   callback(options);
