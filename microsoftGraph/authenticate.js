@@ -21,11 +21,10 @@ function validSession(next, req, res, callback){
   console.log("newSection:")
   var session = commons.getContext(req.body.result.contexts, 'session');
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
-  console.log("valid.session: Options:")
-  console.log(JSON.stringify(this.options));
+
+  console.log("valid.session: Options: "+JSON.stringify(this.options));
   this.options = {};
-  console.log("valid.session: Options:empty")
-  console.log(JSON.stringify(this.options));
+  console.log("#Empthy:"+ JSON.stringify(this.options));
   //console.log("Body:" + JSON.stringify(req.body));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //console.log("skype");
