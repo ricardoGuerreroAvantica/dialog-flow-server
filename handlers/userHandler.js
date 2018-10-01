@@ -78,6 +78,7 @@ function searchUser(next, options, callback){
 
 
 function helper(options, callback){
+  console.log(JSON.stringify(options));
   options.message = "HELP HERE!"
   callback(options);
 }
