@@ -25,7 +25,7 @@ function validSession(next, req, res, callback){
   console.log("valid.session: Options: "+JSON.stringify(this.options));
   this.options = {};
   console.log("#Empthy:"+ JSON.stringify(this.options));
-  //console.log("Body:" + JSON.stringify(req.body));
+  console.log("Body:" + JSON.stringify(req.body));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
