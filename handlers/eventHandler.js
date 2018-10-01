@@ -60,7 +60,8 @@ function deleteInvite(options, callback){
   console.log('deleteInvite.options : ' + JSON.stringify(options, null, 2) );
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
-    options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
+    console.log("No contexts found")
+    //options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
     options.message = options.speech = 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
     callback(options);
   }
