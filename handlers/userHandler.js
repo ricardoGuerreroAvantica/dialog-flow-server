@@ -79,7 +79,26 @@ function searchUser(next, options, callback){
 
 function helper(options, callback){
   console.log(JSON.stringify(options));
-  options.message = "HELP HERE!"
+  let space = commons.getChangeLine(options.source);
+  if (options.parameters.helperId == "basic"){
+    options.message = "Can you tell me how i can help you?"
+                      +space+"• How to create a event?"
+                      +space+"• How to check if someone is available?"
+                      +space+"• How to check my events?!";         
+  }
+  if (options.parameters.helperId == "event"){
+    options.message = "HELP HERE!"
+  }
+  if (options.parameters.helperId == "available"){
+    options.message = "HELP HERE!"
+  }
+  if (options.parameters.helperId == "invite"){
+    options.message = "HELP HERE!"
+  }
+  if (options.parameters.helperId == "myEvents"){
+    options.message = "HELP HERE!"
+  }
+  
   callback(options);
 }
 
