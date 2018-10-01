@@ -67,7 +67,7 @@ function deleteInvite(options, callback){
   }
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
-  Console.log("THE FULL INVITES : "+ JSON.stringify(invites)))
+  Console.log("THE FULL INVITES : "+ JSON.stringify(invites));
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())
       && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
