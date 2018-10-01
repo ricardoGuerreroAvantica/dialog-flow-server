@@ -42,7 +42,7 @@ function showInvites(options, callback){
   console.log("The contexts! here : "+ JSON.stringify(options.contexts));
   console.log(invitesContext +" print invites");
   if (!invitesContext){
-    options.message = options.speech = `There are no invitations yet \n\n`;
+    options.message = options.speech = `There are no invitations yet.`;
     callback(options);
   }
   var invites = invitesContext.parameters.invites;
@@ -61,42 +61,46 @@ function deleteInvite(options, callback){
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
     console.log("No contexts found")
-    //options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
+    options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
     options.message = options.speech = 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
     callback(options);
   }
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var invites = invitesContext.parameters.invites;
-
+  Console.log("THE FULL INVITES : "+ JSON.stringify(invites)))
   for (var i in invites){
     if (userData.name && userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())
       && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
-      console.log("THE INVITES" + JSON.stringify(invites))
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ';
+      console.log("THE INVITES" + JSON.stringify(invites[i]))
       invites.splice(i, 1);
-      console.log("NO SPLICED" + JSON.stringify(invites))
+      console.log("NO SPLICED" + JSON.stringify(invites[i]))
       callback(options);
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
-      console.log("THE INVITES" + JSON.stringify(invites))
-      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
+      console.log("#1");
+      console.log("THE INVITES" + JSON.stringify(invites[i]))
+      options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ';
       invites.splice(i, 1);
-      console.log("NO SPLICED" + JSON.stringify(invites))
+      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }else if (userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
-      console.log("THE INVITES" + JSON.stringify(invites))
+      console.log("#2");
+      console.log("THE INVITES" + JSON.stringify(invites[i]))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      console.log("NO SPLICED" + JSON.stringify(invites))
+      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }else if (userData.name && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())){
-      console.log("NO SPLICE" + JSON.stringify(invites))
+      console.log("#3");
+      console.log("NO SPLICE" + JSON.stringify(invites[i]))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      console.log("NO SPLICED" + JSON.stringify(invites))
+      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }
   }
-  console.log("NOT FOUND" + JSON.stringify(invites))
+
+  console.log("Remove.user.invitation: not found user in " + JSON.stringify(invites))
   options.message = options.speech = userData.email + 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
   callback(options);
 }
