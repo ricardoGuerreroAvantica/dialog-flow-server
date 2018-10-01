@@ -105,7 +105,6 @@ function PrefindMeetingTimes(next, options, callback){
     console.log("POST BODY: " + JSON.stringify(postBody))
 
     //The request to microsoft 365 is executed here:
-    try{
       request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
         if (error){
           errorHandler.actionError(error);
@@ -134,11 +133,6 @@ function PrefindMeetingTimes(next, options, callback){
         }
       })
     }
-    catch(error){
-      console.log("Error in server");
-      callback(options);
-    }
-}
 
 function checkMeetingTimes(options, callback){
       let space = commons.getChangeLine(options.source);
@@ -187,10 +181,7 @@ function checkMeetingTimes(options, callback){
               options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
               (options);
           }
-        }).catch((error) => {
-          console.log('showLocations.error : ' + error);
-          callback(options, callback);
-        });
+        })
       }
       else{
         callback(options);
