@@ -26,7 +26,7 @@ function validSession(next, req, res, callback){
   this.options = {};
   console.log("#Empthy:"+ JSON.stringify(this.options));
   console.log("Body:" + JSON.stringify(req.body));
-  if(req.reqJSONBody.result.action =="helper"){
+  if(req.body.result.result.action =="helper"){
     next(req, res, callback);
   }
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
