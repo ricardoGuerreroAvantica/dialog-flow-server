@@ -48,6 +48,10 @@ function parseAction(req, res, callback){
       break;
 
     ///////////////SHOW EVENTS///////////////
+    case 'helper' :
+      userHandler.helper(options, callback);
+      break;
+    ///////////////SHOW EVENTS///////////////
     case 'show_events' :
       //HOOK
       Action.prototype.showEvents = calendarHandler.showEvents;

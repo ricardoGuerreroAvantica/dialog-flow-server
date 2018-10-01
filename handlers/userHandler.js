@@ -76,5 +76,12 @@ function searchUser(next, options, callback){
   });
 }
 
-exports.searchUser = searchUser;
 
+function helper(options, callback){
+  options.message = "HELP HERE!"
+  callback(options);
+}
+
+
+exports.searchUser = searchUser;
+exports.helper = helper;
