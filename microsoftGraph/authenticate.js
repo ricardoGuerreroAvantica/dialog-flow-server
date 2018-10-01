@@ -26,6 +26,9 @@ function validSession(next, req, res, callback){
   this.options = {};
   console.log("#Empthy:"+ JSON.stringify(this.options));
   console.log("Body:" + JSON.stringify(req.body));
+  if(req.reqJSONBody.result.action =="helper"){
+    next(req, res, callback);
+  }
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
@@ -36,7 +39,10 @@ function validSession(next, req, res, callback){
     console.log("Enter the IOS section: --------------------------------------");
     console.log(JSON.stringify(this.options));
     var IOSId = reqJSONBody.result.contexts;
+
     IOSFiltered = IOSId.filter(filter)
+    console.log()
+    console.log(IOSFiltered)
     var IOSName=IOSFiltered[0].name;
     if (IOSName && IOSName != "session"){
     this.options.sessionId = IOSName;
