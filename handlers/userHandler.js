@@ -83,36 +83,38 @@ function helper(options, callback){
   let space = commons.getChangeLine(options.source);
   if (options.parameters.helperId == "basic"){
     options.message = "Can you tell me how i can help you?"
-                      +space+"• How to create a event?"
-                      +space+"• How to check if someone is available?"
-                      +space+"• How to check my events?!";         
+                      +space+space+"▶ How to create an event?"
+                      +space+space+"▶ How to check if someone is available?"
+                      +space+space+"▶ How to check my events?"
+                      +space+space+"▶ How can i invite someone?";         
+                      +space+space+"▶ How to invite someone to an event?";   
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
-                      +space+space+"• Create new event example today at 3:00pm for 40 minutes."
-                      +space+"• Create a new event."
-                      +space+"• Create new event testing on 4 sep at 14:00."
+                      +space+space+"▶ Create new event example today at 3:00pm for 40 minutes."
+                      +space+space+"▶ Create a new event."
+                      +space+space+"▶ Create new event testing on 4 sep at 14:00."
                       +space+space+"To complete the creation only say \"Done\"";  ;       
   }
   if (options.parameters.helperId == "available"){
     options.message = "To check someone availability you can use their first name or their email:"
-                      +space+space+"• Is Ricardo Guerrrero Available today at now?"
-                      +space+"• Is Ricardo guerrero Available"
-                      +space+"• Can you see if ricardo.guerero@avantica.net is available 20 oct at 7am";   
+                      +space+space+"▶ Is Ricardo Guerrrero Available today at now?"
+                      +space+space+"▶ Is Ricardo guerrero Available"
+                      +space+space+"▶ Is ricardo.guerero@avantica.net is available in 20 oct at 7am";   
   }
   if (options.parameters.helperId == "invite"){
     options.message = "To invite or Uninvite someone to the event you can just write this:"
-                      +space+space+"• Invite ricardo.guerrero@avantica.net"
-                      +space+"• Add Ricardo Guerrero"
-                      +space+"• Uninvite ricardo.guerrero@avantica.net"
-                      +space+"• remove Ricardo Guerrero";                      ;   
+                      +space+space+"▶ Invite ricardo.guerrero@avantica.net"
+                      +space+space+"▶ Add Ricardo Guerrero"
+                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net"
+                      +space+space+"▶ remove Ricardo Guerrero";                      ;   
   }
   if (options.parameters.helperId == "myEvents"){
     options.message = "You can see your events from a date or a period using this:"
                       +space+space+"• My events"
-                      +space+"• Show me my events"
-                      +space+"• Show me my events from monday to friday"
-                      +space+"• Show any events called wellness program";  
+                      +space+space+"▶ Show me my events"
+                      +space+space+"▶ Show me my events from monday to friday"
+                      +space+space+"▶ Show any events called wellness program";  
   }
   
   callback(options);
