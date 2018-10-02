@@ -87,7 +87,7 @@ function helper(options, callback){
                       +space+space+"▶ How to check if someone is available?"
                       +space+space+"▶ How to check my events?"
                       +space+space+"▶ How can i invite someone?";         
-                      +space+space+"▶ How to invite someone to an event?";   
+                      +space+space+"▶ How to invite someone";   
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
@@ -104,10 +104,10 @@ function helper(options, callback){
   }
   if (options.parameters.helperId == "invite"){
     options.message = "To invite or Uninvite someone to the event you can just write this:"
+                      +space+space+"▶ Add Ricardo Guerrero"  
+                      +space+space+"▶ remove Ricardo Guerrero"                
                       +space+space+"▶ Invite ricardo.guerrero@avantica.net"
-                      +space+space+"▶ Add Ricardo Guerrero"
-                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net"
-                      +space+space+"▶ remove Ricardo Guerrero";                      ;   
+                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net";                      ;   
   }
   if (options.parameters.helperId == "myEvents"){
     options.message = "You can see your events from a date or a period using this:"
