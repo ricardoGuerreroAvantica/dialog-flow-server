@@ -86,8 +86,7 @@ function helper(options, callback){
                       +space+space+"▶ How to create an event?"
                       +space+space+"▶ How to check if someone is available?"
                       +space+space+"▶ How to check my events?"
-                      +space+space+"▶ How can i invite someone?";         
-                      +space+space+"▶ How to invite someone";   
+                      +space+space+"▶ How can i invite someone?";
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
