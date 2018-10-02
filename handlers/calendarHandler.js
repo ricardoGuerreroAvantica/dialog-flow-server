@@ -190,6 +190,7 @@ function checkMeetingTimes(options, callback){
 
 
 function showEvents(options, callback){
+  var space = commons.getChangeLine();
   var parameters = options.parameters;
   var name = parameters.name;
   var period = parameters.period;
@@ -222,14 +223,14 @@ function showEvents(options, callback){
   .then((response) => {
     var events = response.data.value;
     if (events.length > 0){
-      options.message = options.speech = 'Found these events: \n\n';
+      options.message = options.speech = 'Found these events:'+space;
       events.forEach((event) => {
-        options.message += '-----------------------' + '\n\n';
-        options.message += 'Subject        : '    + event.subject + '\n\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) + '\n\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) + '\n\n';
+        options.message += '-----------------------' +space;
+        options.message += 'Subject        : '    + event.subject +space;
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name + '\n\n';
+        options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
       });
       //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
