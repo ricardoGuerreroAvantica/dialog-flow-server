@@ -110,7 +110,7 @@ function helper(options, callback){
   }
   if (options.parameters.helperId == "myEvents"){
     options.message = "You can see your events from a date or a period using this:"
-                      +space+space+"• My events"
+                      +space+space+"▶ My events"
                       +space+space+"▶ Show me my events"
                       +space+space+"▶ Show me my events from monday to friday"
                       +space+space+"▶ Show any events called wellness program";  
