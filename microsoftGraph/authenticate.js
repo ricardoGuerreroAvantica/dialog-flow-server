@@ -69,8 +69,8 @@ function validUser(next, req, res, callback){
 
   //console.log('THE TOKENS: ' + JSON.stringify(tokens));
   //console.log("SESSION_ID: " +sessionId)
-  //console.log("SESSION: " + !this.options.sessionTokens)
-  //console.log("options.source" + this.options.source)
+  console.log("SESSION: " + !this.options.sessionTokens)
+  console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
       return res.json({ speech: 'Your access token is invalid, please restart the chat', displayText: 'Confirmation', source: "dialog-server-flow" });
