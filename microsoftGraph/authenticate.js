@@ -67,7 +67,7 @@ function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
 
-  //console.log('THE TOKENS: ' + JSON.stringify(tokens));
+  console.log('THE TOKENS: ' + JSON.stringify(tokens));
   //console.log("SESSION_ID: " +sessionId)
   console.log("SESSION: " + !this.options.sessionTokens)
   console.log("options.source" + this.options.source)
