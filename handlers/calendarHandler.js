@@ -226,9 +226,9 @@ function showEvents(options, callback){
       options.message = options.speech = 'Found these events:'+space;
       events.forEach((event) => {
         options.message += '-----------------------' +space;
-        options.message += 'Subject        : '    + event.subject ;
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) ;
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) ;
+        options.message += 'Subject        : '    + event.subject +space;
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
       });
