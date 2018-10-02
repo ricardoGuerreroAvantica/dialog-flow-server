@@ -46,12 +46,12 @@ function validSession(next, req, res, callback){
     this.options.source = 'ios';
 
     }
-    else if (IOSId.name == "session"){
-        console.log("Android");
-        console.log("Parameters :"+ session.parameters.id)
-        this.options.sessionId = session.parameters.id;
-        this.options.source = 'android';
-    }
+    //else if (IOSId.name == "session"){
+        //console.log("Android");
+        //console.log("Parameters :"+ session.parameters.id)
+        //this.options.sessionId = session.parameters.id;
+        //this.options.source = 'android';
+    //}
     console.log("----------------end---------------------");
 
   }
