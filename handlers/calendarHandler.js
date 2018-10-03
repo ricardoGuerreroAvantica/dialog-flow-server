@@ -196,6 +196,7 @@ function showEventsOnDate(options, callback){
   filter = 'startdatetime=' + moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.000')  + 'Z' +
             '&enddatetime=' + moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+  console.log("The request showEventsOnDate: "+url + filter)
   axios.get(url + filter, {
     headers : {
       'Content-Type':
