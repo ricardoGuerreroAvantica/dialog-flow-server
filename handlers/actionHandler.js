@@ -63,6 +63,17 @@ function parseAction(req, res, callback){
       action.showEvents(options, callback);
       break;
 
+    ///////////////SHOW EVENTS///////////////
+    case 'show_events_on_date' :
+      //HOOK
+      Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
+      //PRE
+      Action.pre('showEventsOnDate', authenticate.refreshToken);
+
+      var action = new Action();
+      action.showEventsOnDate(options, callback);
+      break;
+
     ///////////////SHOW LOCATIONS///////////////
     case 'show_locations' :
       //HOOK

@@ -189,6 +189,47 @@ function checkMeetingTimes(options, callback){
 }
 
 
+function showEventsOnDate(options, callback){
+  var space = commons.getChangeLine();
+  var filter = '';
+  var url = '';
+  filter = 'startdatetime=' + moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.000')  + 'Z' +
+            '&enddatetime=' + moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+  url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+  axios.get(url + filter, {
+    headers : {
+      'Content-Type':
+      'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + options.access_token }
+  })
+  .then((response) => {
+    var events = response.data.value;
+    if (events.length > 0){
+      options.message = options.speech = 'Found these events:'+space;
+      events.forEach((event) => {
+        options.message += '-----------------------' +space;
+        options.message += 'Subject        : '    + event.subject +space;
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
+        options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
+      });
+      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
+      callback(options);
+    }else{
+      options.message = options.speech = 'There is nothing on your agenda';
+      callback(options);
+    }
+  })
+  .catch((error) => {
+    //console.log('showEvents.error : ' + error);
+    errorHandler.actionError(error);
+  });
+
+}
+
+
 function showEvents(options, callback){
   var space = commons.getChangeLine();
   var parameters = options.parameters;
@@ -245,7 +286,8 @@ function showEvents(options, callback){
   });
 
 }
-exports.userData = userData
+exports.showEventsOnDate = showEventsOnDate;
+exports.userData = userData;
 exports.checkMeetingTimes = checkMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;

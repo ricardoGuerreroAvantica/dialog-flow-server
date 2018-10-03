@@ -157,9 +157,8 @@ function signIn(req, res){
       }
     });
   }
-  
-
 }
+
 
 
 function getTokenFromCode(code, callback) {
