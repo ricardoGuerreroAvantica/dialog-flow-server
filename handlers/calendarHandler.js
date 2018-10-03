@@ -190,6 +190,7 @@ function checkMeetingTimes(options, callback){
 
 
 function showEventsOnDate(options, callback){
+  var parameters = options.parameters;
   var date = parameters.date;
   var filter = '';
   var url = '';
