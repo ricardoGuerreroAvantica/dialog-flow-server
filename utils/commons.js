@@ -40,8 +40,8 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  //var startDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  //var endDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var xstartDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
+  var xendDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   var times = time.split(':');
   var endTime;
@@ -89,8 +89,8 @@ function parseDate(date){
   moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
   */
  //
-  return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('MMM DD') + ' at ' +
-    moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('kk:mm');
+  return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('MMM DD') + ' at ' +
+    moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('kk:mm');
 }
 
 exports.getChangeLine = getChangeLine;
