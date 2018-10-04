@@ -251,7 +251,7 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }else{
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+            '&enddatetime=' + moment().endOf('week').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
