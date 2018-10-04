@@ -11,27 +11,29 @@ function scheduleMeeting(options, callback){
   var name = eventContext.parameters.eventName;
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DDTHH:mm:ss');
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').subtract(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
+  console.log("START DATE" + startDate);
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
-  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, duration.unit)
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').subtract(6, 'hours').format('YYYY-MM-DDTHH:mm:ss').add(duration.amount, duration.unit)
       .format('YYYY-MM-DDTHH:mm:ss');
+    console.log("END DATE" + startDate);   
   var body = {
     "subject": name,
     "attendees": invites,
     "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
-  //console.log('scheduleMeeting.body :' + JSON.stringify(body, null, 2));
+  console.log('scheduleMeeting.body :' + JSON.stringify(body, null, 2));
 
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     if (error){
-      //console.log('scheduleMeeting.error : ' + JSON.stringify(error));
+      console.log('scheduleMeeting.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
 
-    //console.log('scheduleMeeting.response : ' + response);
+    console.log('scheduleMeeting.response : ' + response);
     options.message = options.speech = response.subject + ' created' + '\n\n';
     options.message += '-----------------------' + '\n\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
