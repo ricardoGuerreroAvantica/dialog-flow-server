@@ -194,6 +194,8 @@ function showEventsOnDate(options, callback){
   var date = parameters.date;
   var filter = '';
   var url = '';
+  console.log("STARTTIME: " + moment().startOf(date))
+  console.log("ENDTIME: " + moment().endOf(date))
   filter = 'startdatetime=' + moment().startOf(date).format('YYYY-MM-DDTHH:mm:ss.000')  + 'Z' +
             '&enddatetime=' + moment().endOf(date).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
