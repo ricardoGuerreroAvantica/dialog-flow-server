@@ -91,8 +91,8 @@ function parseDate(date){
  //
 
  
-  return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('MMM DD') + ' at ' +
-    moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('kk:mm');
+  return moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('MMM DD') + ' at ' +
+    moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('kk:mm');
 }
 
 exports.getChangeLine = getChangeLine;
