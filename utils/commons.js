@@ -40,26 +40,16 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  var xstartDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  var xendDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
 
   var times = time.split(':');
   var endTime;
   var startTime;
-  if(parseInt(times[0]) + endTimeMargin <10){
-    endTime = ("0" + (parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  else{
-    endTime = ((parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  if(parseInt(times[0]) - startTimeMargin <10){
-    startTime   = ("0" + (parseInt(times[0]) - startTimeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  else{
-    startTime   = ((parseInt(times[0]) - startTimeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  
 
+  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours');
+
+  var startDate = moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(startTimeMargin, 'hours');
+
+  var endDate = moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(startTimeMargin, 'hours');
 
   console.log("START TIMER: " + date + 'T' + startTime);
   console.log("END TIMER: " + date + 'T' + endTime);
