@@ -190,6 +190,7 @@ function checkMeetingTimes(options, callback){
 
 
 function showEventsOnDate(options, callback){
+  var space = commons.getChangeLine();
   var parameters = options.parameters;
   var date = parameters.date;
   var filter = '';
@@ -197,8 +198,6 @@ function showEventsOnDate(options, callback){
   filter = 'startdatetime=' + date+('T00:00:00.000Z') +
             '&enddatetime=' + date+('T23:59:59.000Z');
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  console.log("The request showEventsOnDate: "+url + filter);
-  console.log(date);
   axios.get(url + filter, {
     headers : {
       'Content-Type':
