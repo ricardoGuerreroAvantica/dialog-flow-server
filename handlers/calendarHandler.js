@@ -16,9 +16,8 @@ function scheduleMeeting(options, callback){
   console.log("START DATE" + startDate);
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
-  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').subtract(6, 'hours').format('YYYY-MM-DDTHH:mm:ss').add(duration.amount, duration.unit)
-      .format('YYYY-MM-DDTHH:mm:ss');
-    console.log("END DATE" + startDate);   
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').subtract(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+    console.log("END DATE" + endDate);   
   var body = {
     "subject": name,
     "attendees": invites,
