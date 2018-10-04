@@ -90,7 +90,7 @@ function parseDate(date){
   */
  //
  console.log("Normal" + date);
- var time = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(5, 'hours');
+ var time = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours');
  console.log("Added" + time);
  
   return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("-05:00").format('MMM DD') + ' at ' +
