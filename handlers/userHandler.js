@@ -93,7 +93,8 @@ function helper(options, callback){
                       +space+space+"▶ Create new event example today at 3:00pm for 40 minutes."
                       +space+space+"▶ Create a new event."
                       +space+space+"▶ Create new event testing on 4 sep at 14:00."
-                      +space+space+"To complete the creation only say \"Done\"";  ;       
+                      +space+space+"____________________"
+                      +space+space+"To complete the creation only say \"Done\"";
   }
   if (options.parameters.helperId == "available"){
     options.message = "To check someone availability you can use their first name or their email:"
