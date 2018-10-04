@@ -91,6 +91,11 @@ function parseDate(date){
  //
 
  
+ console.log("NEW DATE");
+ console.log(date)
+ console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours'))
+ console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('MMM DD') )
+ console.log(date.subtract(5, 'hours'))
   return moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('MMM DD') + ' at ' +
     moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(5, 'hours').format('kk:mm');
 }
