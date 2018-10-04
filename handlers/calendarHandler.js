@@ -191,7 +191,7 @@ function checkMeetingTimes(options, callback){
 
 function showEventsOnDate(options, callback){
   var parameters = options.parameters;
-  var date = parameters.date;
+  var date = parameters.date.split("-").join();
   var filter = '';
   var url = '';
   console.log("STARTTIME: " + moment().startOf(date))
