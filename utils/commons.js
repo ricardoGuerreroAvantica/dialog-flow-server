@@ -89,6 +89,8 @@ function parseDate(date){
   moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
   */
  //
+ console.log("THE DATE: ")
+ console.log(date);
   return moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('MMM DD') + ' at ' +
     moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('kk:mm');
 }
