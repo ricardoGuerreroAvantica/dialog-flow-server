@@ -194,8 +194,8 @@ function showEventsOnDate(options, callback){
   var date = parameters.date;
   var filter = '';
   var url = '';
-  filter = 'startdatetime=' + date+('T00:00:00.000')  + 'Z' +
-            '&enddatetime=' + date+('T23:59:59.000')  + 'Z' ;
+  filter = 'startdatetime=' + date+('T00:00:00.000Z') +
+            '&enddatetime=' + date+('T23:59:59.000Z');
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   console.log("The request showEventsOnDate: "+url + filter);
   console.log(date);
@@ -226,7 +226,7 @@ function showEventsOnDate(options, callback){
     }
   })
   .catch((error) => {
-    //console.log('showEvents.error : ' + error);
+    console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
 
