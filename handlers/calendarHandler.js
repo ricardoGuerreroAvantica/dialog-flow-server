@@ -100,7 +100,7 @@ function PrefindMeetingTimes(next, options, callback){
     console.log("PrefindMeetingTimes.isOrganizerInRequest : = " +options.user.displayName +" != "+options.userName)
     var postBody = {
       attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, time, 0, 2),
+      timeConstraint : commons.getTimeConstraint(date, 0, 2),
       isOrganizerOptional: isOrganizerInRequest
     };
     console.log("POST BODY: " + JSON.stringify(postBody))
@@ -152,7 +152,7 @@ function checkMeetingTimes(options, callback){
         console.log("checkMeetingTimes.isOrganizerInRequest : = " +options.user.displayName +" != "+options.userName)
         var postBody = {
           attendees: commons.getAttendees([user]),
-          timeConstraint : commons.getTimeConstraint(date, time, 2, 4),
+          timeConstraint : commons.getTimeConstraint(date, 2, 4),
           isOrganizerOptional: isOrganizerInRequest
         };
         console.log("POST BODY: " + JSON.stringify(postBody))
