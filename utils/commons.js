@@ -44,28 +44,17 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
   var times = time.split(':');
   var newTime;
+  newTime   = times[0]+ ':' + times[1] + ':' + times[2] + '.000';
 
-  
-  if(parseInt(times[0])<10){
-    newTime   = "0" + times[0]+ ':' + times[1] + ':' + times[2] + '.000';
-  }
-  else{
-    newTime   = times[0]+ ':' + times[1] + ':' + times[2] + '.000';;
-  }
 
   endTime = endTimeMargin + 6;
   startTime = 6 - startTimeMargin;
-  console.log ( "Time :" + time + "Date: "+date)
-  console.log("newTime: " +newTime)
-  console.log ("startTime :"+startTime+" endTime:"+endTime);
-  console.log("2018-10-05 16:57:38" + (moment("2018-10-05 16:57:38").format('YYYY-MM-DDThh:mm:ss.SSS')).toString());
-  console.log("2018-10-05T04:57:38.000" + (moment("2018-10-05T04:57:38.000").format('YYYY-MM-DDThh:mm:ss.SSS').toString()));
-  
-  var startDate = moment(date + ' ' + newTime).format('YYYY-MM-DDThh:mm:ss.SSS');
+
+  var startDate = moment(date + ' ' + newTime).format('YYYY-MM-DDThh:mm:ss');
   console.log("START TIMER: " + startDate);
-  startDate = moment(date + ' ' + newTime).add(startTime,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
+  startDate = moment(date + ' ' + newTime).add(startTime,"hours").format('YYYY-MM-DDThh:mm:ss');
   console.log("START TIMER: " + startDate);
-  var endDate = moment(date + ' ' + newTime).add(endTime,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
+  var endDate = moment(date + ' ' + newTime).add(endTime,"hours").format('YYYY-MM-DDThh:mm:ss');
   
   console.log("END TIMER: " + endDate);
 
@@ -73,11 +62,11 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate+ 'Z',
+          "dateTime": startDate+ '000Z',
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate+ 'Z',
+          "dateTime": endDate+ '000Z',
           "timeZone": "UTC"
         }
       }
