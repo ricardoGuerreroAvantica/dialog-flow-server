@@ -40,22 +40,41 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  var newDate = moment(date + ' ' + time).format('YYYY-MM-DDThh:mm:ss.SSS');
-  var startDate = moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(startTimeMargin, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  console.log("START TIMER: " + date + 'T' + startDate);
-  var endDate = moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').add(endTimeMargin, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  console.log("END TIMER: " + date + 'T' + endTime);
+  var newDate = moment(date+' '+time, 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log("new date= "+newDate)
+  var times = time.split(':');
+  var endTime;
+  var startTime;
+  if(parseInt(times[0]) + endTimeMargin <10){
+    endTime = ("0" + (parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
+  }
+  else{
+    endTime = ((parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
+  }
+  if(parseInt(times[0]) - startTimeMargin <10){
+    startTime   = ("0" + (parseInt(times[0]) - startTimeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
+  }
+  else{
+    startTime   = ((parseInt(times[0]) - startTimeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
+  }
   
+
+
+  console.log("START TIMER: " + date + 'T' + startTime);
+  console.log("END TIMER: " + date + 'T' + endTime);
+
+  var startDate = date + 'T' + startTime ;
+  var endDate = date + 'T' + endTime ;
 
   var result = {
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate+'Z',
+          "dateTime": startDate,
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate+'Z',
+          "dateTime": endDate,
           "timeZone": "UTC"
         }
       }
