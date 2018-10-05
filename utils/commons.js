@@ -39,22 +39,15 @@ function getAttendees(invites){
 
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
-
-  
-
   var times = time.split(':');
-  var newTime;
-  newTime   = times[0]+ ':' + times[1] + ':' + times[2] + '.000';
+  let newTime   = date + ' ' +times[0]+ ':' + times[1] + ':' + times[2] + '.000';
+  let endTime = endTimeMargin + 6;
+  let startTime = 6 - startTimeMargin;
 
-
-  endTime = endTimeMargin + 6;
-  startTime = 6 - startTimeMargin;
-
-  var startDate = moment(date + ' ' + newTime).format('YYYY-MM-DDThh:mm:ss');
+  console.log("newTime" +newTime)
+  startDate = moment(newTime).add(startTime,"hours").format('YYYY-MM-DDThh:mm:ss');
   console.log("START TIMER: " + startDate);
-  startDate = moment(date + ' ' + newTime).add(startTime,"hours").format('YYYY-MM-DDThh:mm:ss');
-  console.log("START TIMER: " + startDate);
-  var endDate = moment(date + ' ' + newTime).add(endTime,"hours").format('YYYY-MM-DDThh:mm:ss');
+  var endDate = moment(newTime).add(endTime,"hours").format('YYYY-MM-DDThh:mm:ss');
   
   console.log("END TIMER: " + endDate);
 
