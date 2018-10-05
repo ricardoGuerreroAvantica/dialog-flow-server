@@ -45,9 +45,9 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
 
 
-  startDate = moment(momentDate).add(12+startTime,"hour").format('YYYY-MM-DDThh:mm:ss');
+  startDate = moment(momentDate).add(23,"hour").format('YYYY-MM-DDThh:mm:ss');
   console.log("START TIMER: " + startDate);
-  var endDate = moment(momentDate).add(12+endTime,"hour").format('YYYY-MM-DDThh:mm:ss');
+  var endDate = moment(momentDate).add(43,"hour").format('YYYY-MM-DDThh:mm:ss');
   console.log("END TIMER: " + endDate);
 
   var result = {
