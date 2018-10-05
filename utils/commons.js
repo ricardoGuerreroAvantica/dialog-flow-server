@@ -40,8 +40,8 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
   let newTime   = date + ' ' + time;
-  let endTime = endTimeMargin + 6;
-  let startTime = 6 - startTimeMargin;
+  let endTime = parseInt(endTimeMargin) + 6;
+  let startTime = 6 - parseInt(startTimeMargin);
 
   console.log("newTime" +newTime)
   startDate = moment(newTime).add(startTime,"hours").format('YYYY-MM-DDThh:mm:ss');
@@ -53,11 +53,11 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate+ '000Z',
+          "dateTime": startDate+ '.000Z',
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate+ '000Z',
+          "dateTime": endDate+ '.000Z',
           "timeZone": "UTC"
         }
       }
