@@ -39,19 +39,35 @@ function getAttendees(invites){
 
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
-  var standardDateTime =  moment.utc(date+' '+time).format('YYYY-MM-DDThh:mm:ss.SSS');
-  console.log("getTimeConstraint.standardDateTime=" + standardDateTime);
-  var startDate = moment.utc(standardDateTime).add((6-startTimeMargin).toString(), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  var endDate  = moment.utc(standardDateTime).add((6+endTimeMargin).toString(), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+
   
-  console.log("getTimeConstraint.startDate="+startDate + "---"+startTimeMargin);
-  console.log("getTimeConstraint.endDate="+endDate + "---"+endTimeMargin);
+
+  var times = time.split(':');
+  var newTime;
+
+  console.log ( "Time :" + time + "Date: "+date)
+  if(parseInt(times[0])<10){
+    newTime   = "0" + times[0]+ ':' + times[1] + ':' + times[2] + '.000';
+  }
+  else{
+    newTime   = times[0]+ ':' + times[1] + ':' + times[2] + '.000';;
+  }
+
+  endTime = endTimeMargin + 6;
+  startTime = 6 - startTimeMargin;
+
+  console.log ("startTime :"+startTime+" endTime:"+endTime);
+
+  var startDate = moment(date + 'T' + newTime).add(startTime).format('YYYY-MM-DDThh:mm:ss.SSS');
+  var endDate = moment(date + 'T' + newTime).add(endTime).format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log("START TIMER: " + startDate);
+  console.log("END TIMER: " + endDate);
 
   var result = {
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate + 'Z',
+          "dateTime": startDate+ 'Z',
           "timeZone": "UTC"
         },
         "end": {
@@ -61,7 +77,6 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
       }
     ]
   }
-  console.log("getTimeConstraint.result="+JSON.stringify(result))
   return result;
 }
 
