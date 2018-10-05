@@ -44,8 +44,8 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
   var startDate = moment(standardDateTime).add((6-startTimeMargin), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
   var endDate  = moment(standardDateTime).add((6+endTimeMargin), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
   
-  console.log("getTimeConstraint.startDate="+startDate + "---"+6+"-"-startTimeMargin);
-  console.log("getTimeConstraint.endDate="+endDate + "---"+6+"+"-endTimeMargin);
+  console.log("getTimeConstraint.startDate="+startDate + "---"+startTimeMargin);
+  console.log("getTimeConstraint.endDate="+endDate + "---"+endTimeMargin);
 
   var result = {
     "timeslots": [
