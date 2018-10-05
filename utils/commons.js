@@ -56,6 +56,7 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
   endTime = endTimeMargin + 6;
   startTime = 6 - startTimeMargin;
 
+  console.log("newTime: " +newTime)
   console.log ("startTime :"+startTime+" endTime:"+endTime);
 
   var startDate = moment(date + 'T' + newTime).format('YYYY-MM-DDThh:mm:ss.SSS');
