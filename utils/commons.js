@@ -41,7 +41,7 @@ function getAttendees(invites){
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
 
-  newDateTime = date + 'T' + times[0] + ':00:00.000Z'
+  newDateTime = date + 'T' + time.split(':')[0] + ':00:00.000Z'
   console.log("commons.getTimeConstraint.date :" +newDateTime);
   
   var newdate   = moment(newDateTime, 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' ;
