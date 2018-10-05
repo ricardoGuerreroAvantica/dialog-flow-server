@@ -40,42 +40,32 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  var xstartDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-  var xendDate = moment.utc(date + ' ' + time, 'YYYY-MM-DD HH:mm:ss').add('2', 'hours').utcOffset("+05:00").format('YYYY-MM-DDTHH:mm:ss');
-
-  var times = time.split(':');
-  var endTime;
-  var startTime;
-  if(parseInt(times[0]) + endTimeMargin <10){
-    endTime = ("0" + (parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  else{
-    endTime = ((parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  if(parseInt(times[0]) - startTimeMargin <10){
-    startTime   = ("0" + (parseInt(times[0]) - startTimeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  else{
-    startTime   = ((parseInt(times[0]) - startTimeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  
-
-
-  console.log("START TIMER: " + date + 'T' + startTime);
+  var newDate = moment(date + ' ' + time).format('YYYY-MM-DDThh:mm:ss.SSS');
+  var startDate = moment(newDate).subtract(startTimeMargin, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log("START TIMER: " + date + 'T' + startDate);
+  var endDate = moment(newDate).add(endTimeMargin, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS0');
   console.log("END TIMER: " + date + 'T' + endTime);
 
-  var startDate = date + 'T' + startTime ;
-  var endDate = date + 'T' + endTime ;
+  console.log("END TIMER: " + date + 'T' + endTime);
+
+  console.log("END TIMER: " + date + 'T' + endTime);
+
+  console.log("END TIMER: " + date + 'T' + endTime);
+
+  console.log("END TIMER: " + date + 'T' + endTime);
+
+  console.log("END TIMER: " + date + 'T' + endTime);
+  
 
   var result = {
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate,
+          "dateTime": startDate+'Z',
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate,
+          "dateTime": endDate+'Z',
           "timeZone": "UTC"
         }
       }
