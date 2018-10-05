@@ -41,16 +41,29 @@ function getAttendees(invites){
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
 
-  newDateTime = date + 'T' + time.split(':')[0] + ':00:00.000Z'
-  console.log("commons.getTimeConstraint.date :" +newDateTime);
+  var times = time.split(':');
+  var endTime;
+  var startTime;
+  var newTime;
+  if(parseInt(times[0])<10){
+    newTime   = ("0" + times[0])+ ':' + times[1] + ':' + times[2] + '.000';
+  }
+  else{
+    newTime   = times[0] + ':' + times[1] + ':' + times[2] + '.000';
+  }
+  console.log(" startTimeMargin: "+ startTimeMargin + "startTimeMargin :" + endTimeMargin)
+  console.log("commons.getTimeConstraint.newTime :" + newTime)
+  newDateTime = date + 'T' + newTime;
+  console.log("commons.getTimeConstraint.newDateTime :" + newDateTime);
   
   var newdate   = moment(newDateTime, 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' ;
+  console.log("commons.getTimeConstraint.newDateTime :" + newdate);
+  
   var endDate   = moment(newdate, 'YYYY-MM-DDThh:mm:ss.SSS').add(endTimeMargin, 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' ;
+  console.log("commons.getTimeConstraint.newDateTime :" + endDate);
+  
   var startDate = moment(newdate, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(startTimeMargin, 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' ;
-
-  console.log(newdate + " start: "+ startTimeMargin + "End :" + endTimeMargin)
-  console.log("START TIMER: " + startDate);
-  console.log("END TIMER: " + endDate);
+  console.log("commons.getTimeConstraint.newDateTime :" + startDate);
 
   var result = {
     "timeslots": [
