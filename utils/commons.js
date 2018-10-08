@@ -43,8 +43,11 @@ function getDate(date, time){
   var times = time.split(':');
   if(parseInt(times[0]))
   addingValue = 6 + parseInt(times[0])
-  var newDate = moment(date).add(addingValue,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
-  console.log('Getted time = '+ newDate);
+  console.log("addingValue = "+addingValue);
+  var newDate = moment(date).format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log('Getted time 1 = '+ newDate);
+  newDate = moment(date).add(addingValue,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log('Getted time 2 = '+ newDate);
 }
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
