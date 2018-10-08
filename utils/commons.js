@@ -39,10 +39,12 @@ function getAttendees(invites){
 
 
 function getDate(date, time){
+
   console.log('Used time = '+date + time)
   var dates = date.split('-');
   var times = time.split(':');
 
+  console.log(dates[0]+" "+dates[1]+" "+dates[2]+" "+times[0]+" "+times[1]+" "+times[2]);
   var requestedDate = new date(dates[0],dates[1],dates[2],times[0],times[1],times[2])
   console.log(requestedDate.toString());
   addingValue = 6 + parseInt(times[0])
