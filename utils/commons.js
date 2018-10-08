@@ -45,16 +45,12 @@ function getDate(date, time){
   var dates = date.split('-');
   var times = time.split(':');
 
-  
-  var requestedDate = new Date(parseInt(dates[0]),parseInt(dates[1]),parseInt(dates[2]),parseInt(times[0]),parseInt(times[1]),parseInt(times[2]))
-  console.log(dates[0]+" "+dates[1]+" "+dates[2]+" "+times[0]+" "+times[1]+" "+times[2]);
-  console.log('nedate =' + requestedDate);
   addingValue = 6 + parseInt(times[0])
   console.log("addingValue = "+addingValue);
   console.log ("time[0] = "+ times[0])
   var newDate = moment(date+' '+time).format(format);
   console.log('Getted time 1 = '+ newDate);
-  newDate = moment(newDate).add(addingValue,"hours").format(format);
+  newDate = moment(date+' '+time).add(addingValue,"hours").format(format);
   console.log('Getted time 2 = '+ newDate);
 }
 
