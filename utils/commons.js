@@ -40,6 +40,7 @@ function getAttendees(invites){
 
 function getDate(date, time){
 
+  var format = 'LLL'
   console.log('Used time = '+date + time)
   var dates = date.split('-');
   var times = time.split(':');
@@ -51,7 +52,7 @@ function getDate(date, time){
   addingValue = 6 + parseInt(times[0])
   console.log("addingValue = "+addingValue);
   console.log ("time[0] = "+ times[0])
-  var newDate = moment(date +'T'+ +times[0]+':00:00.000').format(format);
+  var newDate = moment(requestedDate).format(format);
   console.log('Getted time 1 = '+ newDate);
   newDate = moment(newDate).add(addingValue,"hours").format(format);
   console.log('Getted time 2 = '+ newDate);
