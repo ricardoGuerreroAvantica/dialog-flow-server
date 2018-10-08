@@ -41,7 +41,7 @@ function getAttendees(invites){
 function getDate(date, time, extraTime,isSubstraction){
   try {
       var times= time.split(':');
-      var format = 'LLL';
+      var format = 'YYYY-MM-DDThh:mm:ss.SSS';
       console.log('Used time = '+date + time);
       if (isSubstraction){
         var extraValue = 6 - extraTime;
