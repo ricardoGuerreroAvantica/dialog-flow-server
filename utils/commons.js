@@ -104,8 +104,8 @@ function parseDate(date){
  console.log(newDate)
  var time = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours').format('kk:mm')
  console.log(time);
-  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('MMM DD') + ' at ' +
-    moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('kk:mm');
+  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT') + ' at ' +
+    moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 
 exports.getChangeLine = getChangeLine;
