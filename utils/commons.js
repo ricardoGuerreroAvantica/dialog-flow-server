@@ -40,6 +40,7 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
+  console.log('Used time = '+date + time)
   var times = time.split(':');
   var endTime;
   var startTime;
