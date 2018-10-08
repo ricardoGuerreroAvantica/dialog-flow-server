@@ -52,7 +52,7 @@ function getDate(date, time){
   addingValue = 6 + parseInt(times[0])
   console.log("addingValue = "+addingValue);
   console.log ("time[0] = "+ times[0])
-  var newDate = moment(requestedDate).format(format);
+  var newDate = moment(date+' '+time).format(format);
   console.log('Getted time 1 = '+ newDate);
   newDate = moment(newDate).add(addingValue,"hours").format(format);
   console.log('Getted time 2 = '+ newDate);
