@@ -42,19 +42,19 @@ function getDate(date, time, extraTime,isSubstraction){
   try {
       var times= time.split(':');
       var format = 'LLL';
-      var extraValue = 6;
       console.log('Used time = '+date + time);
-      //if (isSubstraction){
-        extraValue = extraValue - parseInt(times[0])
+      if (isSubstraction){
+        var extraValue = 6 - extraTime;
         console.log("extraValue = "+extraValue);
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         console.log('Getted time 2 = '+ newDate);
-      //}
-      //else{
-        extraValue =  extraValue -  parseInt(times[0])
+      }
+      else{
+        var extraValue =  6 +  extraTime;
         console.log("extraValue = "+extraValue);
-        newDate = moment(date+' '+time).subtract(extraValue,"hours").format(format);
+        newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         console.log('Getted time 2 = '+ newDate);
+      }
   }
   catch(err) {
       console.log(err);
@@ -64,8 +64,10 @@ function getDate(date, time, extraTime,isSubstraction){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  console.log('getdatemetod'+date + time)
+  console.log('getdatemetod'+date + time);
+  console.log('START DATE : ');
   getDate(date, time,startTimeMargin,true);
+  console.log('END DATE : ');
   getDate(date, time,endTimeMargin,false);
   var times = time.split(':');
   var endTime;
