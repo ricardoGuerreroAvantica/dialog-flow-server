@@ -76,17 +76,19 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate+z,
+          "dateTime": startDate+"Z",
           "timeZone": "UTC"
         },
         "end": {
-          "dateTime": endDate,
+          "dateTime": endDate+"Z",
           "timeZone": "UTC"
         }
       }
     ]
   }
   return result;
+
+
 }
 
 function parseDate(date){
