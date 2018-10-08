@@ -41,19 +41,21 @@ function getAttendees(invites){
 function getDate(date, time, extraTime,isSubstraction){
   try {
       var times= time.split(':');
-      var format = 'YYYY-MM-DDThh:mm:ss.SSS';
+      var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
       console.log('Used time = '+date + time);
       if (isSubstraction){
         var extraValue = 6 - extraTime;
         console.log("extraValue = "+extraValue);
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         console.log('Getted time 2 = '+ newDate);
+        return newDate
       }
       else{
         var extraValue =  6 +  extraTime;
         console.log("extraValue = "+extraValue);
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         console.log('Getted time 2 = '+ newDate);
+        return newDate
       }
   }
   catch(err) {
@@ -66,38 +68,15 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
   console.log('getdatemetod'+date + time);
   console.log('START DATE : ');
-  getDate(date, time,startTimeMargin,true);
+  var endDate = getDate(date, time,startTimeMargin,true);
   console.log('END DATE : ');
-  getDate(date, time,endTimeMargin,false);
-  var times = time.split(':');
-  var endTime;
-  var startTime;
-  if(parseInt(times[0]) + endTimeMargin <10){
-    endTime = ("0" + (parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  else{
-    endTime = ((parseInt(times[0]) + endTimeMargin).toString() ) + ':00:00.000Z';
-  }
-  if(parseInt(times[0]) - startTimeMargin <10){
-    startTime   = ("0" + (parseInt(times[0]) - startTimeMargin).toString())+ ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  else{
-    startTime   = ((parseInt(times[0]) - startTimeMargin).toString()) + ':' + times[1] + ':' + times[2] + '.000Z';
-  }
-  
-
-
-  console.log("START TIMER: " + date + 'T' + startTime);
-  console.log("END TIMER: " + date + 'T' + endTime);
-
-  var startDate = date + 'T' + startTime ;
-  var endDate = date + 'T' + endTime ;
+  var startDate = getDate(date, time,endTimeMargin,false);
 
   var result = {
     "timeslots": [
       {
         "start": {
-          "dateTime": startDate,
+          "dateTime": startDate+z,
           "timeZone": "UTC"
         },
         "end": {
