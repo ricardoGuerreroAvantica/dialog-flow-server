@@ -44,9 +44,9 @@ function getDate(date, time){
   if(parseInt(times[0]))
   addingValue = 6 + parseInt(times[0])
   console.log("addingValue = "+addingValue);
-  var newDate = moment(date).subtract(12,'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+  var newDate = moment(date +'T'+ +times[0]+':00:00.000').format('YYYY-MM-DDThh:mm:ss.SSS');
   console.log('Getted time 1 = '+ newDate);
-  newDate = moment(date).add(addingValue,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
+  newDate = moment(newDate).add(addingValue,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
   console.log('Getted time 2 = '+ newDate);
 }
 
