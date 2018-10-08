@@ -55,20 +55,13 @@ function getDate(date, time, extraTime,isSubstraction){
     newDate = moment(date+' '+time).subtract(extraValue,"hours").format(format);
     console.log('Getted time 2 = '+ newDate);
   }
- 
 
-
-  
-  
-
-  
-  
-}
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
   console.log('getdatemetod'+date + time)
-  getDate(date, time)
+  getDate(date, time,startTimeMargin,true);
+  getDate(date, time,endTimeMargin,false);
   var times = time.split(':');
   var endTime;
   var startTime;
