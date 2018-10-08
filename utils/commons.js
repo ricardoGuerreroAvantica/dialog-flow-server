@@ -38,20 +38,31 @@ function getAttendees(invites){
 }
 
 
-function getDate(date, time){
+function getDate(date, time, extraTime,isSubstraction){
 
-  var format = 'LLL'
-  console.log('Used time = '+date + time)
-  var dates = date.split('-');
-  var times = time.split(':');
+  var format = 'LLL';
+  var extraValue = 6;
+  console.log('Used time = '+date + time);
+  //if (isSubstraction){
+    extraValue = extraValue - parseInt(times[0])
+    console.log("extraValue = "+extraValue);
+    newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
+    console.log('Getted time 2 = '+ newDate);
+  //}
+  //else{
+    extraValue =  extraValue -  parseInt(times[0])
+    console.log("extraValue = "+extraValue);
+    newDate = moment(date+' '+time).subtract(extraValue,"hours").format(format);
+    console.log('Getted time 2 = '+ newDate);
+  }
+ 
 
-  addingValue = 6 + parseInt(times[0])
-  console.log("addingValue = "+addingValue);
-  console.log ("time[0] = "+ times[0])
-  var newDate = moment(date+' '+time).format(format);
-  console.log('Getted time 1 = '+ newDate);
-  newDate = moment(date+' '+time).add(addingValue,"hours").format(format);
-  console.log('Getted time 2 = '+ newDate);
+
+  
+  
+
+  
+  
 }
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
