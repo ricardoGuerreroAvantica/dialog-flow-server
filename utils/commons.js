@@ -68,9 +68,9 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
   console.log('getdatemetod'+date + time);
   console.log('START DATE : ');
-  var endDate = getDate(date, time,startTimeMargin,true);
+  var startDate = getDate(date, time,startTimeMargin,true);
   console.log('END DATE : ');
-  var startDate = getDate(date, time,endTimeMargin,false);
+  var endDate = getDate(date, time,endTimeMargin,false);
 
   var result = {
     "timeslots": [
