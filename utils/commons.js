@@ -38,9 +38,19 @@ function getAttendees(invites){
 }
 
 
+function getDate(date, time){
+  console.log('Used time = '+date + time)
+  var times = time.split(':');
+  if(parseInt(times[0]))
+  addingValue = 6 + parseInt(times[0])
+  var newDate = moment(date).add(addingValue,"hours").format('YYYY-MM-DDThh:mm:ss.SSS');
+  console.log('Getted time = '+ newDate);
+}
+
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  console.log('Used time = '+date + time)
+  console.log('getdatemetod'+date + time)
+  getDate(date, time)
   var times = time.split(':');
   var endTime;
   var startTime;
