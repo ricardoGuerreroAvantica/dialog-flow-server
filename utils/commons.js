@@ -40,8 +40,6 @@ function getAttendees(invites){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
-  
-
   var times = time.split(':');
   var endTime;
   var startTime;
@@ -66,7 +64,6 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
   var startDate = date + 'T' + startTime ;
   var endDate = date + 'T' + endTime ;
 
-  
   var result = {
     "timeslots": [
       {

@@ -180,7 +180,7 @@ function checkMeetingTimes(options, callback){
           }else{
             console.log("Didnt find any available time at:" + time);
               options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
-              (options);
+              callback(options);
           }
         })
       }
