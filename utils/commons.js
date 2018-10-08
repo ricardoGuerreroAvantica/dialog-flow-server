@@ -45,7 +45,7 @@ function getDate(date, time){
   var times = time.split(':');
 
   
-  var requestedDate = new date(dates[0],dates[1],dates[2],times[0],times[1],times[2])
+  var requestedDate = new date(parseInt(dates[0]),parseInt(dates[1]),parseInt(dates[2]),parseInt(times[0]),parseInt(times[1]),parseInt(times[2]))
   console.log(dates[0]+" "+dates[1]+" "+dates[2]+" "+times[0]+" "+times[1]+" "+times[2]);
   console.log('nedate =' + requestedDate);
   addingValue = 6 + parseInt(times[0])
