@@ -141,7 +141,7 @@ function checkMeetingTimes(options, callback){
       if (options.message == "I found some space at: "+space+"-----------------------"+space){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
-        options.message += options.speech = "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space;
+        options.message = options.speech = "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space;
         
         var parameters = options.parameters;
         var date = parameters.date;
