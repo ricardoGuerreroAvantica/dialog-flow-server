@@ -138,7 +138,7 @@ function PrefindMeetingTimes(next, options, callback){
 
 function checkMeetingTimes(options, callback){
       let space = commons.getChangeLine(options.source);
-      if (options.message == "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space){
+      if (options.message == "I found some space at: "+space+"-----------------------"+space){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
         options.message += options.speech = "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space;
