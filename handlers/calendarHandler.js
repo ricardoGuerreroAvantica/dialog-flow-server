@@ -113,6 +113,7 @@ function PrefindMeetingTimes(next, options, callback){
         var meetings = response.meetingTimeSuggestions;
         console.log("MEETINGS: "+ JSON.stringify(meetings));
         if (meetings.length > 0){
+          
           //Found open meeting times in the requested TimeConstrain
           meetings.forEach((meeting) => {
             console.log("THE MEETING: " + JSON.stringify(meeting));
@@ -140,6 +141,8 @@ function checkMeetingTimes(options, callback){
       if (options.message == "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
+        options.message += options.speech = "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space;
+        
         var parameters = options.parameters;
         var date = parameters.date;
         var user = options.user;
@@ -179,7 +182,7 @@ function checkMeetingTimes(options, callback){
             callback(options);
           }else{
             console.log("Didnt find any available time at:" + time);
-              options.message = "Didn't find any available slot in this employee calendar, can you try again with other time?"
+              options.message = "Didn't find any available slot in this employee the calendar, can you try again with other time?"
               callback(options);
           }
         })
