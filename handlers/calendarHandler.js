@@ -90,7 +90,7 @@ function PrefindMeetingTimes(next, options, callback){
     var user = options.user;
     var time = options.parameters.time;
     console.log("FIRST RUN");
-    options.message += options.speech = "Is available at: "+space+"-----------------------"+space;
+    options.message += options.speech = "I found some space at: "+space+"-----------------------"+space;
     time = options.parameters.time;
 
     
@@ -137,7 +137,7 @@ function PrefindMeetingTimes(next, options, callback){
 
 function checkMeetingTimes(options, callback){
       let space = commons.getChangeLine(options.source);
-      if (options.message == "Is available at: "+space+"-----------------------"+space){
+      if (options.message == "I did't found space at the requested time, but i found some space at: "+space+"-----------------------"+space){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
         var parameters = options.parameters;
@@ -179,7 +179,7 @@ function checkMeetingTimes(options, callback){
             callback(options);
           }else{
             console.log("Didnt find any available time at:" + time);
-              options.message += "Didn't find any available slot in the calendar, can you try again with other time?"
+              options.message = "Didn't find any available slot in this employee calendar, can you try again with other time?"
               callback(options);
           }
         })
@@ -199,6 +199,7 @@ function showEventsOnDate(options, callback){
   filter = 'startdatetime=' + date+('T00:00:00.000Z') +
             '&enddatetime=' + date+('T23:59:59.000Z');
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+  console.log(url+filter)
   axios.get(url + filter, {
     headers : {
       'Content-Type':
