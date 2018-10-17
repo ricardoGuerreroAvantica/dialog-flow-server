@@ -263,6 +263,8 @@ function showEvents(options, callback){
             '&enddatetime=' + moment().endOf('week').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
+  
+  console.log("period" + period);
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
   console.log("SHOW EVENT TOKEN: " + options.access_token);
   axios.get(url + filter, {
