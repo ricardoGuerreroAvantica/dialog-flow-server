@@ -256,7 +256,7 @@ function showEvents(options, callback){
   }else if (period){
     period = period.split("/");
     filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z';
+            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD'),add(30,'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }else{
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
