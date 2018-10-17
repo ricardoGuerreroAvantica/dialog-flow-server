@@ -199,6 +199,8 @@ function showEventsOnDate(options, callback){
   var date = parameters.date;
   var filter = '';
   var url = '';
+  console.log("Date Start: " + moment(date+('T00:00:00.000Z')).add(6, 'hours').format());
+  console.log("Date End: " + moment(date+('T23:59:59.000Z')).add(6, 'hours').format());
   filter = 'startdatetime=' + date+('T00:00:00.000Z') +
             '&enddatetime=' + date+('T23:59:59.000Z');
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
@@ -291,8 +293,8 @@ function showEvents(options, callback){
     //console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
-
 }
+
 exports.showEventsOnDate = showEventsOnDate;
 exports.userData = userData;
 exports.checkMeetingTimes = checkMeetingTimes;
