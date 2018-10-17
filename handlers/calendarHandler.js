@@ -199,8 +199,8 @@ function showEventsOnDate(options, callback){
   var date = parameters.date;
   var filter = '';
   var url = '';
-  console.log("Date Start: " + moment(date+('T00:00:00.000')).add(6, 'hours').format());
-  console.log("Date End: " + moment(date+('T23:59:59.000')).add(6, 'hours').format());
+  console.log("Date Start: " + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS'));
+  console.log("Date End: " + moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS'));
   filter = 'startdatetime=' + date+('T00:00:00.000Z') +
             '&enddatetime=' + date+('T23:59:59.000Z');
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
