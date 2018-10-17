@@ -255,15 +255,15 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/events?';
   }else if (period){
     period = period.split("/");
-    filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+    filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z' +
+            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }else{
     filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
             '&enddatetime=' + moment().endOf('week').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
-  
+
   console.log("period" + period);
   console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
   console.log("SHOW EVENT TOKEN: " + options.access_token);
