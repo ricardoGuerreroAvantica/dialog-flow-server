@@ -39,7 +39,7 @@ function searchUser(next, options, callback){
 
     if (response.data.value.length === 0){
       console.log("No user found");
-      console.log("Sorry i couldn't find any user with this discription: \n");
+      console.log("Sorry I couldn't find any user with this discription: \n");
       console.log(JSON.stringify(userData));
       options.message = ("Sorry i couldn't find any user with this discription: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
       + " " +(userData.lastname ? (userData.lastname)  : "") +(userData.email ? (("\nEmail: ") + (userData.email)) : "");
@@ -82,7 +82,7 @@ function helper(options, callback){
   console.log(JSON.stringify(options));
   let space = commons.getChangeLine(options.source);
   if (options.parameters.helperId == "basic"){
-    options.message = "Can you tell me how i can help you?"
+    options.message = "Can you tell me how I can help you?"
                       +space+space+"▶ How to create an event?"
                       +space+space+"▶ How to check if someone is available?"
                       +space+space+"▶ How to check my events?"
