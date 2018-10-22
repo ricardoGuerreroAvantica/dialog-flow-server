@@ -41,6 +41,7 @@ function parseAction(req, res, callback){
       
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
+      .pre('checkMeetingTimes',userHandler.preSearchUser)
       .pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
@@ -103,6 +104,7 @@ function parseAction(req, res, callback){
       
       //PRE
       Action.pre('inviteUser', authenticate.refreshToken)
+        .pre('inviteUser',userHandler.preSearchUser)
         .pre('inviteUser', userHandler.searchUser);
       console.log("Procced to invite user")
       var action = new Action();
