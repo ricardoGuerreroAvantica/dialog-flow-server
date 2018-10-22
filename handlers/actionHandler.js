@@ -27,7 +27,8 @@ function parseAction(req, res, callback){
     case 'search_User':
     Action.prototype.searchUser = userHandler.searchUser;
     //PRE
-    Action.pre('searchUser', authenticate.refreshToken)
+    Action.pre('preSearchUser',userHandler.preSearchUser)
+    .pre('searchUser', authenticate.refreshToken)
     var action = new Action();
     action.searchUser(options, callback);
     break;
