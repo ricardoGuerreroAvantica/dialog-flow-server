@@ -4,6 +4,7 @@ var commons = require('../utils/commons.js');
 
 
 function preSearchUser(next, options, callback){
+  console.log ("preSearchUser.start")
     var parameters = options.parameters;
     var userData = { name : parameters.name,
       lastname : parameters.lastname,
