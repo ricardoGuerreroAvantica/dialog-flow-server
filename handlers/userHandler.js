@@ -12,7 +12,7 @@ function preSearchUser(next, options, callback){
     secondName : parameters.secondName,
     secondLastname : parameters.secondLastname,    
     email : parameters.email }
-  if( !userData.lastname || !userData.name){
+  if( userData.lastname || userData.name){
     var filter =  ("startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+
                   ((userData.secondName) ? (" " + userData.secondName) : '')+
                   ((userData.lastname) ? (" " + userData.secondName) : '')+
