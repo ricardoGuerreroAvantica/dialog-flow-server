@@ -5,12 +5,13 @@ var commons = require('../utils/commons.js');
 
 function preSearchUser(next, options, callback){
 
-  var parameters = options.parameters;
+  try{
+    var parameters = options.parameters;
   console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
     secondName : parameters.secondName,
-    secondLastname : parameters.secondLastname,    
+    secondLastname : parameters.secondLastname,
     email : parameters.email }
   if( userData.lastname || userData.name){
     var filter =  ("startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+
@@ -54,7 +55,10 @@ function preSearchUser(next, options, callback){
     else{
       next(options, callback);
     }
-  
+  }
+  catch(err){
+    console.log(err)
+  }  
 }
 
 function searchUser(next, options, callback){
