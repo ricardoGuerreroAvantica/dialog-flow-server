@@ -9,10 +9,16 @@ function preSearchUser(next, options, callback){
   console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
-    lastname : parameters.secondName,
+    secondName : parameters.secondName,
+    secondLastname : parameters.secondLastname,    
     email : parameters.email }
   if( !userData.lastname || !userData.name){
-    var filter = "startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+" "+(unescape(encodeURIComponent(userData.lastname)))+ "')"
+    var filter =  "startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+
+                  ((userData.secondName) ? (" " + userData.secondName) : '')+
+                  ((userData.lastname) ? (" " + userData.secondName) : '')+
+                  ((userData.secondLastname) ? (" " + userData.secondName) : '')+
+                  + "')"
+
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph:  "+url+filter)
     axios.get(url + filter, {
