@@ -79,6 +79,8 @@ function searchUser(next, options, callback){
     console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
     var userData = { name : parameters.name,
       lastname : parameters.lastname,
+      secondName : parameters.secondName,
+      secondLastname : parameters.secondLastname,
       email : parameters.email }
   
     
