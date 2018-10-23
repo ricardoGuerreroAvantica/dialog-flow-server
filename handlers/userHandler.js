@@ -4,41 +4,42 @@ var commons = require('../utils/commons.js');
 
 
 function preSearchUser(next, options, callback){
-  console.log ("preSearchUser.start")
-    var parameters = options.parameters;
-    var userData = { name : parameters.name,
-      lastname : parameters.lastname,
-      lastname : parameters.secondName,
-      email : parameters.email }
-    if( !userData.lastname || !userData.name){
-      var filter = "startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+" "+(unescape(encodeURIComponent(userData.lastname)))+ "')"
-      var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-      console.log("preSearchUser.graph:  "+url+filter)
-      axios.get(url + filter, {
-        headers : {
-          'Content-Type': 
-          'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + options.access_token
+
+  var parameters = options.parameters;
+  console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
+  var userData = { name : parameters.name,
+    lastname : parameters.lastname,
+    lastname : parameters.secondName,
+    email : parameters.email }
+  if( !userData.lastname || !userData.name){
+    var filter = "startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+" "+(unescape(encodeURIComponent(userData.lastname)))+ "')"
+    var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
+    console.log("preSearchUser.graph:  "+url+filter)
+    axios.get(url + filter, {
+      headers : {
+        'Content-Type': 
+        'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + options.access_token
+      }
+    })
+    .then((response) => {
+      options.message = "";
+      console.log('searchUser.response : ' + JSON.stringify(response.data));
+      if (response.data.value.length === 0){
+        next(options, callback);
+      }
+      if (response.data.value.length > 1){
+        next(options, callback);
+      }
+      else{
+        options.user = {
+        displayName : response.data.value[0].displayName,
+        givenName : response.data.value[0].givenName,
+        mail : response.data.value[0].mail,
+        surname : response.data.value[0].surname,
         }
-      })
-      .then((response) => {
-        options.message = "";
-        console.log('searchUser.response : ' + JSON.stringify(response.data));
-        if (response.data.value.length === 0){
-          next(options, callback);
-        }
-        if (response.data.value.length > 1){
-          next(options, callback);
-        }
-        else{
-          options.user = {
-          displayName : response.data.value[0].displayName,
-          givenName : response.data.value[0].givenName,
-          mail : response.data.value[0].mail,
-          surname : response.data.value[0].surname,
-          }
-        }
+      }
 
         //console.log('searchUser.options : ' + JSON.stringify(options));
         next(options, callback);
