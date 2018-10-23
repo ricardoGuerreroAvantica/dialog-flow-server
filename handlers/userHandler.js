@@ -62,6 +62,8 @@ function preSearchUser(next, options, callback){
 
 function searchUser(next, options, callback){
   var parameters = options.parameters;
+  console.log("searchUser.user: " + JSON.stringify(parameters.user))
+  console.log("searchUserParameters: " + JSON.stringify(parameters))
   if(!parameters.user){
     console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
     var userData = { name : parameters.name,
