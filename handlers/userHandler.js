@@ -15,7 +15,7 @@ function preSearchUser(next, options, callback){
     email : parameters.email }
   if( userData.lastname || userData.name){
     var filter =  ("startswith(displayName,'" +
-                  ((parameters.name) ? (" " + unescape(encodeURIComponent(String(userData.name)))) : '')+
+                  ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : '')+
                   ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')+
                   ((parameters.lastname) ? (" " + unescape(encodeURIComponent(userData.lastname))) : '')+
                   ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
@@ -48,8 +48,6 @@ function preSearchUser(next, options, callback){
         surname : response.data.value[0].surname,
         }
       }
-
-        //console.log('searchUser.options : ' + JSON.stringify(options));
         next(options, callback);
       })
     }
