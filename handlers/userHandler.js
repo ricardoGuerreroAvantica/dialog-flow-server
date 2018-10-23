@@ -8,6 +8,7 @@ function preSearchUser(next, options, callback){
     var parameters = options.parameters;
     var userData = { name : parameters.name,
       lastname : parameters.lastname,
+      lastname : parameters.secondName,
       email : parameters.email }
     if( !userData.lastname || !userData.name){
       var filter = "startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+" "+(unescape(encodeURIComponent(userData.lastname)))+ "')"
@@ -38,6 +39,7 @@ function preSearchUser(next, options, callback){
           surname : response.data.value[0].surname,
           }
         }
+
         //console.log('searchUser.options : ' + JSON.stringify(options));
         next(options, callback);
       })
