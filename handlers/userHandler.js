@@ -14,10 +14,11 @@ function preSearchUser(next, options, callback){
     secondLastname : parameters.secondLastname,
     email : parameters.email }
   if( userData.lastname || userData.name){
-    var filter =  ("startswith(displayName,'" +(unescape(encodeURIComponent(userData.name)))+
-                  ((userData.secondName) ? (" " + userData.secondName) : '')+
-                  ((userData.lastname) ? (" " + userData.lastname) : '')+
-                  ((userData.secondLastname) ? (" " + userData.secondLastname) : '')+
+    var filter =  ("startswith(displayName,'" +
+                  ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.name))) : '')+
+                  ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')+
+                  ((parameters.lastname) ? (" " + unescape(encodeURIComponent(userData.lastname))) : '')+
+                  ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')+
                   + "')")
 
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
