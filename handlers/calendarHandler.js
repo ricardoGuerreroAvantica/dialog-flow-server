@@ -36,7 +36,7 @@ function showEventDetails(options,callback){
     message += "Your invites:"
     var invitesContext = commons.getContext(options.contexts, 'invites');
     if (!invitesContext){
-      options.message = options.speech = `There are no invitations yet.`;
+      options.message += `There are no invitations yet.`;
       callback(options);
     }
     var invites = invitesContext.parameters.invites;
