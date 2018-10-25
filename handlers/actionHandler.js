@@ -24,6 +24,10 @@ function parseAction(req, res, callback){
   console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
   switch (options.action) {
     
+
+
+    
+
     case 'search_User':
     Action.prototype.searchUser = userHandler.searchUser;
     //PRE
@@ -123,7 +127,9 @@ function parseAction(req, res, callback){
     case 'create_event_uninvite' :
       eventHandler.showInvites(options, callback);
       break;
-
+    case 'createEventBegin' :
+      calendarHandler.showEventDetails(options, callback);
+      break;
     ///////////////DEFAULT ANSWER///////////////
     default:
       this.options.message = 'Could you repeat that?';

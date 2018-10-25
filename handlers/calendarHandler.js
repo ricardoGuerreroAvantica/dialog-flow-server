@@ -13,6 +13,23 @@ function replaceSpecialCharacteres(name){
   return name
 }
 
+function showEventDetails(options,callback){
+  let space = commons.getChangeLine(options.source);
+  var eventContext = commons.getContext(options.contexts, 'createevent');
+  name = replaceSpecialCharacteres(name)
+  console.log(replaceSpecialCharacteres(name))
+  var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
+  var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+  if (duration.unit === 'h') duration.unit = 'hours';
+  else if(duration.unit === 'min') duration.unit = 'minutes';
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+  var message = name+" for "+ duration + space +'-----------------------'+space + "Will Start at  " +startDate + space + "Will End at:  " + endDate;
+  console.log(message)
+  options.message = message;
+  callback(options)
+}
+
 function scheduleMeeting(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
@@ -318,3 +335,4 @@ exports.checkMeetingTimes = checkMeetingTimes;
 exports.scheduleMeeting = scheduleMeeting;
 exports.showEvents = showEvents;
 exports.PrefindMeetingTimes = PrefindMeetingTimes;
+exports.showEventDetails = showEventDetails;
