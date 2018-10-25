@@ -16,17 +16,15 @@ function replaceSpecialCharacteres(name){
 function showEventDetails(options,callback){
   let space = commons.getChangeLine(options.source);
   var eventContext = commons.getContext(options.contexts, 'createevent');
+  console.log(JSON.stringify(eventContext));
   console.log("NAME ORIGINAL: " + name)
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
   console.log(replaceSpecialCharacteres(name))
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
-  if (duration.unit === 'h') duration.unit = 'hours';
-  else if(duration.unit === 'min') duration.unit = 'minutes';
-  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-  var message = name+" for "+ duration + space +'-----------------------'+space + "Will Start at  " +startDate + space + "Will End at:  " + endDate;
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('LLLL');
+  var message = "The event : " + name + "Will be created at: "+ space +startDate + space+"With a duration of: "+  duration.amount +" "+ duration.unit;
   console.log(message)
   options.message = message;
   callback(options)
