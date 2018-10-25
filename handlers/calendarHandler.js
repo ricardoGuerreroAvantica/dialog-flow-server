@@ -33,7 +33,7 @@ function showEventDetails(options,callback){
   }
   else{
     message += space +'-----------------------'+space;
-    message += "Your invites: "
+    message += "Your invites:"+space;
     var invitesContext = commons.getContext(options.contexts, 'invites');
     if (!invitesContext){
       message += "There are no invitations yet.";
@@ -41,11 +41,8 @@ function showEventDetails(options,callback){
       callback(options);
     }
     var invites = invitesContext.parameters.invites;
-    console.log("THE INVITES" + JSON.stringify(invites))
-    options.message = options.speech = `These are your current attendees \n\n`;
-    options.message += '-----------------------' + '\n\n';
     invites.forEach((invite) => {
-      options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+      message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
     });
   }
   console.log(message)
