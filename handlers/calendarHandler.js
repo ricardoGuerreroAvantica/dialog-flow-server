@@ -16,6 +16,8 @@ function replaceSpecialCharacteres(name){
 function showEventDetails(options,callback){
   let space = commons.getChangeLine(options.source);
   var eventContext = commons.getContext(options.contexts, 'createevent');
+  console.log("NAME ORIGINAL: " + name)
+  var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
   console.log(replaceSpecialCharacteres(name))
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
