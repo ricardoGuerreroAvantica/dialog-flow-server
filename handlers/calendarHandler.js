@@ -33,10 +33,11 @@ function showEventDetails(options,callback){
   }
   else{
     message += space +'-----------------------'+space;
-    message += "Your invites:"
+    message += "Your invites: "
     var invitesContext = commons.getContext(options.contexts, 'invites');
     if (!invitesContext){
-      options.message += `There are no invitations yet.`;
+      message += "There are no invitations yet.";
+      options.message = message;
       callback(options);
     }
     var invites = invitesContext.parameters.invites;
