@@ -90,7 +90,8 @@ function PrefindMeetingTimes(next, options, callback){
     var user = options.user;
     var time = options.parameters.time;
     console.log("FIRST RUN");
-    options.message += options.speech = "I found some space at: "+space+"-----------------------"+space;
+    options.message += options.speech = "I found some space at: "+space+"-----------------------"+space+"From:"+space;
+    
     time = options.parameters.time;
 
     
@@ -123,7 +124,7 @@ function PrefindMeetingTimes(next, options, callback){
                         commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
             console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
-              options.message += "From:"+space+timeSet
+              options.message += timeSet
             }
           });
           console.log("Meeetings: " + JSON.stringify(meetings));
@@ -138,7 +139,7 @@ function PrefindMeetingTimes(next, options, callback){
 
 function checkMeetingTimes(options, callback){
       let space = commons.getChangeLine(options.source);
-      if (options.message == "I found some space at: "+space+"-----------------------"+space){
+      if (options.message == "I found some space at: "+space+"-----------------------"+space+"From:"+space){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
         options.message = options.speech = "I didn't found space at the requested time, but i found some space at: "+space+"-----------------------"+space;
