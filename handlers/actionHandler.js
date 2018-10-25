@@ -127,7 +127,13 @@ function parseAction(req, res, callback){
     case 'create_event_uninvite' :
       eventHandler.showInvites(options, callback);
       break;
+
+    case 'Show_event_Info' :
+      options.simpleInfo = false;
+      calendarHandler.showEventDetails(options, callback);
+      break;
     case 'createEventBegin' :
+      options.simpleInfo = true;
       calendarHandler.showEventDetails(options, callback);
       break;
     ///////////////DEFAULT ANSWER///////////////

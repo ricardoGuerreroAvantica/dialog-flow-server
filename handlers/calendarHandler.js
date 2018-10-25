@@ -13,6 +13,9 @@ function replaceSpecialCharacteres(name){
   return name
 }
 
+
+
+
 function showEventDetails(options,callback){
   let space = commons.getChangeLine(options.source);
   var eventContext = commons.getContext(options.contexts, 'createevent');
@@ -25,7 +28,9 @@ function showEventDetails(options,callback){
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('LLLL');
   var message = "The Event : " + name + space +"Will be created at: " + startDate + space+"With a duration of: "+  duration.amount +" "+ duration.unit;
-  message += space +'-----------------------'+space +"Would you like to make any changes on the name, date, time or duration of the event? Or make some invites?, if you want to complete the creation only say \"Done\""
+  if (options.simpleInfo==true){
+    message += space +'-----------------------'+space +"Would you like to make any changes on the name, date, time or duration of the event? Or make some invites?, if you want to complete the creation only say \"Done\""
+  }
   console.log(message)
   options.message = message;
   callback(options)
