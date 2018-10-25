@@ -24,7 +24,8 @@ function showEventDetails(options,callback){
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('LLLL');
-  var message = "The event : " + name + "Will be created at: "+ space +startDate + space+"With a duration of: "+  duration.amount +" "+ duration.unit;
+  var message = "The Event : " + name + space +"Will be created at: "+ space + startDate + space+"With a duration of: "+  duration.amount +" "+ duration.unit;
+  message += space +'-----------------------'+space +"Would you like to make any changes on the name, date, time or duration of the event? Or make some invites?, if you want to complete the creation only say "Done""
   console.log(message)
   options.message = message;
   callback(options)
