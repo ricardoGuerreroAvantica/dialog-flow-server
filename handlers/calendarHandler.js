@@ -31,6 +31,22 @@ function showEventDetails(options,callback){
   if (options.simpleInfo==true){
     message += space +'-----------------------'+space +"Would you like to make any changes on the name, date, time or duration of the event? Or make some invites?, if you want to complete the creation only say \"Done\""
   }
+  else{
+    message += space +'-----------------------'+space;
+    message += "Your invites:"
+    var invitesContext = commons.getContext(options.contexts, 'invites');
+    if (!invitesContext){
+      options.message = options.speech = `There are no invitations yet.`;
+      callback(options);
+    }
+    var invites = invitesContext.parameters.invites;
+    console.log("THE INVITES" + JSON.stringify(invites))
+    options.message = options.speech = `These are your current attendees \n\n`;
+    options.message += '-----------------------' + '\n\n';
+    invites.forEach((invite) => {
+      options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n\n';
+    });
+  }
   console.log(message)
   options.message = message;
   callback(options)
