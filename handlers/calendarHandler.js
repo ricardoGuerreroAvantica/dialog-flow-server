@@ -119,11 +119,11 @@ function PrefindMeetingTimes(next, options, callback){
             console.log("THE MEETING: " + JSON.stringify(meeting));
             console.log(meeting.meetingTimeSlot.start.dateTime);
             console.log(meeting.meetingTimeSlot.end.dateTime);
-            let timeSet = "From: "+ commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
+            let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
                         commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
             console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
-              options.message += timeSet
+              options.message += "From:"+space+timeSet
             }
           });
           console.log("Meeetings: " + JSON.stringify(meetings));
