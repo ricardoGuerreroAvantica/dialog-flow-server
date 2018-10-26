@@ -60,7 +60,7 @@ function validSession(next, req, res, callback){
 
 function filter(jsonObject) {
   console.log("Users_data: "+JSON.stringify(jsonObject))
-  return jsonObject.name != "createevent" && jsonObject.name != "invites"&& jsonObject.name != "helperhandler";
+  return jsonObject.name != "createevent" && jsonObject.name != "invites"&& jsonObject.name != "helperhandler" && jsonObject.name != "check_available_context";
 }
 
 //CHECK IF USER LOGED IN
