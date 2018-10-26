@@ -59,6 +59,7 @@ function validSession(next, req, res, callback){
 }
 
 function filter(jsonObject) {
+  console.log("Users_data: "+JSON.stringify(jsonObject))
   return jsonObject.name != "createevent" && jsonObject.name != "invites"&& jsonObject.name != "helperhandler";
 }
 
