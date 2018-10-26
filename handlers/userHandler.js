@@ -75,10 +75,11 @@ function preSearchUser(next, options, callback){
 
 //If the user exists, it will change the message to Ask for the next parameter(Date)
 function checkUser(options, callback){
-  if(!options.user){
+  if(options.user){
     options.message = "What is the date?"
     callback(options);
   }
+  callback(options);
 }
 
 
