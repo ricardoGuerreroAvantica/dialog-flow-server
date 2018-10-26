@@ -73,6 +73,15 @@ function preSearchUser(next, options, callback){
   }
 }
 
+//If the user exists, it will change the message to Ask for the next parameter(Date)
+function checkUser(options, callback){
+  if(!options.user){
+    options.message = "What is the date?"
+    callback(options);
+  }
+}
+
+
 function searchUser(next, options, callback){
   var parameters = options.parameters;
   console.log("searchUser.user: " + JSON.stringify(options.user))
@@ -201,3 +210,4 @@ function helper(options, callback){
 exports.preSearchUser = preSearchUser;
 exports.searchUser = searchUser;
 exports.helper = helper;
+exports.checkUser = checkUser;

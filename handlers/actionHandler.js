@@ -128,12 +128,13 @@ function parseAction(req, res, callback){
       eventHandler.showInvites(options, callback);
       break;
     case 'check_available_Only_name' :
-        Action.prototype.searchUser = userHandler.searchUser;
+        Action.prototype.checkUser = userHandler.checkUser;
         //PRE
         Action.pre('searchUser', authenticate.refreshToken)
         .pre('searchUser',userHandler.preSearchUser)
+        .pre('searchUser',userHandler.searchUser)
         var action = new Action();
-        action.searchUser(options, callback);
+        action.checkUser(options, callback);
       break;
 
     case 'Show_event_Info' :
