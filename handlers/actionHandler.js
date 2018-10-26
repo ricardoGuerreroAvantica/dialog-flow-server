@@ -127,6 +127,15 @@ function parseAction(req, res, callback){
     case 'create_event_uninvite' :
       eventHandler.showInvites(options, callback);
       break;
+    case 'check_available_Only_name' :
+        Action.prototype.searchUser = userHandler.searchUser;
+        //PRE
+        options.message = "Please enter the date."
+        Action.pre('searchUser',userHandler.preSearchUser)
+        .pre('searchUser', authenticate.refreshToken)
+        var action = new Action();
+        action.searchUser(options, callback);
+      break;
 
     case 'Show_event_Info' :
       options.simpleInfo = false;
