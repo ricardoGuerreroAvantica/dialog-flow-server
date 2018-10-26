@@ -42,9 +42,10 @@ function parseAction(req, res, callback){
     case 'calendar_user_available_simple' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       //PRE
-      console.log("calendar_user_available_simple.parameters"+JSON.stringify(options.parameters))
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
+      .pre('checkMeetingTimes',userHandler.preSearchUser)
+      .pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
       action.checkMeetingTimes(options, callback);
