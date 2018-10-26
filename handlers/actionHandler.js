@@ -130,8 +130,8 @@ function parseAction(req, res, callback){
     case 'check_available_Only_name' :
         Action.prototype.searchUser = userHandler.searchUser;
         //PRE
-        Action.pre('searchUser',userHandler.preSearchUser)
-        .pre('searchUser', authenticate.refreshToken)
+        Action.pre('searchUser', authenticate.refreshToken)
+        .pre('searchUser',userHandler.preSearchUser)
         var action = new Action();
         action.searchUser(options, callback);
       break;
