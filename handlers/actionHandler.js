@@ -39,6 +39,18 @@ function parseAction(req, res, callback){
 
 
     ///////////////FIND MEETING TIME///////////////
+    case 'calendar_user_available_simple' :
+      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
+      //PRE
+      
+      Action.pre('checkMeetingTimes', authenticate.refreshToken)
+      .pre('checkMeetingTimes', calendarHandler.userData)
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
+      var action = new Action();
+      action.checkMeetingTimes(options, callback);
+      console.log("THE END")
+      break;
+    
     case 'calendar_user_available' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       //PRE
@@ -52,7 +64,6 @@ function parseAction(req, res, callback){
       action.checkMeetingTimes(options, callback);
       console.log("THE END")
       break;
-
     ///////////////SHOW EVENTS///////////////
     case 'helper' :
     console.log("enter helped");
