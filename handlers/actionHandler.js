@@ -27,17 +27,6 @@ function parseAction(req, res, callback){
 
 
     
-
-    case 'search_User':
-    Action.prototype.searchUser = userHandler.searchUser;
-    //PRE
-    Action.pre('searchUser',userHandler.preSearchUser)
-    .pre('searchUser', authenticate.refreshToken)
-    var action = new Action();
-    action.searchUser(options, callback);
-    break;
-
-
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available_simple' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
