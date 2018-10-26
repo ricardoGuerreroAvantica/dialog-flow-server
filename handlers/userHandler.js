@@ -59,6 +59,7 @@ function preSearchUser(next, options, callback){
         mail : response.data.value[0].mail,
         surname : response.data.value[0].surname,
         }
+        console.log(options.user)
       }
         next(options, callback);
       })
