@@ -21,6 +21,12 @@ function preSearchUser(next, options, callback){
                   ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
                   + "')")
 
+    console.log("HEADERS"+JSON.stringify({
+      'Content-Type': 
+      'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + options.access_token
+    }))
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph:  "+url+filter)
     axios.get(url + filter, {
@@ -68,7 +74,7 @@ function preSearchUser(next, options, callback){
   }
   catch(err){
     console.log(err)
-  }  
+  }
 }
 
 function searchUser(next, options, callback){
