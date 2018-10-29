@@ -31,6 +31,7 @@ function parseAction(req, res, callback){
     case 'calendar_user_available_simple' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       //PRE
+      console.log("The message" + options.message)
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes',userHandler.preSearchUser)
