@@ -43,9 +43,11 @@ function preSearchUser(next, options, callback){
         for(i = 0; i < response.data.value.length; i++ ){
           console.log(response.data.value[i])
           if ( i!= response.data.value.length-1){
+            console.log("The response data" + response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
+            console.log("The response data" + response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
