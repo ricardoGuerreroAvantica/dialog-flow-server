@@ -273,7 +273,7 @@ function showEventsOnDate(options, callback){
         options.message += 'Subject        : '    + event.subject +space;
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'to be announced') + '\n\n';
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
