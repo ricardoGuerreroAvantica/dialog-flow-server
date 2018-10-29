@@ -86,7 +86,7 @@ function scheduleMeeting(options, callback){
     options.message += '-----------------------' + '\n\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n\n' +
-          ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'Location: to be announced') + '\n\n' +
+          ((response.location && response.location.displayName) ? ('Location: ' + response.location.displayName) : 'to be announced') + '\n\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n\n';
     if (response.attendees && response.attendees.length > 0){
       options.message += '\n\n';
@@ -273,7 +273,7 @@ function showEventsOnDate(options, callback){
         options.message += 'Subject        : '    + event.subject +space;
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
@@ -333,7 +333,7 @@ function showEvents(options, callback){
         options.message += 'Subject        : '    + event.subject +space;
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'Location: to be announced') + '\n\n';
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
       });
       //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
