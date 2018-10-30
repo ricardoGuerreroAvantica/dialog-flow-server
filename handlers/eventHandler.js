@@ -7,6 +7,7 @@ function inviteUser(options, callback){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
     console.log("inviteUser.Context: " + JSON.stringify(options, null, 2) )
+    console.log("inviteUser.options.user: " + JSON.stringify(options.user) )
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
