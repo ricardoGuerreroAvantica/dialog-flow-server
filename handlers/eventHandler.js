@@ -16,6 +16,7 @@ function inviteUser(options, callback){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
         context.parameters.invites.forEach((invite) => {
+          console.log(user.email +" Equal " + invite.emailAddress.address)
           if (user.email === invite.emailAddress.address){
             options.message = options.speech = user.displayName + ' is already invited';
             //console.log(user.displayName + ' is already invited \n\n');
