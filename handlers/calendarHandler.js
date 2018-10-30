@@ -91,7 +91,6 @@ function scheduleMeeting(options, callback){
     if (response.attendees && response.attendees.length > 0){
       options.message += '\n\n';
       options.message += 'Invites: \n\n';
-      options.message += '-----------------' + '\n\n';
       response.attendees.forEach((attendee) => {
         options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n\n';
       });
