@@ -16,11 +16,12 @@ function inviteUser(options, callback){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
         context.parameters.invites.forEach((invite) => {
-          console.log("inviteUser.options.user: " + JSON.stringify(options.user))
-          console.log(JSON.stringify(user.mail) + " Equal " + JSON.stringify(invite.emailAddress.address))
-          console.log(JSON.stringify(user.mail) === JSON.stringify(invite.emailAddress.address))
-          console.log(JSON.stringify(user.mail) == JSON.stringify(invite.emailAddress.address))
-          if (JSON.stringify(user.mail) === JSON.stringify(invite.emailAddress.address)){
+
+          let userEntry = new String(user.mail);
+          let userStored = new String(invite.emailAddress.address);
+          var isEquel = JSON.stringify(userEntry) === JSON.stringify(userStored);
+          console.log(userEntry+" === "+ userStored + " : "+isEquel)
+          if (isEquel){
             options.message = options.speech = user.displayName + ' is already invited';
             //console.log(user.displayName + ' is already invited \n\n');
             callback(options);
