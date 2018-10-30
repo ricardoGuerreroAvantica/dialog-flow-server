@@ -7,7 +7,6 @@ function inviteUser(options, callback){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
     console.log("inviteUser.Context: " + JSON.stringify(options, null, 2) )
-    console.log("inviteUser.options.user: " + JSON.stringify(options.user) )
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
@@ -17,7 +16,8 @@ function inviteUser(options, callback){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
         context.parameters.invites.forEach((invite) => {
-          console.log(user.email +" Equal " + invite.emailAddress.address)
+          console.log("inviteUser.options.user: " + JSON.stringify(options.user))
+          console.log(user.mail + " Equal " + invite.emailAddress.address)
           if (user.email === invite.emailAddress.address){
             options.message = options.speech = user.displayName + ' is already invited';
             //console.log(user.displayName + ' is already invited \n\n');
