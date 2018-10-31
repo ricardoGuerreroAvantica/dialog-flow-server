@@ -26,7 +26,10 @@ function showEventDetails(options,callback){
   console.log(replaceSpecialCharacteres(name))
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  console.log(date)
+
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('LLLL');
+  console.log(startDate)
   var message = name + ' will be created:' + '\n\n';
   message += 'At: ' + startDate  + " with a duration of: "+  duration.amount +" "+ duration.unit+ '\n\n';
   if (options.simpleInfo==true){
