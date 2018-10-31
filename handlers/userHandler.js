@@ -208,10 +208,10 @@ function helper(options, callback){
   }
   if (options.parameters.helperId == "eventInfo"){
     options.message = "After you start the event creation you can see your event information using this:"
-                      +space+space+"▶ how to see my event body ?"
-                      +space+space+"▶ how to see my event info?"
-                      +space+space+"▶ How can i see my event info?"
-                      +space+space+"▶ how to see my event structure?";  
+                      +space+space+"▶ Show my event body"
+                      +space+space+"▶ Show Information"
+                      +space+space+"▶ How does my event look?"
+                      +space+space+"▶ My event information";  
   }
   callback(options);
 }
