@@ -178,7 +178,7 @@ function helper(options, callback){
                       +space+space+"▶ How to check my events?"
                       +space+space+"▶ How can I invite someone?"
                       +space+space+"▶ How can to see my event information?"
-                      +space+space+"▶ How can change my event information?";
+                      +space+space+"▶ How can I change my event information?";
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
