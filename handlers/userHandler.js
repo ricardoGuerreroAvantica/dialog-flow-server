@@ -216,7 +216,7 @@ function helper(options, callback){
                       +space+space+"▶ My event information";  
   }
   if (options.parameters.helperId == "updateEventInfo"){
-    options.message = "After you start the event creation you can change your event information using this:"
+    options.message = "After you start the event creation, you can change your event information using this:"
                       +space+space+"▶ Change the name to [new name]"
                       +space+space+"▶ Change the date to [new date]"
                       +space+space+"▶ Change the time to [new time]"
