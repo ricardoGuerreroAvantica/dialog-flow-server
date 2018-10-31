@@ -28,12 +28,13 @@ function showEventDetails(options,callback){
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   console.log("date: "+date)
 
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('LLLL');
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('MMMM Do YYYY');
+  var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
-  var message = name + ' will be created:' + '\n\n';
-  message += 'At: ' + startDate  + " with a duration of: "+  duration.amount +" "+ duration.unit+ '\n\n';
+  var message = "The event "+name + ' will be created on ' +startDate+ '\n\n';
+  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+ '\n\n';
   if (options.simpleInfo==true){
-    message += space +'-----------------------'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"And to complete the creation only say \"DONE\", for more information ask me for \"HELP\" "
+    message += space +'-----------------------'+space +"Remember You can:"+space+"- Change the name, date, time or duration of the event."+space+"- Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information"
   }
   else{
     message += space +'-----------------------'+space;
