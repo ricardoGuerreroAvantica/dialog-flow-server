@@ -197,7 +197,7 @@ function helper(options, callback){
                       +space+space+"▶ Add Ricardo Guerrero"  
                       +space+space+"▶ remove Ricardo Guerrero"                
                       +space+space+"▶ Invite ricardo.guerrero@avantica.net"
-                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net";                      ;   
+                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net";  
   }
   if (options.parameters.helperId == "myEvents"){
     options.message = "You can see your events from a date or a period using this:"
@@ -206,7 +206,13 @@ function helper(options, callback){
                       +space+space+"▶ Show me my events from monday to friday"
                       +space+space+"▶ Show any events called wellness program";  
   }
-  
+  if (options.parameters.helperId == "eventInfo"){
+    options.message = "After you start the event creation you can see your event information using this:"
+                      +space+space+"▶ how to see my event body ?"
+                      +space+space+"▶ how to see my event info?"
+                      +space+space+"▶ How can i see my event info?"
+                      +space+space+"▶ how to see my event structure?";  
+  }
   callback(options);
 }
 
