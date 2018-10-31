@@ -176,7 +176,9 @@ function helper(options, callback){
                       +space+space+"▶ How to create an event?"
                       +space+space+"▶ How to check if someone is available?"
                       +space+space+"▶ How to check my events?"
-                      +space+space+"▶ How can i invite someone?";
+                      +space+space+"▶ How can I invite someone?"
+                      +space+space+"▶ How can to see my event information?"
+                      +space+space+"▶ How can change my event information?";
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
@@ -212,6 +214,13 @@ function helper(options, callback){
                       +space+space+"▶ Show Information"
                       +space+space+"▶ How does my event look?"
                       +space+space+"▶ My event information";  
+  }
+  if (options.parameters.helperId == "updateEventInfo"){
+    options.message = "After you start the event creation you can change your event information using this:"
+                      +space+space+"▶ Change the name to [new name]"
+                      +space+space+"▶ Change the date to [new date]"
+                      +space+space+"▶ Change the time to [new time]"
+                      +space+space+"▶ Change the duration to [new duration]";  
   }
   callback(options);
 }
