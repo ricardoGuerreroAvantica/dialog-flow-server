@@ -28,7 +28,7 @@ function showEventDetails(options,callback){
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   console.log("date: "+date)
 
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('MMMM Do YYYY');
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
   var message = "The event "+name + ' will be created on ' +startDate+ '\n\n';
