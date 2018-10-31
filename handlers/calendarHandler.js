@@ -34,7 +34,7 @@ function showEventDetails(options,callback){
   var message = "The event "+name + ' will be created on ' +startDate+ '\n\n';
   message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+ '\n\n';
   if (options.simpleInfo==true){
-    message += space +'-----------------------'+space +"Remember You can:"+space+"- Change the name, date, time or duration of the event."+space+"- Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information"
+    message += space +'-----------------------'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information"
   }
   else{
     message += space +'-----------------------'+space;
