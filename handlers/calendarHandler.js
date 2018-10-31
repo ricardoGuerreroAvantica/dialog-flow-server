@@ -28,10 +28,9 @@ function showEventDetails(options,callback){
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('LLLL');
   var message = name + ' will be created:' + '\n\n';
-  message += '-----------------------' + '\n\n';
   message += 'At: ' + startDate  + "With a duration of: "+  duration.amount +" "+ duration.unit+ '\n\n';
   if (options.simpleInfo==true){
-    message += space +'-----------------------'+space +"▶ Remember You can:"+space+" ▶ Change the name, date, time or duration of the event."+space+"▶ make some invites "+space+"And to complete the creation only say \"Done\" "
+    message += space +'-----------------------'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"And to complete the creation only say \"DONE\", for more information ask me for \"HELP\" "
   }
   else{
     message += space +'-----------------------'+space;
