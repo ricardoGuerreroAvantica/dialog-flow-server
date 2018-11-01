@@ -151,7 +151,7 @@ function signIn(req, res){
       if (!error) {
         tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
         console.log(__dirname + '/signIn.html')
-        return res.sendFile('/signIn.html');
+        return res.sendFile(__dirname + '/signIn.html');
       }else{
         //console.log(JSON.parse(error.data).error_description);
         res.status(500);
