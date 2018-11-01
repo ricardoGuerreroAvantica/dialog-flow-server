@@ -150,7 +150,7 @@ function signIn(req, res){
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
         tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
-        return res.json({ response : { description : "Login Successful" } });
+        return res.sendFile(__dirname + '/signIn.html');
       }else{
         //console.log(JSON.parse(error.data).error_description);
         res.status(500);
