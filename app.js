@@ -8,7 +8,7 @@ var routes = require('./routes/index');
 
 var app = express();
 
-
+app.use(express.static('public/images'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
