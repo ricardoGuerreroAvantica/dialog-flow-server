@@ -328,14 +328,15 @@ function showEvents(options, callback){
   .then((response) => {
     var events = response.data.value;
     if (events.length > 0){
-      options.message = options.speech = 'Found these events:'+space;
+      options.message = options.speech = 'Found these events:\n';
       events.forEach((event) => {
         options.message += '-----------------------' +space;
         options.message += 'Subject        : '    + event.subject +space;
+        options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : 'to be announced') + space;
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
+        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + space;
+        options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });
       //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
