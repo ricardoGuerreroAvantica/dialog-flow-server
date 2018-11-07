@@ -56,6 +56,7 @@ function showEventDetails(options,callback){
 }
 
 function scheduleMeeting(options, callback){
+  let space = commons.getChangeLine(options.source);
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
