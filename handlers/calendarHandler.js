@@ -332,7 +332,7 @@ function showEvents(options, callback){
       events.forEach((event) => {
         options.message += '-----------------------' +space;
         options.message += 'Subject        : '    + event.subject +space;
-        options.message += 'Date           : '  + moment((parameters.date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')
+        options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+space;
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + space;
