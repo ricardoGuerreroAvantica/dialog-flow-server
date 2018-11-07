@@ -14,6 +14,10 @@ function preSearchUser(next, options, callback){
     secondLastname : parameters.secondLastname,
     email : parameters.email }
   if( userData.lastname || userData.name){
+    console.log("Name :" + (parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : '')
+    console.log("secondName :" + (parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')
+    console.log("lastname :" + (parameters.lastname) ? (" " + unescape(encodeURIComponent(userData.lastname))) : '')
+    console.log("secondLastname :" + (parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
     var filter =  ("startswith(displayName,'" +
                   ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : '')+
                   ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')+
