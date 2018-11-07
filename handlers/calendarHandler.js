@@ -331,7 +331,7 @@ function showEvents(options, callback){
     if (events.length > 0){
       options.message = options.speech = 'Found these events:\n';
       events.forEach((event) => {
-        options.message += '-----------------------' +space;
+        options.message += '\n-----------------------' +space;
         options.message += 'Subject        : '    + event.subject +space;
         options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+space;
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
