@@ -32,9 +32,9 @@ function showEventDetails(options,callback){
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
   var message = "The event "+name + ' will be created on ' +startDate+ space;
-  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+ space;
+  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ space;
   if (options.simpleInfo==true){
-    message += space +'-----------------------'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information"
+    message += space +'-----------------------'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
   }
   else{
     message += space +'-----------------------'+space;
@@ -119,10 +119,6 @@ function userData(next,options, callback){
     }
   })
   .then((response) => {
-    console.log("_________________________________________________")
-    console.log(JSON.stringify(response.data));
-    console.log("_________________________________________________")
-
     options.userName = response.data.displayName;
     next(options, callback);
   })
@@ -271,14 +267,15 @@ function showEventsOnDate(options, callback){
   .then((response) => {
     var events = response.data.value;
     if (events.length > 0){
-      options.message = options.speech = 'Found these events:'+space;
+      options.message = options.speech = 'Found these events:\n';
       events.forEach((event) => {
         options.message += '-----------------------' +space;
         options.message += 'Subject        : '    + event.subject +space;
+        options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +space;
         options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +space;
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + space;
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name +space;
+        options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });
       console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
