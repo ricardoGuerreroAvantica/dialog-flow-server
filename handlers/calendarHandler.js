@@ -33,10 +33,11 @@ function showEventDetails(options,callback){
   console.log("start: "+startDate)
   if(options.source== 'ios'){
     var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
+    Console.log(message);
   }
   else{
     var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
-
+    console.log(message)
   }
   if (options.simpleInfo==true){
     message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
@@ -237,8 +238,14 @@ function checkMeetingTimes(options, callback){
             console.log("Meeetings: " + JSON.stringify(meetings));
             callback(options);
           }else{
+            if(response.emptySuggestionsReason == "Unknown"){
+              options.message = "Couldn't access to " + options.user.displayName + " calendar, the calendar of this employee may be restricted."
+            }
+            else{
+
+            }
             console.log("Didnt find any available time at:" + time);
-              options.message = "Didn't find any available slot in this employee the calendar, can you try again with other time?"
+              options.message = "Didn't find any available slot in the calendar of"+ options.user.displayName +"."
               callback(options);
           }
         })
