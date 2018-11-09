@@ -270,7 +270,7 @@ function showEventsOnDate(options, callback){
     if (events.length > 0){
       options.message = options.speech = 'Found these events:\n';
       events.forEach((event) => {
-        options.message += '\n'+'▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀' +'\n';
+        options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
         options.message += 'Subject        : '    + event.subject +'\n';
         options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')+'\n';
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +'\n';
@@ -331,7 +331,7 @@ function showEvents(options, callback){
     if (events.length > 0){
       options.message = options.speech = 'Found these events:\n';
       events.forEach((event) => {
-        options.message += '\n'+'▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀' +'\n';
+        options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
         options.message += 'Subject        : '    + event.subject +'\n';
         options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+'\n';
         options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +'\n';
