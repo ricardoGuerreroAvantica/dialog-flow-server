@@ -31,10 +31,9 @@ function showEventDetails(options,callback){
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
-  var message = "The event : "+name + ', will be created on ' +startDate+ '\n';
-  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
+  var message = "The event : "+name + ', will be created on ' +startDate+ 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
   if (options.simpleInfo==true){
-    message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
+    message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
   }
   else{
     message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
