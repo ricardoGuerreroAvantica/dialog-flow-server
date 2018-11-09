@@ -31,7 +31,7 @@ function showEventDetails(options,callback){
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
-  if(this.options.source== 'ios'){
+  if(options.source== 'ios'){
     var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
   }
   else{
