@@ -242,10 +242,9 @@ function checkMeetingTimes(options, callback){
               options.message = "Couldn't access to " + options.user.displayName + " calendar, the calendar of this employee may be restricted."
             }
             else{
-
-            }
-            console.log("Didnt find any available time at:" + time);
+              console.log("Didnt find any available time at:" + response.emptySuggestionsReason);
               options.message = "Didn't find any available slot in the calendar of"+ options.user.displayName +"."
+            }
               callback(options);
           }
         })
