@@ -243,7 +243,7 @@ function checkMeetingTimes(options, callback){
             }
             else{
               console.log("Didnt find any available time at:" + response.emptySuggestionsReason);
-              options.message = "Didn't find any available slot in the calendar of"+ options.user.displayName +"."
+              options.message = "Didn't find any available slot in the calendar of "+ options.user.displayName +"."
             }
               callback(options);
           }
