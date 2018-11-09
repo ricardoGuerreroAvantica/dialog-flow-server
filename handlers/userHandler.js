@@ -43,7 +43,7 @@ function preSearchUser(next, options, callback){
         next(options, callback);
       }
       if (response.data.value.length > 1){
-        options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯n"
+        options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
           console.log(response.data.value[i])
           if ( i!= response.data.value.length-1){
