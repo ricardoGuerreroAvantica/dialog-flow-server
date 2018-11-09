@@ -24,9 +24,6 @@ function parseAction(req, res, callback){
   console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
   switch (options.action) {
     
-
-
-    
     ///////////////FIND MEETING TIME///////////////
     case 'calendar_user_available_simple' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
