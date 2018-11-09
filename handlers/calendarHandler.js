@@ -31,14 +31,14 @@ function showEventDetails(options,callback){
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
   console.log("start: "+startDate)
-  var message = "The event "+name + ' will be created on ' +startDate+ space;
-  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ space;
+  var message = "The event "+name + ' will be created on ' +startDate+ '\n';
+  message += 'At: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
   if (options.simpleInfo==true){
-    message += space +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+space +"Remember You can:"+space+"▶ Change the name, date, time or duration of the event."+space+"▶ Make some invites."+space+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
+    message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
   }
   else{
-    message += space +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+space;
-    message += "Your invites:"+space;
+    message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
+    message += "Your invites:"+'\n';
     var invitesContext = commons.getContext(options.contexts, 'invites');
     if (!invitesContext){
       message += "There are no invitations yet.";
@@ -88,17 +88,17 @@ function scheduleMeeting(options, callback){
     }
 
     console.log('scheduleMeeting.response : ' + response);
-    options.message = options.speech = response.subject + ' created' + space;
-    options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + space;
-    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + space +
-          'Ends at: ' + commons.parseDate(response.end.dateTime) + space +
-          'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + space +
-          'Organizer: ' + response.organizer.emailAddress.name + space;
+    options.message = options.speech = response.subject + ' created' + '\n';
+    options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
+    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
+          'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
+          'Organizer: ' + response.organizer.emailAddress.name + '\n';
     if (response.attendees && response.attendees.length > 0){
-      options.message += space;
+      options.message += '\n';
       options.message += 'Invites: \n\n';
       response.attendees.forEach((attendee) => {
-        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + space;
+        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n';
       });
     }
 
@@ -140,7 +140,7 @@ function PrefindMeetingTimes(next, options, callback){
     var user = options.user;
     var time = options.parameters.time;
     console.log("FIRST RUN");
-    options.message += options.speech = "I found some space at: "+space+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+space+"From:"+space;
+    options.message += options.speech = "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n';
     
     time = options.parameters.time;
 
@@ -171,7 +171,7 @@ function PrefindMeetingTimes(next, options, callback){
             console.log(meeting.meetingTimeSlot.start.dateTime);
             console.log(meeting.meetingTimeSlot.end.dateTime);
             let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
-                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
+                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n';
             console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
               options.message += timeSet
@@ -189,10 +189,10 @@ function PrefindMeetingTimes(next, options, callback){
 
 function checkMeetingTimes(options, callback){
       let space = commons.getChangeLine(options.source);
-      if (options.message == "I found some space at: "+space+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+space+"From:"+space){
+      if (options.message == "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n'){
         //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
         //with more extense time margin:
-        options.message = options.speech = "I didn't found space at the requested time, but I found some space at: "+space+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+space;
+        options.message = options.speech = "I didn't found space at the requested time, but I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n';
         
         var parameters = options.parameters;
         var date = parameters.date;
@@ -223,7 +223,7 @@ function checkMeetingTimes(options, callback){
             meetings.forEach((meeting) => {
               console.log("THE MEETING: " + JSON.stringify(meeting));
               let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + space;
+                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n';
               console.log(!options.message.includes(timeSet) +"New message =" + timeSet)       
               if(!options.message.includes(timeSet)){
                 options.message += timeSet
