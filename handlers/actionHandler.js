@@ -18,16 +18,13 @@ function parseAction(req, res, callback){
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
-  console.log("////////////////////////////////////////////////////////////////////////////////////")
-  console.log("START CONTEXTS: " +JSON.stringify(options.contexts))
-
-  console.log("//////////////////////////////// "+options.action+" ////////////////////////////////")
+  console.log("Case: " +JSON.stringify(options.action))
   switch (options.action) {
     
-    ///////////////FIND MEETING TIME///////////////
+    //Case: calendar_user_available_simple
+    //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available_simple' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
-      //PRE
       console.log("The message" + options.message)
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
@@ -36,13 +33,12 @@ function parseAction(req, res, callback){
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
       action.checkMeetingTimes(options, callback);
-      console.log("THE END")
       break;
     
+    //Case: calendar_user_available
+    //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
-      //PRE
-      
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes',userHandler.preSearchUser)
@@ -50,82 +46,78 @@ function parseAction(req, res, callback){
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
       action.checkMeetingTimes(options, callback);
-      console.log("THE END")
       break;
-    ///////////////SHOW EVENTS///////////////
+
+    //Case: helper
+    //Description: This case is trigger when the user ask for "Help" 
     case 'helper' :
-    console.log("enter helped");
       userHandler.helper(options, callback);
       break;
-    ///////////////SHOW EVENTS///////////////
-    case 'show_events' :
-      //HOOK
-      Action.prototype.showEvents = calendarHandler.showEvents;
-      //PRE
-      Action.pre('showEvents', authenticate.refreshToken);
 
+    //Case: show_events
+    //Description: This case is trigger when the user ask for "Show my events" 
+    case 'show_events' :
+      Action.prototype.showEvents = calendarHandler.showEvents;
+      Action.pre('showEvents', authenticate.refreshToken);
       var action = new Action();
       action.showEvents(options, callback);
       break;
 
-    ///////////////SHOW EVENTS///////////////
+    //Case: show_events_on_date
+    //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
-      //HOOK
       Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
-      //PRE
       Action.pre('showEventsOnDate', authenticate.refreshToken);
 
       var action = new Action();
       action.showEventsOnDate(options, callback);
       break;
 
-    ///////////////SHOW LOCATIONS///////////////
+    //Case: show_locations
+    //Description: #Currently the bot dont handle locations.
     case 'show_locations' :
-      //HOOK
       Action.prototype.showLocations = locationHandler.showLocations;
-      //PRE
       Action.pre('showLocations', authenticate.refreshToken);
-
       var action = new Action();
       action.showLocations(options, callback);
       break;
 
 
-    ///////////////SCHEDULE A MEETING - INVITE USER ///////////////
+    //Case: create_event_finish
+    //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-      //HOOK
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
-      //PRE
       Action.pre('scheduleMeeting', authenticate.refreshToken);
-
       var action = new Action();
       action.scheduleMeeting(options, callback);
       break;
-    ///////////////SCHEDULE A MEETING - INVITE USER ///////////////
+    
+    //Case: create_event_invite
+    //Description: This case is trigger when the user ask for "invite [name]"
     case 'create_event_invite' :
       Action.prototype.inviteUser = eventHandler.inviteUser;
-      
-      //PRE
       Action.pre('inviteUser', authenticate.refreshToken)
         .pre('inviteUser',userHandler.preSearchUser)
         .pre('inviteUser', userHandler.searchUser);
       console.log("Procced to invite user")
       var action = new Action();
       action.inviteUser(options, callback);
-
       break;
-    ///////////////SCHEDULE A MEETING - UNINVITE USER ///////////////
+
+    //Case: create_event_uninvite
+    //Description: This case is trigger when the user ask for "Uninvite [name]"
     case 'create_event_uninvite' :
       eventHandler.deleteInvite(options, callback);
       break;
-    ///////////////SCHEDULE A MEETING - SHOW INVITES USER ///////////////
+    
+    //Case: create_event_show_invites
+    //Description: This case is trigger when the user ask for "Show my invites", and the bot proceed to show all the current invites for the event.
     case 'create_event_show_invites' :
       eventHandler.showInvites(options, callback);
       break;
-    ///////////////SCHEDULE A MEETING - SHOW INVITES USER ///////////////
-    case 'create_event_uninvite' :
-      eventHandler.showInvites(options, callback);
-      break;
+
+    //Case: check_available_Only_name
+    //Description: this case is trigger when the user search for a employee using only the name of the employee
     case 'check_available_Only_name' :
         Action.prototype.checkUser = userHandler.checkUser;
         //PRE
@@ -136,15 +128,22 @@ function parseAction(req, res, callback){
         action.checkUser(options, callback);
       break;
 
+    //Case: Show_event_Info
+    //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
       options.simpleInfo = false;
       calendarHandler.showEventDetails(options, callback);
       break;
+
+    //Case: createEventBegin
+    //Description: This case is trigger when all the information of the event creation is collected and then proced to show the event body to the user
     case 'createEventBegin' :
       options.simpleInfo = true;
       calendarHandler.showEventDetails(options, callback);
       break;
-    ///////////////DEFAULT ANSWER///////////////
+
+    //Case: Default Answer
+    //Description: This is the default answer sended when there is no other case that match the request case.
     default:
       this.options.message = 'Could you repeat that?';
       this.options.speech = 'Could you repeat that?';
