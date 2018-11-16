@@ -238,7 +238,7 @@ function checkMeetingTimes(options, callback){
             callback(options);
           }else{
             if(response.emptySuggestionsReason == "Unknown"){
-              options.message = "Couldn't access to " + options.user.displayName + " calendar, the calendar of this employee may be restricted."
+              options.message = "Couldn't access to " + options.user.displayName + " shedule, the calendar of this employee may be restricted at this time."
             }
             else{
               console.log("Didnt find any available time at:" + response.emptySuggestionsReason);
