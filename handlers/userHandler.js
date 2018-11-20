@@ -102,9 +102,13 @@ function searchUser(next, options, callback){
       secondLastname : parameters.secondLastname,
       email : parameters.email }
   
-    
+    console.log(userData.lastname !='')
+    console.log("lastname : parameters.lastname "+parameters.lastname)
+    console.log("parameters.secondName "+parameters.secondName)
+    console.log("parameters.secondLastname"+parameters.secondLastname)
+    console.log("parameters.email "+parameters.email )
     var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
-    ((userData.lastname) ? (((unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" ): '') +
+    ((userData.lastname && userData.lastname !='') ? (((unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" ): '') +
     ((userData.email) ? ((unescape(encodeURIComponent(userData.lastname)) || unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(mail,'" + unescape(encodeURIComponent(userData.email)) + "')" : '');
         
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
