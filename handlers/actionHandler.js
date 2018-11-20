@@ -21,20 +21,6 @@ function parseAction(req, res, callback){
   console.log("Case: " +JSON.stringify(options.action))
   switch (options.action) {
     
-    //Case: calendar_user_available_simple
-    //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
-    case 'calendar_user_available_simple' :
-      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
-      console.log("The message" + options.message)
-      Action.pre('checkMeetingTimes', authenticate.refreshToken)
-      .pre('checkMeetingTimes', calendarHandler.userData)
-      .pre('checkMeetingTimes',userHandler.preSearchUser)
-      .pre('checkMeetingTimes', userHandler.searchUser)
-      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
-      var action = new Action();
-      action.checkMeetingTimes(options, callback);
-      break;
-    
     //Case: calendar_user_available
     //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
