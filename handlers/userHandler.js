@@ -39,6 +39,7 @@ function preSearchUser(next, options, callback){
     .then((response) => {
       options.message = "";
       console.log('preSearchUser.response : ' + JSON.stringify(response.data));
+      console.log("response.data.value.length: "+ response.data.value.length)
       if (response.data.value.length === 0){
         next(options, callback);
       }
