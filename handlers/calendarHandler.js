@@ -33,7 +33,6 @@ function showEventDetails(options,callback){
   console.log("start: "+startDate)
   if(options.source== 'ios'){
     var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
-    Console.log(message);
   }
   else{
     var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
