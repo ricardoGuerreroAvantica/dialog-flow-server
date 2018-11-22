@@ -176,7 +176,7 @@ function PrefindMeetingTimes(next, options, callback){
             console.log(meeting.meetingTimeSlot.start.dateTime);
             console.log(meeting.meetingTimeSlot.end.dateTime);
             let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
-                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n';
+                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) +"."+ '\n';
             console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
               options.message += timeSet
@@ -203,8 +203,6 @@ function checkMeetingTimes(options, callback){
         var user = options.user;
         var time = options.parameters.time;
         time = options.parameters.time;
-        console.log("SECOND RUN");
-        console.log("THE TIME USED IS :" + time);
         // The postBody is created with the new timerConstraing
         let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
         console.log("checkMeetingTimes.isOrganizerInRequest : = " +options.user.displayName +" != "+options.userName)
@@ -226,8 +224,8 @@ function checkMeetingTimes(options, callback){
             //Found open meeting times in the requested TimeConstrain
             meetings.forEach((meeting) => {
               console.log("THE MEETING: " + JSON.stringify(meeting));
-              let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' - ' +
-                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime) + '\n';
+              let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
+                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime)+"." + '\n';
               console.log(!options.message.includes(timeSet) +"New message =" + timeSet)       
               if(!options.message.includes(timeSet)){
                 options.message += timeSet
