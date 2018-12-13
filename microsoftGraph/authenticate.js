@@ -10,7 +10,7 @@ var credentials = {
   client_id: 'c93a93c8-e0bd-4066-8550-845bf844bea3',
   client_secret: 'iOGRYK9563+=orvbuiMM9?_',
   scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
-  redirect_uri: 'https://blooming-lake-64865.herokuapp.com/signIn',
+  redirect_uri: 'https://sjo-calendar-bot.azurewebsites.net/signIn',
   resouce: 'https://graph.microsoft.com/'
 };
 var tokens = {};
