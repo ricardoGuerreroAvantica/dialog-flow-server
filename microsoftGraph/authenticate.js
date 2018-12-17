@@ -130,6 +130,7 @@ function refreshToken(next, options, callback) {
 function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
+  console.log("ENTER THE APP!")
   try{
     var reqJSONBody = JSON.parse(JSON.stringify(req.body));
     console.log(reqJSONBody)
@@ -138,9 +139,13 @@ function signIn(req, res){
   catch(error){
     console.log("Error" + error)
   }
-  console.log("ENTER THE APP!")
-  if (state=="IOS"){
-    
+  if (reqJSONBody.state=="IOS"){
+
+    tokens[reqJSONBody.session_state] = { ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
+    console.log("---------------------TOKENS------------------------------")
+    console.log(JSON.stringify(tokens))
+    console.log("---------------------END------------------------------")
+
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
