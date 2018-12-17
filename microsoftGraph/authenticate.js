@@ -73,12 +73,8 @@ function validUser(next, req, res, callback){
   console.log("SESSION: " + !this.options.sessionTokens)
   console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
-    if(this.options.source == "ios"){
-      return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" });
-    }
-    else{
+
       return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
-    }
     
   }
   //console.log('validUser.options : ' + JSON.stringify(this.options));
