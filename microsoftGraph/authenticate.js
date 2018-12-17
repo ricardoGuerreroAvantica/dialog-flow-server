@@ -130,16 +130,17 @@ function refreshToken(next, options, callback) {
 function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
+  try{
+    var reqJSONBody = JSON.parse(JSON.stringify(req.body));
+    console.log(reqJSONBody)
+
+  }
+  catch(error){
+    console.log("Error" + error)
+  }
   console.log("ENTER THE APP!")
   if (state=="IOS"){
-    try{
-      var reqJSONBody = JSON.parse(JSON.stringify(req.body));
-      console.log(reqJSONBody)
-
-    }
-    catch(error){
-      console.log("Error" + error)
-    }
+    
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
