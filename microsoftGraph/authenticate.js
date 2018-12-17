@@ -73,8 +73,12 @@ function validUser(next, req, res, callback){
   console.log("SESSION: " + !this.options.sessionTokens)
   console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
-
+    if(this.options.source == "ios"){
+      return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" });
+    }
+    else{
       return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
+    }
     
   }
   //console.log('validUser.options : ' + JSON.stringify(this.options));
@@ -125,7 +129,7 @@ function refreshToken(next, options, callback) {
 function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
-
+  console.log("ENTER THE APP!")
   if (state=="IOS"){
     tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
     console.log("---------------------TOKENS------------------------------")
