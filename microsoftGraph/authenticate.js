@@ -132,11 +132,14 @@ function signIn(req, res){
   var code = req.query.code;
   console.log("ENTER THE APP!")
   if (state=="IOS"){
-    
-    var reqJSONBody= JSON.parse(JSON.stringify(req.body));
-    console.log(reqJSONBody)
-    
+    try{
+      var reqJSONBody = JSON.parse(JSON.stringify(req.body));
+      console.log(reqJSONBody)
 
+    }
+    catch(error){
+      console.log("Error" + error)
+    }
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
