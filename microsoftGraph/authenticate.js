@@ -65,6 +65,7 @@ function filter(jsonObject) {
 
 //CHECK IF USER LOGED IN
 function validUser(next, req, res, callback){
+  console.log("Enter validUser")
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
   console.log("The OPTIONS: " + JSON.stringify(this.options))
@@ -132,6 +133,7 @@ function signIn(req, res){
   console.log("ENTER THE APP!")
   if (state=="IOS"){
     console.log("IOS-LOGIN")
+    
     tokens[req.query.session_state] = { ACCESS_TOKEN_CACHE_KEY : req.query.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
     console.log("---------------------TOKENS------------------------------")
     console.log(JSON.stringify(tokens))
