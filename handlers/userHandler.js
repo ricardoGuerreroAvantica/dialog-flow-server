@@ -20,14 +20,14 @@ function preSearchUser(next, options, callback){
     console.log("secondLastname :" + (parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
     var filter =  ("startswith(displayName,'" +
                   ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : '')+
-                  ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')+
-                  ((parameters.lastname) ? (" " + unescape(encodeURIComponent(userData.lastname))) : '')+
-                  ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
+                  ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : '')+
+                  ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : '')+
+                  ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : '')
                   + "')")
 
     //console.log("The token"+ JSON.stringify(options.access_token))
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    console.log("preSearchUser.graph:  "+url+filter)
+    console.log("preSearchUser.graph filter:  "+url+filter)
     axios.get(url + filter, {
       headers : {
         'Content-Type': 
