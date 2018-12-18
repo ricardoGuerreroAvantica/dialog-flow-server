@@ -4,29 +4,20 @@ var commons = require('../utils/commons.js');
 
 
 function preSearchUser(next, options, callback){
-  console.log("-preSEARCH-")
   try{
     var parameters = options.parameters;
-  //console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
-  var userData = { name : parameters.name,
+    var userData = { name : parameters.name,
     lastname : parameters.lastname,
     secondName : parameters.secondName,
     secondLastname : parameters.secondLastname,
     email : parameters.email }
   if( userData.secondName || userData.name){
-    console.log("Name :" + ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : '')+'X')
-    console.log("secondName :" + ((parameters.secondName) ? (" " + unescape(encodeURIComponent(userData.secondName))) : '')+'X')
-    console.log("lastname :" + ((parameters.lastname) ? (" " + unescape(encodeURIComponent(userData.lastname))) : '')+'X')
-    console.log("secondLastname :" + ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')+'X')
     var filter =  ((("startswith(displayName,'" +
                   ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : null)+
                   ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : null)+
                   ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : null)+
                   ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : null)).trim()
                   +"')"))
-
-    //console.log("The token"+ JSON.stringify(options.access_token))
-    console.log(filter)
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph filter: "+url+filter)
     axios.get(url + filter, {
@@ -39,21 +30,16 @@ function preSearchUser(next, options, callback){
     })
     .then((response) => {
       options.message = "";
-      console.log('preSearchUser.response : ' + JSON.stringify(response.data));
-      console.log("response.data.value.length: "+ response.data.value.length)
       if (response.data.value.length === 0){
         next(options, callback);
       }
       if (response.data.value.length > 1){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
-          console.log(response.data.value[i])
           if ( i!= response.data.value.length-1){
-            console.log("The response data" + response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
-            console.log("The response data" + response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
@@ -67,7 +53,6 @@ function preSearchUser(next, options, callback){
         mail : response.data.value[0].mail,
         surname : response.data.value[0].surname,
         }
-        console.log("The user: " +JSON.stringify(options.user))
       }
         next(options, callback);
       })
@@ -92,7 +77,6 @@ function checkUser(options, callback){
 
 
 function searchUser(next, options, callback){
-  console.log("-SEARCH-")
   var parameters = options.parameters;
   //console.log("searchUser.user: " + JSON.stringify(options.user))
   //console.log("searchUserParameters: " + JSON.stringify(parameters))
@@ -103,24 +87,11 @@ function searchUser(next, options, callback){
       secondName : parameters.secondName,
       secondLastname : parameters.secondLastname,
       email : parameters.email }
-  
-    console.log(userData.lastname !='')
-    console.log("lastname : parameters.lastname "+parameters.lastname)
-    console.log("parameters.secondName "+parameters.secondName)
-    console.log("parameters.secondLastname"+parameters.secondLastname)
-    console.log("parameters.email "+parameters.email )
     var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
     ((userData.lastname && userData.lastname !='') ? (((unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" ): '') +
     ((userData.email) ? ((unescape(encodeURIComponent(userData.lastname)) || unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(mail,'" + unescape(encodeURIComponent(userData.email)) + "')" : '');
         
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    
-    console.log('searchUser.filter.pre.httpCall : ' + filter);
-    console.log('searchUser.filter.pre.httpCall : ' + url + filter);
-    
-    console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(url + filter, {    headers : { 'Content-Type': 'application/json', Accept: 'application/json', Authorization: 'Bearer ' + options.access_token}}));
-  
-    console.log("NEW USER TOKEN: " + 'Bearer ' + options.access_token +'  end ');
     axios.get(url + filter, {
       headers : {
         'Content-Type': 
@@ -131,25 +102,19 @@ function searchUser(next, options, callback){
     })
     .then((response) => {
       options.message = "";
-      console.log('searchUser.response : ' + JSON.stringify(response.data));
       if (filter = ""){
         options.message = ("can you change the format of your answer please?");
         callback(options);
       }
   
       if (response.data.value.length === 0){
-        console.log("No user found");
-        console.log("Sorry I couldn't find any user with this description: \n");
-        console.log(JSON.stringify(userData));
         options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
         +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
         callback(options);
       }
       if (response.data.value.length > 1){
-        console.log("Evaluating the new message")
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
-          console.log(response.data.value[i])
           if ( i!= response.data.value.length-1){
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
