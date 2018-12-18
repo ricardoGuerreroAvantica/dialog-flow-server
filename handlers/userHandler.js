@@ -4,10 +4,10 @@ var commons = require('../utils/commons.js');
 
 
 function preSearchUser(next, options, callback){
-
+  console.log("-preSEARCH-")
   try{
     var parameters = options.parameters;
-  console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
+  //console.log("preSearchUser.parameters: " + JSON.stringify(parameters))
   var userData = { name : parameters.name,
     lastname : parameters.lastname,
     secondName : parameters.secondName,
@@ -25,7 +25,7 @@ function preSearchUser(next, options, callback){
                   ((parameters.secondLastname) ? (" " + unescape(encodeURIComponent(userData.secondLastname))) : '')
                   + "')")
 
-    console.log("The token"+ JSON.stringify(options.access_token))
+    /console.log("The token"+ JSON.stringify(options.access_token))
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph:  "+url+filter)
     axios.get(url + filter, {
@@ -91,11 +91,12 @@ function checkUser(options, callback){
 
 
 function searchUser(next, options, callback){
+  console.log("-SEARCH-")
   var parameters = options.parameters;
-  console.log("searchUser.user: " + JSON.stringify(options.user))
-  console.log("searchUserParameters: " + JSON.stringify(parameters))
+  //console.log("searchUser.user: " + JSON.stringify(options.user))
+  //console.log("searchUserParameters: " + JSON.stringify(parameters))
   if(!options.user){
-    console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
+    //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
     var userData = { name : parameters.name,
       lastname : parameters.lastname,
       secondName : parameters.secondName,
