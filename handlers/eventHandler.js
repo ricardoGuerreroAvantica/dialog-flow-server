@@ -15,7 +15,7 @@ function inviteUser(options, callback){
       if (context.name === 'invites'){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
-        options.message = options.speech += 'Current invitation list:\n';
+        options.message = options.speech = 'Current invitation list:\n';
         context.parameters.invites.forEach((invite) => {
 
           let userEntry = new String(user.mail);
