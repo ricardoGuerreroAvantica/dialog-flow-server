@@ -31,10 +31,10 @@ function inviteUser(options, callback){
           }
         })
 
-        if (options.message =='Current invitation list:\n'){
+        if (JSON.stringify(options.message) =='Current invitation list:\n'){
           options.message = options.speech += '';
         }
-        options.message = options.speech += 'this employee will be added to the invitation list:\n' + user.displayName ;
+        options.message = options.speech += user.displayName ;
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
