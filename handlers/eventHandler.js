@@ -19,6 +19,7 @@ function inviteUser(options, callback){
 
           let userEntry = new String(user.mail);
           let userStored = new String(invite.emailAddress.address);
+          console.log("INVITE : "+JSON.stringify(invite))
           var isEquel = JSON.stringify(userEntry) === JSON.stringify(userStored);
           console.log(userEntry+" === "+ userStored + " : "+isEquel)
           if (isEquel){
@@ -77,30 +78,19 @@ function deleteInvite(options, callback){
     if (userData.name && userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())
       && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ';
-      console.log("THE INVITES" + JSON.stringify(invites[i]))
       invites.splice(i, 1);
-      console.log("NO SPLICED" + JSON.stringify(invites[i]))
       callback(options);
     }else if (userData.email && invites[i].emailAddress.address === userData.email){
-      console.log("#1");
-      console.log("THE INVITES" + JSON.stringify(invites[i]))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ';
       invites.splice(i, 1);
-      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }else if (userData.lastname && invites[i].emailAddress.name.toLowerCase().includes(userData.lastname.toLowerCase())){
-      console.log("#2");
-      console.log("THE INVITES" + JSON.stringify(invites[i]))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }else if (userData.name && invites[i].emailAddress.name.toLowerCase().includes(userData.name.toLowerCase())){
-      console.log("#3");
-      console.log("NO SPLICE" + JSON.stringify(invites[i]))
       options.message = options.speech = invites[i].emailAddress.name + ' was uninvited ' + '\n\n';
       invites.splice(i, 1);
-      console.log("SPLICED INVITES" + JSON.stringify(invites[i]));
       callback(options);
     }
   }
