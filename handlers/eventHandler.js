@@ -15,11 +15,12 @@ function inviteUser(options, callback){
       if (context.name === 'invites'){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
+        options.message = options.speech += 'Current invitation list:\n'
         context.parameters.invites.forEach((invite) => {
 
           let userEntry = new String(user.mail);
           let userStored = new String(invite.emailAddress.address);
-          console.log("INVITE : "+JSON.stringify(invite))
+          options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
           var isEquel = JSON.stringify(userEntry) === JSON.stringify(userStored);
           console.log(userEntry+" === "+ userStored + " : "+isEquel)
           if (isEquel){
@@ -29,7 +30,7 @@ function inviteUser(options, callback){
           }
         })
 
-        options.message = options.speech = 'this user will be added to the invitation list:\n' + user.displayName ;
+        options.message = options.speech += 'this employee will be added to the invitation list:\n' + user.displayName ;
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
