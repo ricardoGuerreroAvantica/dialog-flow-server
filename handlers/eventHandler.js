@@ -30,11 +30,8 @@ function inviteUser(options, callback){
             callback(options);
           }
         })
-
-        if (JSON.stringify(options.message) =='Current invitation list:\n'){
-          options.message = options.speech += '';
-        }
-        options.message = options.speech += user.displayName ;
+        console.l
+        options.message = options.speech += user.displayName +", email: "+ user.mail;
         context.parameters.invites.push(invite);
         //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
         callback(options);
