@@ -37,9 +37,11 @@ function preSearchUser(next, options, callback){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
           if ( i!= response.data.value.length-1){
+            console.log("response.data.value[i].displayName" +JSON.stringify(response.data.value[i].displayName));
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
+            console.log("response.data.value[i].displayName" +JSON.stringify(response.data.value[i].displayName));
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
