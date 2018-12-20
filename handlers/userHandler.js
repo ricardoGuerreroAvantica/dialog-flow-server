@@ -51,8 +51,7 @@ function preSearchUser(next, options, callback){
       else{
         console.log("I am mr.debbuger, look at me!")
         console.log("USER.DISPLAYNAME1"+response.data.value[0])
-        console.log("USER.DISPLAYNAME2"+response.data)
-        console.log("USER.DISPLAYNAME3"+JSON.stringify(response))
+        console.log("USER.DISPLAYNAME2"+JSON.stringify(response.data))
         options.user = {
         displayName : response.data.value[0].displayName,
         givenName : response.data.value[0].givenName,
