@@ -33,8 +33,11 @@ function preSearchUser(next, options, callback){
 
       console.log("LOOK HERE")
       console.log(response.data.value.length === 0)
+      console.log("response.data.value: "+JSON.stringify(response.data.value))
       if (response.data.value.length === 0){
+        console.log("its gone")
         next(options, callback);
+        console.log("byebye")
       }
       if (response.data.value.length > 1){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
@@ -53,7 +56,7 @@ function preSearchUser(next, options, callback){
       }
       else{
         console.log("I am mr.debbuger, look at me!")
-        console.log("USER.DISPLAYNAME1"+response.data.value[0])
+        console.log("USER.DISPLAYNAME1"+JSON.stringify(response.data.value))
         console.log("USER.DISPLAYNAME2"+JSON.stringify(response.data))
         options.user = {
         displayName : response.data.value[0].displayName,
