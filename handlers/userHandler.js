@@ -30,6 +30,7 @@ function preSearchUser(next, options, callback){
     })
     .then((response) => {
       options.message = "";
+      console.log("LENGHT"+response.data.value.length === 0)
       if (response.data.value.length === 0){
         next(options, callback);
       }
