@@ -49,6 +49,8 @@ function preSearchUser(next, options, callback){
         callback(options);
       }
       else{
+        console.log("I am mr.debbuger, look at me!")
+        console.log("USER.DISPLAYNAME"+response.data.value[0].displayName)
         options.user = {
         displayName : response.data.value[0].displayName,
         givenName : response.data.value[0].givenName,
@@ -128,6 +130,8 @@ function searchUser(next, options, callback){
         callback(options);
       }
       else{
+        console.log("I am mr.debbuger2, look at me!")
+        console.log("USER.DISPLAYNAME"+response.data.value[0].displayName)
         options.user = {
         displayName : response.data.value[0].displayName,
         givenName : response.data.value[0].givenName,
