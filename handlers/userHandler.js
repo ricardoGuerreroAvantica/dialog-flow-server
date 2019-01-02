@@ -159,57 +159,56 @@ function searchUser(next, options, callback){
 
 function helper(options, callback){
   console.log(JSON.stringify(options));
-  let space = commons.getChangeLine(options.source);
   if (options.parameters.helperId == "basic"){
     options.message = "Can you tell me how I can help you?"
-                      +space+space+"▶ How to create an event?"
-                      +space+space+"▶ How to check if someone is available?"
-                      +space+space+"▶ How to check my events?"
-                      +space+space+"▶ How can I invite someone?"
-                      +space+space+"▶ How can I see my event information?"
-                      +space+space+"▶ How can I change my event information?";
+                      +"\n▶ How to create an event?"
+                      +"\n▶ How to check if someone is available?"
+                      +"\n▶ How to check my events?"
+                      +"\n▶ How can I invite someone?"
+                      +"\n▶ How can I see my event information?"
+                      +"\n▶ How can I change my event information?";
   }
   if (options.parameters.helperId == "event"){
     options.message = "Here are some examples of how can you create a event:"
-                      +space+space+"▶ Create new event example today at 3:00pm for 40 minutes."
-                      +space+space+"▶ Create a new event."
-                      +space+space+"▶ Create new event testing on 4 sep at 14:00."
-                      +space+space+"____________________"
-                      +space+space+"To complete the creation only say \"Done\"";
+                      +"\n▶ Create new event example today at 3:00pm for 40 minutes."
+                      +"\n▶ Create a new event."
+                      +"\n▶ Create new event testing on 4 sep at 14:00."
+                      +"\n____________________"
+                      +"\nTo complete the creation only say \"Done\"";
   }
   if (options.parameters.helperId == "available"){
     options.message = "To check someone availability you can use their first name or their email:"
-                      +space+space+"▶ Is Ricardo Guerrrero Available today at now?"
-                      +space+space+"▶ Is Ricardo guerrero Available"
-                      +space+space+"▶ Is ricardo.guerero@avantica.net is available in 20 oct at 7am";   
+                      +"\n▶ Is Ricardo Guerrrero Available today at now?"
+                      +"\n▶ Is Ricardo guerrero Available"
+                      +"\n▶ Is ricardo.guerero@avantica.net is available in 20 oct at 7am";   
   }
   if (options.parameters.helperId == "invite"){
     options.message = "To invite or Uninvite someone to the event you can just write this:"
-                      +space+space+"▶ Add Ricardo Guerrero"  
-                      +space+space+"▶ remove Ricardo Guerrero"                
-                      +space+space+"▶ Invite ricardo.guerrero@avantica.net"
-                      +space+space+"▶ Uninvite ricardo.guerrero@avantica.net";  
+                      +"\n▶ Add Ricardo Guerrero"  
+                      +"\n▶ remove Ricardo Guerrero"                
+                      +"\n▶ Invite ricardo.guerrero@avantica.net"
+                      +"\n▶ Uninvite ricardo.guerrero@avantica.net";  
   }
   if (options.parameters.helperId == "myEvents"){
     options.message = "You can see your events from a date or a period using this:"
-                      +space+space+"▶ My events"
-                      +space+space+"▶ Show me my events"
-                      +space+space+"▶ Show me my events from monday to friday"
-                      +space+space+"▶ Show any events called wellness program";  
+                      +"\n▶ My events"
+                      +"\n▶ Show me my events"
+                      +"\n▶ Show me my events from monday to friday"
+                      +"\n▶ Show any events called wellness program";  
   }
   if (options.parameters.helperId == "eventInfo"){
     options.message = "After you start the event creation you can see your event information using this:"
-                      +space+space+"▶ Show my event body"
-                      +space+space+"▶ Show Information"
-                      +space+space+"▶ How does my event look?"
-                      +space+space+"▶ My event information";  
+                      +"\n▶ Show my event body"
+                      +"\n▶ Show Information"
+                      +"\n▶ How does my event look?"
+                      +"\n▶ My event information";  
   }
   if (options.parameters.helperId == "updateEventInfo"){
     options.message = "After you start the event creation, you can change your event information using this:"
-                      +space+space+"▶ Change the name to [new name]"
-                      +space+space+"▶ Change the date to [new date]"
-                      +space+space+"▶ Change the time to [new time]"
-                      +space+space+"▶ Change the duration to [new duration]";  
+                      +"\n▶ Change the name to [new name]"
+                      +"\n▶ Change the date to [new date]"
+                      +"\n▶ Change the time to [new time]"
+                      +"\n▶ Change the duration to [new duration]";  
   }
   callback(options);
 }

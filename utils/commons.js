@@ -92,12 +92,7 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 }
 
 function parseDate(date){
-  /** CONVERT TO UTC
-  moment.utc('2018-03-23T06:00:00.016Z', 'YYYY-MM-DDThh:mm:ss.SSS').utcOffset("+05:00").format('YYYY MMM DD - HH : mm : ss')
-  */
- //
 
- 
  console.log("NEW DATE");
  console.log(date)
  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours')
