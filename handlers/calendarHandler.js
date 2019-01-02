@@ -17,7 +17,6 @@ function replaceSpecialCharacteres(name){
 
 
 function showEventDetails(options,callback){
-  let space = commons.getChangeLine(options.source);
   var eventContext = commons.getContext(options.contexts, 'createevent');
   console.log(JSON.stringify(eventContext));
   console.log("NAME ORIGINAL: " + name)
@@ -52,7 +51,7 @@ function showEventDetails(options,callback){
     }
     var invites = invitesContext.parameters.invites;
     invites.forEach((invite) => {
-      message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + space;
+      message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
     });
   }
   console.log(message)
@@ -61,7 +60,6 @@ function showEventDetails(options,callback){
 }
 
 function scheduleMeeting(options, callback){
-  let space = commons.getChangeLine(options.source);
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
@@ -135,7 +133,6 @@ function userData(next,options, callback){
 }
 
 function PrefindMeetingTimes(next, options, callback){
-  let space = commons.getChangeLine(options.source);
   console.log("START FINDING MEETING FUNCTION:")
   console.log(JSON.stringify(options));
   console.log(JSON.stringify(options.parameters));
@@ -252,7 +249,6 @@ function checkMeetingTimes(options, callback){
 
 
 function showEventsOnDate(options, callback){
-  var space = commons.getChangeLine();
   var parameters = options.parameters;
   var date = parameters.date;
   var filter = '';
@@ -301,7 +297,6 @@ function showEventsOnDate(options, callback){
 
 
 function showEvents(options, callback){
-  var space = commons.getChangeLine();
   var parameters = options.parameters;
   var name = parameters.name;
   var period = parameters.period;
