@@ -8,6 +8,7 @@ function inviteUser(options, callback){
 
   function reWriteContext(contexts, name, newContext){
     for (var i in contexts){
+      console.log("CONTEXT:#"+i+ contexts[i].name)
       if (contexts[i].name === name){
         console.log("SELECTED CONTEX: "+ JSON.stringify(contexts[i]))
         contexts[i] = newContext;
@@ -27,7 +28,6 @@ function inviteUser(options, callback){
       console.log("Entry data#2"+JSON.stringify(data));
       options.context = reWriteContext(options.context, 'createevent', data);
       console.log("FINAL CONTEXT: "+JSON.stringify(options.context));
-
     }
 
     if (!commons.getContext(options.contexts, 'invites'))
