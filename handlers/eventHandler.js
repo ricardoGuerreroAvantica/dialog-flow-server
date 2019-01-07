@@ -3,7 +3,6 @@ var commons = require('../utils/commons.js');
 
 
 function inviteUser(options, callback){
-  console.log("INVITE CONTEXT : "+JSON.stringify(options.contexts));
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
@@ -68,7 +67,7 @@ function deleteInvite(options, callback){
   console.log('deleteInvite.options : ' + JSON.stringify(options, null, 2) );
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }
   if (!commons.getContext(options.contexts, 'invites')){
-    console.log("No contexts found");
+    console.log("No contexts found")
     options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
     options.message = options.speech = 'Couldnt find ' + ((userData.name) ? userData.name: userData.email);
     callback(options);
