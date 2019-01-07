@@ -60,8 +60,9 @@ function showEventDetails(options,callback){
 }
 
 function scheduleMeeting(options, callback){
-
+  console.log("eventContext##" + JSON.stringify(options.contexts));
   var invitesContext = commons.getContext(options.contexts, 'invites');
+  console.log("invitesContext"+ commons.getContext(options.contexts, 'invites'))
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
   var name = eventContext.parameters.eventName;
