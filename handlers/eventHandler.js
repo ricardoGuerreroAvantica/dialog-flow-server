@@ -3,7 +3,8 @@ var commons = require('../utils/commons.js');
 
 
 function inviteUser(options, callback){
-  console.log("The list ="+JSON.stringify(commons.getContext(options.contexts, 'createevent')))
+  var data = commons.getContext(options.contexts, 'invitationlist')
+  console.log("The list ="+JSON.stringify(data))
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
