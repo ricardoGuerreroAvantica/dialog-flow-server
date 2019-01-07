@@ -2,17 +2,6 @@ var request = require('../microsoftGraph/request.js');
 var commons = require('../utils/commons.js');
 
 
-function reWriteContext(contexts, name, newContext){
-  for (var i in contexts){
-    console.log("CONTEXT:#"+i+ contexts[i].name)
-    if (contexts[i].name === name){
-      console.log("SELECTED CONTEX: "+ JSON.stringify(contexts[i]))
-      contexts[i] = newContext;
-    }
-  }
-  return contexts;
-}
-
 function inviteUser(options, callback){
   var data = commons.getContext(options.contexts, 'createevent');
   console.log("data.parameters ="+JSON.stringify(data))
@@ -21,17 +10,8 @@ function inviteUser(options, callback){
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-
-    if(data.parameters.invitationList ==""){
-      console.log("Entry data#1"+JSON.stringify(data));
-      data.parameters.invitationList=[]
-      data.parameters.invitationList.push(invite)
-      console.log("Entry data#2"+JSON.stringify(data));
-      console.log("PREFINAL CONTEXT: "+JSON.stringify(options.contexts));
-      options.contexts = reWriteContext(options.contexts, 'createevent', data);
-      console.log("FINAL CONTEXT: "+JSON.stringify(options.contexts));
-    }
-
+    invitesvar= commons.getContext(options.contexts, 'invites')
+    console.log("LOOK THE INVITES: "+ invitesvar)
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
