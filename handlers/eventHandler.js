@@ -10,8 +10,10 @@ function inviteUser(options, callback){
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-    if (!commons.getContext(options.contexts, 'invites'))
+    if (!commons.getContext(options.contexts, 'invites')){
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 60 });
+    }
+      
 
     options.contexts.forEach((context) => {
       console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
