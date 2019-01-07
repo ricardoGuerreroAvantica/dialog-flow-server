@@ -1,10 +1,10 @@
 var request = require('../microsoftGraph/request.js');
 var commons = require('../utils/commons.js');
 
-
 function inviteUser(options, callback){
-  var data = commons.getContext(options.contexts, 'invitationlist')
-  console.log("The list ="+JSON.stringify(data))
+  var data = commons.getContext(options.contexts, 'createevent');
+  console.log("data.parameters ="+JSON.stringify(data))
+  console.log("data.parameters.invitationList ="+JSON.stringify(data.parameters.invitationList))
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
