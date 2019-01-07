@@ -65,12 +65,14 @@ function scheduleMeeting(options, callback){
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
   var name = eventContext.parameters.eventName;
-  console.log("invitesContext" + startDate);
-  console.log("eventContext" + startDate);
-  console.log("invites" + startDate);
-  console.log("name" + startDate);
+  console.log("invitesContext##" + JSON.stringify(invitesContext));
+  console.log("eventContext##" + JSON.stringify(eventContext));
+  console.log("invites##" + JSON.stringify(invites));
+  console.log("name##" + JSON.stringify(name));
   name = replaceSpecialCharacteres(name)
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
+  console.log("duration##" + duration);
+
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
