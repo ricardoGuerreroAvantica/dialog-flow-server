@@ -5,10 +5,29 @@ function inviteUser(options, callback){
   var data = commons.getContext(options.contexts, 'createevent');
   console.log("data.parameters ="+JSON.stringify(data))
   console.log("data.parameters.invitationList ="+JSON.stringify(data.parameters.invitationList))
+
+  function reWriteContext(contexts, name, newContext){
+    for (var i in contexts){
+      if (contexts[i].name === name){
+        console.log("SELECTED CONTEX: "+ JSON.stringify(contexts[i]))
+        contexts[i] = newContext;
+      }
+    }
+    return contexts;
+  }
+
   if (options.message == ""){
     var user = options.user;
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-    console.log("inviteUser.Context: " + JSON.stringify(options, null, 2) )
+
+    if(data.parameters.invitationList ==""){
+      console.log("Entry data#1"+data);
+      data.parameters.invitationList=[]
+      data.parameters.invitationList.push(invite)
+      console.log("Entry data#2"+data);
+      options.context = reWriteContext(options.context, 'createevent', data);
+    }
+
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
@@ -22,19 +41,16 @@ function inviteUser(options, callback){
 
           let userEntry = new String(user.mail);
           let userStored = new String(invite.emailAddress.address);
-          console.log("EMAILL"+invite.emailAddress)
           options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
           var isEquel = JSON.stringify(userEntry) === JSON.stringify(userStored);
-          console.log(userEntry+" === "+ userStored + " : "+isEquel)
           if (isEquel){
             options.message = options.speech = user.displayName + ' is already invited';
-            //console.log(user.displayName + ' is already invited \n\n');
             callback(options);
           }
         })
         options.message = options.speech += user.displayName +", email: "+ user.mail;
         context.parameters.invites.push(invite);
-        //console.log('inviteUser.invite : ' + user.displayName + ' was invited \n\n');
+
         callback(options);
       }
     });
