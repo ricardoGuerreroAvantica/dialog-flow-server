@@ -10,13 +10,13 @@ function inviteUser(options, callback){
     if (!commons.getContext(options.contexts, 'invites'))
       options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 10 });
 
-    options.contexts.forEach((context) => {
+      Array.from(options.contexts).forEach((context) => {
       console.log('inviteUser.context : ' + JSON.stringify(context, null, 2) );
       if (context.name === 'invites'){
         //console.log('inviteUser.Invite : Invite' );
         //console.log('inviteUser.Invite : ' + context.parameters.invites );
         options.message = options.speech = 'Current invitation list:\n';
-        context.parameters.invites.forEach((invite) => {
+        Array.from(context.parameters.invites).forEach((invite) => {
 
           let userEntry = new String(user.mail);
           let userStored = new String(invite.emailAddress.address);
@@ -56,7 +56,7 @@ function showInvites(options, callback){
   var invites = invitesContext.parameters.invites;
   console.log("THE INVITES" + JSON.stringify(invites))
   options.message = options.speech = `These are your current attendees:\n`;
-  invites.forEach((invite) => {
+  Array.from(invites).forEach((invite) => {
     options.message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
   });
   callback(options);
