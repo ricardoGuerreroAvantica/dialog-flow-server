@@ -21,11 +21,13 @@ function inviteUser(options, callback){
     var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
 
     if(data.parameters.invitationList ==""){
-      console.log("Entry data#1"+data);
+      console.log("Entry data#1"+JSON.stringify(data));
       data.parameters.invitationList=[]
       data.parameters.invitationList.push(invite)
-      console.log("Entry data#2"+data);
+      console.log("Entry data#2"+JSON.stringify(data));
       options.context = reWriteContext(options.context, 'createevent', data);
+      console.log("FINAL CONTEXT: "+JSON.stringify(options.context));
+
     }
 
     if (!commons.getContext(options.contexts, 'invites'))
