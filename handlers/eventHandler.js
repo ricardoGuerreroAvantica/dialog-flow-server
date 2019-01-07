@@ -27,8 +27,9 @@ function inviteUser(options, callback){
       data.parameters.invitationList=[]
       data.parameters.invitationList.push(invite)
       console.log("Entry data#2"+JSON.stringify(data));
-      options.context = reWriteContext(options.context, 'createevent', data);
-      console.log("FINAL CONTEXT: "+JSON.stringify(options.context));
+      console.log("PREFINAL CONTEXT: "+JSON.stringify(options.contexts));
+      options.contexts = reWriteContext(options.contexts, 'createevent', data);
+      console.log("FINAL CONTEXT: "+JSON.stringify(options.contexts));
     }
 
     if (!commons.getContext(options.contexts, 'invites'))
