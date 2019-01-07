@@ -60,13 +60,16 @@ function showEventDetails(options,callback){
 }
 
 function scheduleMeeting(options, callback){
+
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
-  console.log("NAME ORIGINAL: " + name)
   var name = eventContext.parameters.eventName;
+  console.log("invitesContext" + startDate);
+  console.log("eventContext" + startDate);
+  console.log("invites" + startDate);
+  console.log("name" + startDate);
   name = replaceSpecialCharacteres(name)
-  console.log(replaceSpecialCharacteres(name))
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
