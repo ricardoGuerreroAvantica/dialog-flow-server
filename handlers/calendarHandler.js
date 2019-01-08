@@ -3,6 +3,7 @@ var moment = require('moment');
 var axios = require('axios');
 var commons = require('../utils/commons.js');
 
+//dialogflow replace " ' and '' with diferent values to represent them, this fuction return the message to it original characters.
 function replaceSpecialCharacteres(name){
   name = name.replace("&quot;","\"");
   name = name.replace("quot;","\"");
@@ -13,9 +14,7 @@ function replaceSpecialCharacteres(name){
   return name
 }
 
-
-
-
+//This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
   var eventContext = commons.getContext(options.contexts, 'createevent');
   console.log(JSON.stringify(eventContext));
@@ -59,37 +58,26 @@ function showEventDetails(options,callback){
   callback(options)
 }
 
+//this function is in charge of creating the new event in the established time values.
 function scheduleMeeting(options, callback){
-  console.log("eventContext##" + JSON.stringify(options.contexts));
   var invitesContext = commons.getContext(options.contexts, 'invites');
-  console.log("invitesContext"+ commons.getContext(options.contexts, 'invites'))
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
   var name = eventContext.parameters.eventName;
-  console.log("invitesContext##" + JSON.stringify(invitesContext));
-  console.log("eventContext##" + JSON.stringify(eventContext));
-  console.log("invites##" + JSON.stringify(invites));
-  console.log("name##" + JSON.stringify(name));
   name = replaceSpecialCharacteres(name)
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
-  console.log("duration##" + duration);
-
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
-  console.log("START DATE" + startDate);
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-    console.log("END DATE" + endDate);   
   var body = {
     "subject": name,
     "attendees": invites,
     "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
-  console.log('scheduleMeeting.body :' + JSON.stringify(body));
-
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     if (error){
       console.log('scheduleMeeting.error : ' + JSON.stringify(error));
@@ -120,7 +108,6 @@ function scheduleMeeting(options, callback){
 
 //This function is in charge of geeting the basic information of the user
 function userData(next,options, callback){
-  console.log("START the user autentification:")
   axios.get('https://graph.microsoft.com/v1.0/me', {
     headers : {
       'Content-Type': 'application/json',
@@ -139,24 +126,16 @@ function userData(next,options, callback){
 }
 
 function PrefindMeetingTimes(next, options, callback){
-  console.log("START FINDING MEETING FUNCTION:")
-  console.log(JSON.stringify(options));
-  console.log(JSON.stringify(options.parameters));
     //If the function didnt find the requested data-time as available, it will execute the function again with diferent times/
     var parameters = options.parameters;
     var date = parameters.date;
     var user = options.user;
     var time = options.parameters.time;
-    console.log("FIRST RUN");
     options.message += options.speech = "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n';
     
     time = options.parameters.time;
-
-    
-    console.log("THE TIME USED IS :" + time);
     // The postBody is created with the new timerConstraing
     let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
-    console.log("PrefindMeetingTimes.isOrganizerInRequest : = " +options.user.displayName +" != "+options.userName)
     var postBody = {
       attendees: commons.getAttendees([user]),
       timeConstraint : commons.getTimeConstraint(date, time, 0, 2),
@@ -170,17 +149,12 @@ function PrefindMeetingTimes(next, options, callback){
           errorHandler.actionError(error);
         }
         var meetings = response.meetingTimeSuggestions;
-        console.log("MEETINGS: "+ JSON.stringify(meetings));
         if (meetings.length > 0){
           
           //Found open meeting times in the requested TimeConstrain
           meetings.forEach((meeting) => {
-            console.log("THE MEETING: " + JSON.stringify(meeting));
-            console.log(meeting.meetingTimeSlot.start.dateTime);
-            console.log(meeting.meetingTimeSlot.end.dateTime);
             let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
                         commons.parseDate(meeting.meetingTimeSlot.end.dateTime) +"."+ '\n';
-            console.log(!options.message.includes(timeSet) +"New message =" + timeSet)        
             if(!options.message.includes(timeSet)){
               options.message += timeSet
             }
@@ -208,33 +182,27 @@ function checkMeetingTimes(options, callback){
         time = options.parameters.time;
         // The postBody is created with the new timerConstraing
         let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
-        console.log("checkMeetingTimes.isOrganizerInRequest : = " +options.user.displayName +" != "+options.userName)
         var postBody = {
           attendees: commons.getAttendees([user]),
           timeConstraint : commons.getTimeConstraint(date, time, 2, 4),
           isOrganizerOptional: isOrganizerInRequest
         };
         console.log("POST BODY: " + JSON.stringify(postBody))
-
         //The request to microsoft 365 is executed here:
         request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
           if (error){
             errorHandler.actionError(error);
           }
           var meetings = response.meetingTimeSuggestions;
-          console.log("MEETINGS: "+ JSON.stringify(meetings));
           if (meetings.length > 0){
             //Found open meeting times in the requested TimeConstrain
             meetings.forEach((meeting) => {
-              console.log("THE MEETING: " + JSON.stringify(meeting));
               let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
                             commons.parseDate(meeting.meetingTimeSlot.end.dateTime)+"." + '\n';
-              console.log(!options.message.includes(timeSet) +"New message =" + timeSet)       
               if(!options.message.includes(timeSet)){
                 options.message += timeSet
               }
             });
-            console.log("Meeetings: " + JSON.stringify(meetings));
             callback(options);
           }else{
             if(response.emptySuggestionsReason == "Unknown"){
@@ -253,7 +221,7 @@ function checkMeetingTimes(options, callback){
       }
 }
 
-
+//this function is in charge of taking two different dates and show the events between them.
 function showEventsOnDate(options, callback){
   var parameters = options.parameters;
   var date = parameters.date;
@@ -301,7 +269,7 @@ function showEventsOnDate(options, callback){
 
 }
 
-
+// this function ask to microsoft graph for a list of all the current events of the user.
 function showEvents(options, callback){
   var parameters = options.parameters;
   var name = parameters.name;
@@ -309,7 +277,6 @@ function showEvents(options, callback){
   var filter = '';
   var url = '';
 
-  console.log("THE NAME" + name);
   if (name){
     filter = "$filter=startswith(subject,'" + name + "')";
     url = 'https://graph.microsoft.com/v1.0/me/events?';
@@ -324,9 +291,6 @@ function showEvents(options, callback){
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
   }
 
-  console.log("period" + period);
-  console.log('showEvents.filter : ' + 'https://graph.microsoft.com/v1.0/me/calendarview?' + filter);
-  console.log("SHOW EVENT TOKEN: " + options.access_token);
   axios.get(url + filter, {
     headers : {
       'Content-Type':

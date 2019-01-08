@@ -1,8 +1,7 @@
 var axios = require('axios');
-var users = "";
 var commons = require('../utils/commons.js');
 
-
+//This function is in charge of searching for the user and check if it exists in the microsoft graph database
 function preSearchUser(next, options, callback){
   try{
     var parameters = options.parameters;
@@ -70,7 +69,7 @@ function preSearchUser(next, options, callback){
   }
 }
 
-//If the user exists, it will change the message to Ask for the next parameter(Date)
+//If the username sended was found and store, it will change the message to Ask for the next parameter(Date)
 function checkUser(options, callback){
   if(options.user){
     options.message = "What is the date?"
@@ -78,7 +77,6 @@ function checkUser(options, callback){
   }
   callback(options);
 }
-
 
 function searchUser(next, options, callback){
   var parameters = options.parameters;
@@ -149,7 +147,7 @@ function searchUser(next, options, callback){
 
 }
 
-
+//This functions create and send all the helper messages
 function helper(options, callback){
   console.log(JSON.stringify(options));
   if (options.parameters.helperId == "basic"){
