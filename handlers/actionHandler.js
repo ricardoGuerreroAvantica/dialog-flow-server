@@ -28,7 +28,7 @@ function parseAction(req, res, callback){
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes',userHandler.preSearchUser)
-      .pre('checkMeetingTimes', userHandler.searchUser)
+      //.pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
       action.checkMeetingTimes(options, callback);
@@ -108,7 +108,7 @@ function parseAction(req, res, callback){
         //PRE
         Action.pre('checkUser', authenticate.refreshToken)
         .pre('checkUser',userHandler.preSearchUser)
-        .pre('checkUser',userHandler.searchUser)
+        //.pre('checkUser',userHandler.searchUser)
         var action = new Action();
         action.checkUser(options, callback);
       break;
