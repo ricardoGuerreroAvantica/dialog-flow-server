@@ -96,7 +96,7 @@ function scheduleMeeting(options, callback){
       errorHandler.actionError(error);
     }
 
-    console.log('scheduleMeeting.response : ' + response);
+    console.log('scheduleMeeting.response : ' + JSON.stringify(response));
     options.message = options.speech = response.subject + ' created' + '\n';
     options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +

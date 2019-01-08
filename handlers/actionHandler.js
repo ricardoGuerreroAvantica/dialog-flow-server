@@ -83,8 +83,7 @@ function parseAction(req, res, callback){
     case 'create_event_invite' :
       Action.prototype.inviteUser = eventHandler.inviteUser;
       Action.pre('inviteUser', authenticate.refreshToken)
-        .pre('inviteUser',userHandler.preSearchUser)
-        .pre('inviteUser', userHandler.searchUser);
+        .pre('inviteUser',userHandler.preSearchUser);
       console.log("Procced to invite user")
       var action = new Action();
       action.inviteUser(options, callback);

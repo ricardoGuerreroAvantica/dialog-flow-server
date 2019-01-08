@@ -35,29 +35,23 @@ function preSearchUser(next, options, callback){
       console.log(response.data.value.length === 0)
       console.log("response.data.value: "+JSON.stringify(response.data.value))
       if (response.data.value.length === 0){
-        console.log("its gone")
-        next(options, callback);
-        console.log("byebye")
+        options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
+        +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
+        callback(options);
       }
       if (response.data.value.length > 1){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
           if ( i!= response.data.value.length-1){
-            console.log("response.data.value[i].displayName" +JSON.stringify(response.data.value[i]));
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
-            console.log("response.data.value[i].displayName" +JSON.stringify(response.data.value[i]));
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
-        console.log("New Message = " + options.message)
         callback(options);
       }
       else{
-        console.log("I am mr.debbuger, look at me!")
-        console.log("USER.DISPLAYNAME1"+JSON.stringify(response.data.value))
-        console.log("USER.DISPLAYNAME2"+JSON.stringify(response.data))
         options.user = {
         displayName : response.data.value[0].displayName,
         givenName : response.data.value[0].givenName,
