@@ -13,12 +13,12 @@ function preSearchUser(next, options, callback){
     email : parameters.email }
   if( userData.secondName || userData.name){
     var filter =  ((("startswith(displayName,'" +
-                  ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : null)+
-                  ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : null)+
-                  ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : null)+
-                  ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : null)).trim()
+                  ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : "")+
+                  ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : "")+
+                  ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
+                  ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
                   +"')"));
-    filter = filter.replace(/\s+/g, ' ');
+    
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph filter: "+url+filter)
     axios.get(url + filter, {
