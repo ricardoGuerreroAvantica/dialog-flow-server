@@ -42,10 +42,13 @@ function preSearchUser(next, options, callback){
       if (response.data.value.length > 1){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
+          console.log(JSON.stringify(response))
           if ( i!= response.data.value.length-1){
+            console.log(" if ( i!= response.data.value.length-1) "+response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
+            console.log("else"+response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
