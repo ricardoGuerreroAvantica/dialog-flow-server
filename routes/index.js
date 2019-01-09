@@ -39,8 +39,9 @@ router.post("/request", (req, res) => {
 
 });
 
-
-
+router.post("/signIn", (req, res) => {
+  authenticate.signIn(req, res);
+});
 
 router.get('/signIn', function (req, res) {
   authenticate.signIn(req, res);
