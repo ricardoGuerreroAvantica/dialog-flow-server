@@ -17,7 +17,9 @@ function preSearchUser(next, options, callback){
                   ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
                   ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
                   +"')"));
-    
+    console.log("before"+filter);
+    filter= filter.replace("   "," ").replace("  "," ");
+    console.log("after"+filter);
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
     console.log("preSearchUser.graph filter: "+url+filter)
     axios.get(url + filter, {
@@ -78,74 +80,6 @@ function checkUser(options, callback){
   callback(options);
 }
 
-function searchUser(next, options, callback){
-  var parameters = options.parameters;
-  //console.log("searchUser.user: " + JSON.stringify(options.user))
-  //console.log("searchUserParameters: " + JSON.stringify(parameters))
-  if(!options.user){
-    //console.log('searchUser.options.pre.httpCall : ' + JSON.stringify(options));
-    var userData = { name : parameters.name,
-      lastname : parameters.lastname,
-      secondName : parameters.secondName,
-      secondLastname : parameters.secondLastname,
-      email : parameters.email }
-    var filter = ((userData.name) ? "startswith(displayName,'" + userData.name + "')" : '') +
-    ((userData.lastname && userData.lastname !='') ? (((unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(surname,'" + unescape(encodeURIComponent(userData.lastname)) + "')" ): '') +
-    ((userData.email) ? ((unescape(encodeURIComponent(userData.lastname)) || unescape(encodeURIComponent(userData.name))) ? ' and ' : '') + "startswith(mail,'" + unescape(encodeURIComponent(userData.email)) + "')" : '');
-        
-    var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    axios.get(url + filter, {
-      headers : {
-        'Content-Type': 
-        'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + options.access_token
-      }
-    })
-    .then((response) => {
-      options.message = "";
-      if (filter = ""){
-        options.message = ("can you change the format of your answer please?");
-        callback(options);
-      }
-  
-      if (response.data.value.length === 0){
-        options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
-        +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
-        callback(options);
-      }
-      if (response.data.value.length > 1){
-        options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
-        for(i = 0; i < response.data.value.length; i++ ){
-          if ( i!= response.data.value.length-1){
-            options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
-          }
-          else{
-            options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
-          }
-        }
-        console.log("New Message = " + options.message)
-        callback(options);
-      }
-      else{
-        console.log("I am mr.debbuger2, look at me!")
-        console.log("USER.DISPLAYNAME"+response.data.value[0])
-        options.user = {
-        displayName : response.data.value[0].displayName,
-        givenName : response.data.value[0].givenName,
-        mail : response.data.value[0].mail,
-        surname : response.data.value[0].surname,
-        }
-      }
-      //console.log('searchUser.options : ' + JSON.stringify(options));
-      next(options, callback);
-    })
-  }
-  else{
-    next(options, callback);
-  }
-
-}
 
 //This functions create and send all the helper messages
 function helper(options, callback){
@@ -205,6 +139,5 @@ function helper(options, callback){
 }
 
 exports.preSearchUser = preSearchUser;
-exports.searchUser = searchUser;
 exports.helper = helper;
 exports.checkUser = checkUser;
