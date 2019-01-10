@@ -17,11 +17,9 @@ function preSearchUser(next, options, callback){
                   ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
                   ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
                   +"')"));
-    console.log("before"+filter);
     filter= filter.replace("   "," ").replace("  "," ");
-    console.log("after"+filter);
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    console.log("preSearchUser.graph filter: "+url+filter)
+    //console.log("preSearchUser.graph filter: "+url+filter)
     axios.get(url + filter, {
       headers : {
         'Content-Type': 
@@ -32,8 +30,6 @@ function preSearchUser(next, options, callback){
     })
     .then((response) => {
       options.message = "";
-      console.log(response.data.value.length === 0)
-      console.log("response.data.value: "+JSON.stringify(response.data.value))
       if (response.data.value.length === 0){
         options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
         +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
@@ -42,13 +38,10 @@ function preSearchUser(next, options, callback){
       if (response.data.value.length > 1){
         options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
         for(i = 0; i < response.data.value.length; i++ ){
-          console.log(JSON.stringify(response))
           if ( i!= response.data.value.length-1){
-            console.log(" if ( i!= response.data.value.length-1) "+response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
           }
           else{
-            console.log("else"+response.data.value[i].displayName)
             options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
           }
         }
@@ -86,7 +79,6 @@ function checkUser(options, callback){
 
 //This functions create and send all the helper messages
 function helper(options, callback){
-  console.log(JSON.stringify(options));
   if (options.parameters.helperId == "basic"){
     options.message = "Can you tell me how I can help you?"
                       +"\n▶ How to create an event?"

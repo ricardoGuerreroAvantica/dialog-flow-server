@@ -18,61 +18,37 @@ var tokens = {};
 
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
-  console.log("newSection:")
-  var session = commons.getContext(req.body.result.contexts, 'session');
+  //var session = commons.getContext(req.body.result.contexts, 'session');
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
 
-  console.log("valid.session: Options: "+JSON.stringify(this.options));
   this.options = {};
-  console.log("#Empthy:"+ JSON.stringify(this.options));
-  console.log("Body:" + JSON.stringify(req.body));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
-    //console.log("skype");
     this.options.sessionId = req.body.originalRequest.data.user.id;
     this.options.source = 'skype';
 
   }else {
     //LOGIN IN IOS
-    console.log("Enter the IOS section: --------------------------------------");
-    console.log(JSON.stringify(this.options));
     var IOSId = reqJSONBody.result.contexts;
 
     IOSFiltered = IOSId.filter(filter)
-    console.log()
-    console.log(IOSFiltered)
     var IOSName=IOSFiltered[0].name;
     if (IOSName && IOSName != "session"){
     this.options.sessionId = IOSName;
     this.options.source = 'ios';
 
     }
-    //else if (IOSId.name == "session"){
-        //console.log("Android");
-        //console.log("Parameters :"+ session.parameters.id)
-        //this.options.sessionId = session.parameters.id;
-        //this.options.source = 'android';
-    //}
-    console.log("----------------end---------------------");
-
   }
   next(req, res, callback);
 }
 
 function filter(jsonObject) {
-  console.log("Users_data: "+JSON.stringify(jsonObject))
   return jsonObject.name != "createevent" && jsonObject.name != "invites"&& jsonObject.name != "helperhandler" && jsonObject.name != "check_available_context";
 }
 
 //CHECK IF USER LOGED IN
 function validUser(next, req, res, callback){
-  console.log("Enter validUser")
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
-  console.log("The OPTIONS: " + JSON.stringify(this.options))
-  console.log('THE TOKENS: ' + JSON.stringify(tokens));
-  console.log("SESSION_ID: " +sessionId)
-  console.log("SESSION: " + !this.options.sessionTokens)
-  console.log("options.source" + this.options.source)
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
       return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" });
@@ -130,11 +106,8 @@ function refreshToken(next, options, callback) {
 function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
-  console.log("ENTER THE APP!")
   try{
     var reqJSONBody = JSON.parse(JSON.stringify(req.body));
-    console.log(reqJSONBody)
-
   }
   catch(error){
     console.log("Error" + error)
@@ -142,10 +115,6 @@ function signIn(req, res){
   if (reqJSONBody.state=="IOS"){
 
     tokens[reqJSONBody.session_state] = { ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
-    console.log("---------------------TOKENS------------------------------")
-    console.log(JSON.stringify(tokens))
-    console.log("---------------------END------------------------------")
-
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
@@ -160,7 +129,6 @@ function signIn(req, res){
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
         tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
-        console.log(__dirname + '/signIn.html')
         return res.sendFile(__dirname + '/signIn.html');
       }else{
         //console.log(JSON.parse(error.data).error_description);

@@ -17,24 +17,18 @@ function replaceSpecialCharacteres(name){
 //This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
   var eventContext = commons.getContext(options.contexts, 'createevent');
-  console.log(JSON.stringify(eventContext));
-  console.log("NAME ORIGINAL: " + name)
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
-  console.log(replaceSpecialCharacteres(name))
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  console.log("date: "+date)
-
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
-  console.log("start: "+startDate)
+
   if(options.source== 'ios'){
     var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
   }
   else{
     var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
-    console.log(message)
   }
   if (options.simpleInfo==true){
     message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
@@ -53,7 +47,6 @@ function showEventDetails(options,callback){
       message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
     });
   }
-  console.log(message)
   options.message = message;
   callback(options)
 }
@@ -83,8 +76,6 @@ function scheduleMeeting(options, callback){
       console.log('scheduleMeeting.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
     }
-
-    console.log('scheduleMeeting.response : ' + JSON.stringify(response));
     options.message = options.speech = response.subject + ' created' + '\n';
     options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
@@ -141,7 +132,6 @@ function PrefindMeetingTimes(next, options, callback){
       timeConstraint : commons.getTimeConstraint(date, time, 0, 2),
       isOrganizerOptional: isOrganizerInRequest
     };
-    console.log("POST BODY: " + JSON.stringify(postBody))
 
     //The request to microsoft 365 is executed here:
       request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
@@ -159,10 +149,8 @@ function PrefindMeetingTimes(next, options, callback){
               options.message += timeSet
             }
           });
-          console.log("Meeetings: " + JSON.stringify(meetings));
           next(options,callback);
         }else{
-          console.log("Didnt find any available time at:" + time);
           //If didnt find any meeting time at this time just skip to the next time.
             next(options, callback);
         }
@@ -187,7 +175,6 @@ function checkMeetingTimes(options, callback){
           timeConstraint : commons.getTimeConstraint(date, time, 2, 4),
           isOrganizerOptional: isOrganizerInRequest
         };
-        console.log("POST BODY: " + JSON.stringify(postBody))
         //The request to microsoft 365 is executed here:
         request.postData('graph.microsoft.com','/beta/me/findMeetingTimes', options.access_token, JSON.stringify(postBody), (error, response) => {
           if (error){
@@ -209,7 +196,6 @@ function checkMeetingTimes(options, callback){
               options.message = "Couldn't access to " + options.user.displayName + " shedule, the calendar of this employee may be restricted at this time."
             }
             else{
-              console.log("Didnt find any available time at:" + response.emptySuggestionsReason);
               options.message = "Didn't find any available slot in the calendar of "+ options.user.displayName +"."
             }
               callback(options);
@@ -229,12 +215,10 @@ function showEventsOnDate(options, callback){
   var url = '';
   var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
   var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  console.log("Date Start: " +startDate);
-  console.log("Date End: " + endDate)
   filter = 'startdatetime=' + startDate+ 'Z' +
             '&enddatetime=' + endDate+ 'Z';
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  console.log(url+filter)
+  //console.log(url+filter)
   axios.get(url + filter, {
     headers : {
       'Content-Type':
@@ -255,7 +239,6 @@ function showEventsOnDate(options, callback){
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });
-      console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
       options.message = options.speech = 'There is nothing on your agenda';

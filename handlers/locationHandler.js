@@ -1,6 +1,3 @@
-var request = require('../microsoftGraph/request.js');
-var commons = require('../utils/commons.js');
-
 function showLocations(options, callback){
   axios.get('https://graph.microsoft.com/beta/me/findRooms', {
     headers : {
