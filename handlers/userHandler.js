@@ -1,5 +1,4 @@
 var axios = require('axios');
-var commons = require('../utils/commons.js');
 
 //This function is in charge of searching for the user and check if it exists in the microsoft graph database
 function preSearchUser(next, options, callback){

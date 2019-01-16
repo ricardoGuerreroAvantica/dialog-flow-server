@@ -116,7 +116,9 @@ function signIn(req, res){
   }
   if (reqJSONBody.state=="IOS"){
 
-    tokens[reqJSONBody.session_state] = { ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : "" }
+    tokens[reqJSONBody.session_state] = { ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : "" ,TIMEZONE:commons.getTimeZone(access_token)}
+    console.log(JSON.stringify("skype session:" + tokens[reqJSONBody.session_state]))
+
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
@@ -130,8 +132,8 @@ function signIn(req, res){
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
-        commons.getTimeZone(access_token);
-        tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
+        tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token ,TIMEZONE:commons.getTimeZone(access_token)}
+        console.log(JSON.stringify("skype session:" + tokens[state]))
         return res.sendFile(__dirname + '/signIn.html');
       }else{
         //console.log(JSON.parse(error.data).error_description);
