@@ -3,7 +3,7 @@ var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
 var eventHandler = require('../handlers/eventHandler.js');
 var locationHandler = require('../handlers/locationHandler.js');
-var timezones = require('../constants/Timezones.js');
+var timezones = require('./../constants/Timezones.js');
 var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
 
