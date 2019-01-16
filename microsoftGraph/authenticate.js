@@ -1,5 +1,3 @@
-var errorHandler = require('../handlers/errorHandler.js');
-var commons = require('../utils/commons.js');
 var OAuth = require('oauth');
 
 var credentials = {
@@ -7,14 +5,17 @@ var credentials = {
   authorize_endpoint: '/oauth2/authorize',
   token_endpoint: '/oauth2/token',
   logout_endpoint: '/oauth2/logout',
-  client_id: 'c93a93c8-e0bd-4066-8550-845bf844bea3',
-  client_secret: 'iOGRYK9563+=orvbuiMM9?_',
-  scope : 'Calendars.Read.Shared%20Calendars.ReadWrite%20User.Read%20User.ReadBasicAll',
+  client_id: 'f9c030a5-9a75-4ae7-add2-55330dc196c4',
+  client_secret: 'ckgoMKCP65ilpGDY960[;?@',
+  scope : 'Calendars.ReadWrite.Shared'+
+          '%20Calendars.ReadWrite'+
+          '%20User.ReadBasicAll'+
+          '%20MailboxSettings.ReadWrite'+
+          '%20User.ReadWrite',
   redirect_uri: 'https://sjo-calendar-bot.azurewebsites.net/signIn',
   resouce: 'https://graph.microsoft.com/'
 };
 var tokens = {};
-
 
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
