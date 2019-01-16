@@ -117,7 +117,7 @@ function signIn(req, res){
   if (reqJSONBody.state=="IOS"){
     UserTimezone=commons.getTimeZone(access_token);
     tokens[reqJSONBody.session_state] = { TIMEZONE:UserTimezone, ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : ""}
-    console.log(JSON.stringify("IOS session: is " + json.stringify(tokens[reqJSONBody.session_state])))
+    console.log(JSON.stringify("IOS session: is " + json.stringify(tokens[reqJSONBody.session_state].TIMEZONE)))
 
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
@@ -134,7 +134,7 @@ function signIn(req, res){
       if (!error) {
         UserTimezone=commons.getTimeZone(access_token);
         tokens[state] = {TIMEZONE:UserTimezone, ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token}
-        console.log(JSON.stringify("skype session: is " + JSON.stringify(tokens[state])))
+        console.log(JSON.stringify("skype session: is " + JSON.stringify(tokens[state].TIMEZONE)))
         return res.sendFile(__dirname + '/signIn.html');
       }else{
         //console.log(JSON.parse(error.data).error_description);
