@@ -98,13 +98,11 @@ function getTimeZone(access_token){
   })
   .then((response) => {
   
-    console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data.value))
     if (response.data.value.length != 0){
-      console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data.value))
       for (i = 0; i < timezones.timezones.length; i++) {
-        console.log(timezones.timezones[i].name.trim() == response.data.value.trim() + " "+timezones.timezones[i].name.trim());
         if(timezones.timezones[i].name == response.data.value){
-          console.log(timezones.timezones[i].name +timezones.timezones[i].time)
+          console.log("Selected : "+timezones.timezones[i].name+" "+timezones.timezones[i].time)
+          return timezones.timezones[i].time;
         }
       }
     }
