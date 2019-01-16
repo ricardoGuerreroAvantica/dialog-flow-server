@@ -21,7 +21,6 @@ var tokens = {};
 function validSession(next, req, res, callback){
   //var session = commons.getContext(req.body.result.contexts, 'session');
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
-
   this.options = {};
   console.log("The Body:"+JSON.stringify(reqJSONBody));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
