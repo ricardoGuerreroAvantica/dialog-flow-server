@@ -102,9 +102,9 @@ function getTimeZone(access_token){
     if (response.data.value.length != 0){
       console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data.value))
       for (i = 0; i < timezones.timezones.length; i++) {
-        console.log(timezones.timezones.name);
-        if(timezones.timezones.name == response.data.value){
-          return timezones.timezones.time;
+        console.log(timezones.timezones[i].name);
+        if(timezones.timezones[i].name == response.data.value){
+          console.log(timezones.timezones[i].name +timezones.timezones[i].time)
         }
       }
     }
