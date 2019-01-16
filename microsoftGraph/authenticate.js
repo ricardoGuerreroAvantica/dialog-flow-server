@@ -23,7 +23,7 @@ function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
 
   this.options = {};
-  console.log("The Body:"+reqJSONBody)
+  console.log("The Body:"+JSON.stringify(reqJSONBody));
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     this.options.sessionId = req.body.originalRequest.data.user.id;
     this.options.source = 'skype';
