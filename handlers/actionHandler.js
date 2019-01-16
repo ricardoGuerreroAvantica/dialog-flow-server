@@ -5,6 +5,7 @@ var userHandler = require('../handlers/userHandler.js');
 var actionHandler = require('../handlers/actionHandler.js');
 var eventHandler = require('../handlers/eventHandler.js');
 var locationHandler = require('../handlers/locationHandler.js');
+var Timezones = require('../constants/Timezones.js');
 
 var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
@@ -14,6 +15,7 @@ for (var k in hooks) {
 }
 
 function parseAction(req, res, callback){
+  console.log('Used time = '+JSON.stringify(Timezones.timezones));
   var options = this.options;
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
