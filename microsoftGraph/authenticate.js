@@ -1,4 +1,5 @@
 var OAuth = require('oauth');
+var commons = require('../utils/commons.js');
 
 var credentials = {
   authority: 'https://login.microsoftonline.com/common',
@@ -129,6 +130,7 @@ function signIn(req, res){
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
+        commons.getTimeZone(access_token);
         tokens[state] = { ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token }
         return res.sendFile(__dirname + '/signIn.html');
       }else{
@@ -139,6 +141,9 @@ function signIn(req, res){
     });
   }
 }
+
+
+
 
 
 

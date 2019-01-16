@@ -1,4 +1,6 @@
 var moment = require('moment');
+var axios = require('axios');
+
 function getContext(contexts, name){
   console.log("Inside context function: "+ JSON.stringify(contexts))
   for (var i in contexts){
@@ -84,6 +86,25 @@ function parseDate(date){
  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 
+function getTimeZone(access_token){
+  axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
+    headers : {
+      'Content-Type': 
+      'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + access_token
+    }
+  })
+  .then((response) => {
+  
+    console.log("TIMEZONE RESPONSES"+JSON.stringify(response))
+    if (response.data.value.length === 0){
+      
+    }
+    })
+}
+
+exports.getTimeZone = getTimeZone;
 exports.getChangeLine = getChangeLine;
 exports.getContext = getContext;
 exports.parseDate = parseDate;
