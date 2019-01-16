@@ -1,12 +1,9 @@
 var authenticate = require('../microsoftGraph/authenticate.js');
-
 var calendarHandler = require('../handlers/calendarHandler.js');
 var userHandler = require('../handlers/userHandler.js');
-var actionHandler = require('../handlers/actionHandler.js');
 var eventHandler = require('../handlers/eventHandler.js');
 var locationHandler = require('../handlers/locationHandler.js');
-var Timezones = require('../constants/Timezones.js');
-
+var timezones = require('../constants/Timezones.js');
 var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
 
@@ -15,7 +12,7 @@ for (var k in hooks) {
 }
 
 function parseAction(req, res, callback){
-  console.log('Used time = '+JSON.stringify(Timezones.timezones));
+  console.log('Used time = '+JSON.stringify(timezones.timezones));
   var options = this.options;
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;

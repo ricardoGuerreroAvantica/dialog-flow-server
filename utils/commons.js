@@ -1,6 +1,4 @@
 var moment = require('moment');
-var Timezones = require('../constants/Timezones.js');
-
 function getContext(contexts, name){
   console.log("Inside context function: "+ JSON.stringify(contexts))
   for (var i in contexts){
@@ -42,7 +40,6 @@ function getAttendees(invites){
 function getDate(date, time, extraTime,isSubstraction){
   try {
       var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
-      console.log('Used time = '+JSON.stringify(Timezones.timezones));
       if (isSubstraction){
         var extraValue = 6 - extraTime;
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
