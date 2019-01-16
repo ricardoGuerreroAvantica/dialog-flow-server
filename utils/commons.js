@@ -1,5 +1,6 @@
 var moment = require('moment');
 var axios = require('axios');
+var timezones = require('./../constants/Timezones.js');
 
 function getContext(contexts, name){
   console.log("Inside context function: "+ JSON.stringify(contexts))
@@ -97,9 +98,15 @@ function getTimeZone(access_token){
   })
   .then((response) => {
   
-    console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data))
+    console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data.value))
     if (response.data.value.length === 0){
-      
+      console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data.value))
+      for (i = 0; i < timezones.timezones.length; i++) {
+        console.log(timezones.timezones.name);
+        if(timezones.timezones.name == response.data.value){
+          return timezones.timezones.time;
+        }
+      }
     }
     })
 }
