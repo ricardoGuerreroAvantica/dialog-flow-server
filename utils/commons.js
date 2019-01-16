@@ -102,7 +102,8 @@ function getTimeZone(access_token){
       for (i = 0; i < timezones.timezones.length; i++) {
         if(timezones.timezones[i].name == response.data.value){
           console.log("Selected : "+timezones.timezones[i].name+" "+timezones.timezones[i].time)
-          return timezones.timezones[i].time;
+          console.log(JSON.stringify({timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)}))
+          return {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
         }
       }
     }
