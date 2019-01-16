@@ -97,7 +97,7 @@ function getTimeZone(access_token){
   })
   .then((response) => {
   
-    console.log("TIMEZONE RESPONSES"+JSON.stringify(response))
+    console.log("TIMEZONE RESPONSES"+JSON.stringify(response.data))
     if (response.data.value.length === 0){
       
     }
