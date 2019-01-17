@@ -7,6 +7,8 @@ function getTimeZone(next, options, callback){
     console.log("Enter");
 
     try {
+        console.log("options: " + JSON.stringify(options))
+        console.log(options.access_token)
         axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
         headers : {
             'Content-Type': 
