@@ -136,7 +136,7 @@ function signIn(req, res){
         UserTimezone=commons.getTimeZone(access_token);
         tokens[state] = {ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token}
 
-        tokens[reqJSONBody.session_state].TIMEZONE=UserTimezone;
+        tokens[state].TIMEZONE=UserTimezone;
         console.log(JSON.stringify("IOS session: is " + json.stringify(tokens[state].TIMEZONE)))
 
         return res.sendFile(__dirname + '/signIn.html');
