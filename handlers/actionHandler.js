@@ -52,8 +52,7 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
       Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
-      Action.pre('showEvents', timezoneHandler.getTimeZone)
-      .pre('showEventsOnDate', authenticate.refreshToken);
+      Action.pre('showEventsOnDate', authenticate.refreshToken);
 
       var action = new Action();
       action.showEventsOnDate(options, callback);
@@ -63,8 +62,7 @@ function parseAction(req, res, callback){
     //Description: #Currently the bot dont handle locations.
     case 'show_locations' :
       Action.prototype.showLocations = locationHandler.showLocations;
-      Action.pre('showEvents', timezoneHandler.getTimeZone)
-      .pre('showLocations', authenticate.refreshToken);
+      Action.pre('showLocations', authenticate.refreshToken);
       var action = new Action();
       action.showLocations(options, callback);
       break;
@@ -74,8 +72,7 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
-      Action.pre('showEvents', timezoneHandler.getTimeZone)
-      .pre('scheduleMeeting', authenticate.refreshToken);
+      Action.pre('scheduleMeeting', authenticate.refreshToken);
       var action = new Action();
       action.scheduleMeeting(options, callback);
       break;
@@ -118,22 +115,16 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
       options.simpleInfo = false;
-      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
-      Action.pre('showEventDetails', timezoneHandler.getTimeZone)
-      var action = new Action();
-      action.showEventDetails(options, callback);
+      calendarHandler.showEventDetails(options, callback);
       break;
 
     //Case: createEventBegin
     //Description: This case is trigger when all the information of the event creation is collected and then proced to show the event body to the user
     case 'createEventBegin' :
       options.simpleInfo = true;
-      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
-      Action.pre('showEventDetails', timezoneHandler.getTimeZone)
-      var action = new Action();
-      action.showEventDetails(options, callback);
+      calendarHandler.showEventDetails(options, callback);
       break;
-      
+
     //Case: Default Answer
     //Description: This is the default answer sended when there is no other case that match the request case.
     default:

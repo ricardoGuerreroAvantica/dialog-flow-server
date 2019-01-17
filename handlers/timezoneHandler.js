@@ -23,6 +23,7 @@ function getTimeZone(next, options, callback){
         }
       }
       })
+      next(options, callback);
   }
 
 
