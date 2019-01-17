@@ -1,9 +1,12 @@
 var timezones = require('./../constants/Timezones.js');
 var axios = require('axios');
 
+
+
 function getTimeZone(next, options, callback){
     console.log("Enter");
-    try{
+
+    try {
         axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
         headers : {
             'Content-Type': 
@@ -27,13 +30,13 @@ function getTimeZone(next, options, callback){
             }
         }
         })
-        next(options, callback);
-        }
-        catch
-        {
-            console.error()
-        }
-        next(options, callback);
+      }
+      catch(err) {
+        console.log(err);
+      }
+
+    
+      next(options, callback);
   }
 
 
