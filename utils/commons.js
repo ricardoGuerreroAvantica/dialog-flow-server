@@ -3,6 +3,7 @@ var moment = require('moment');
 function getContext(contexts, name){
   console.log("IgetContext: ")
   for (var i in contexts){
+    console.log("is "+name+" equal to "+contexts[i].name + (contexts[i].name === name).toString());
     if (contexts[i].name === name){
       console.log("Selected:  "+contexts[i])
       return contexts[i];
