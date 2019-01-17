@@ -16,10 +16,19 @@ function replaceSpecialCharacteres(name){
 
 //This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
-  console.log(JSON.stringify(eventContext))
   var eventContext = commons.getContext(options.contexts, 'createevent');
+
+  console.log("createevent  :"+JSON.stringify(eventContext))
+  console.log("createevent  time:"+JSON.stringify(eventContext.parameters.time))
+
+  console.log("createevent  getContext:"+JSON.stringify(options.contexts))
+
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
+  
+
+
+
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
