@@ -1,4 +1,5 @@
 var timezones = require('./../constants/Timezones.js');
+var axios = require('axios');
 
 function getTimeZone(next, options, callback){
     axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
