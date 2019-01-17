@@ -1,6 +1,5 @@
 var moment = require('moment');
 var axios = require('axios');
-var timezones = require('./../constants/Timezones.js');
 
 function getContext(contexts, name){
   console.log("Inside context function: "+ JSON.stringify(contexts))
@@ -87,30 +86,7 @@ function parseDate(date){
  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 
-function getTimeZone(access_token){
-  axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
-    headers : {
-      'Content-Type': 
-      'application/json',
-      Accept: 'application/json',
-      Authorization: 'Bearer ' + access_token
-    }
-  })
-  .then((response) => {
-  
-    if (response.data.value.length != 0){
-      for (i = 0; i < timezones.timezones.length; i++) {
-        if(timezones.timezones[i].name == response.data.value){
-          console.log("Selected : "+timezones.timezones[i].name+" "+timezones.timezones[i].time)
-          console.log(JSON.stringify({timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)}))
-          return {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
-        }
-      }
-    }
-    })
-}
 
-exports.getTimeZone = getTimeZone;
 exports.getChangeLine = getChangeLine;
 exports.getContext = getContext;
 exports.parseDate = parseDate;
