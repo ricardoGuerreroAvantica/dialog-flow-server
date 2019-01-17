@@ -1,5 +1,4 @@
 var moment = require('moment');
-var axios = require('axios');
 
 function getContext(contexts, name){
   console.log("Inside context function: "+ JSON.stringify(contexts))
