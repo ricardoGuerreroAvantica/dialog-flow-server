@@ -19,13 +19,11 @@ function showEventDetails(options,callback){
   console.log("LOOK HERE:")
   var eventContext = commons.getContext(options.contexts, 'createevent');
 
-  console.log("createevent  :"+JSON.stringify(eventContext))
-  console.log("createevent  time:"+JSON.stringify(eventContext.parameters.time))
-
-  console.log("createevent  getContext:"+JSON.stringify(options.contexts))
 
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
+  console.log("createevent getContext:"+JSON.stringify(eventContext.parameters))
+  console.log("createevent getContext:"+JSON.stringify(eventContext.parameters.time))
   
 
 
