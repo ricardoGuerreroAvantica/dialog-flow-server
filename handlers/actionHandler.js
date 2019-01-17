@@ -42,8 +42,8 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my events" 
     case 'show_events' :
       Action.prototype.showEvents = calendarHandler.showEvents;
-      Action.pre('showEvents', timezoneHandler.getTimeZone)
-      .pre('showEvents', authenticate.refreshToken);
+      Action.pre('showEvents', authenticate.refreshToken)
+      .pre('showEvents', timezoneHandler.getTimeZone)      ;
       var action = new Action();
       action.showEvents(options, callback);
       break;
