@@ -16,6 +16,7 @@ function replaceSpecialCharacteres(name){
 
 //This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
+  console.log(JSON.stringify(eventContext))
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
