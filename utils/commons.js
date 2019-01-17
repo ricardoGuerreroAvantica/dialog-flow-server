@@ -1,12 +1,14 @@
 var moment = require('moment');
 
 function getContext(contexts, name){
-  console.log("Inside context function: "+ JSON.stringify(contexts))
+  console.log("IgetContext: ")
   for (var i in contexts){
     if (contexts[i].name === name){
+      console.log("Selected:  "+contexts[i])
       return contexts[i];
     }
   }
+  console.log("notfound")
   return undefined;
 }
 
