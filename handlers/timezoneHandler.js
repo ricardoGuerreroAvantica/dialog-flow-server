@@ -4,11 +4,7 @@ var axios = require('axios');
 
 
 function getTimeZone(next, options, callback){
-    console.log("Enter");
-
     try {
-        console.log("options: " + JSON.stringify(options))
-        console.log(options.access_token)
         axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
         headers : {
             'Content-Type': 
@@ -27,7 +23,7 @@ function getTimeZone(next, options, callback){
                 console.log("Selected : "+timezones.timezones[i].name+" "+timezones.timezones[i].time)
                 console.log(JSON.stringify({timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)}))
                 options.userTimezone= {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
-                next(options, callback);
+                break;
             }
             }
         }

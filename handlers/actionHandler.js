@@ -22,11 +22,10 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
-      Action.pre('checkMeetingTimes', timezoneHandler.getTimeZone)
-      .pre('checkMeetingTimes', authenticate.refreshToken)
+      Action.pre('checkMeetingTimes', authenticate.refreshToken)
+      .pre('checkMeetingTimes', timezoneHandler.getTimeZone)
       .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes',userHandler.preSearchUser)
-      //.pre('checkMeetingTimes', userHandler.searchUser)
       .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
       var action = new Action();
       action.checkMeetingTimes(options, callback);
@@ -52,7 +51,8 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
       Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
-      Action.pre('showEventsOnDate', authenticate.refreshToken);
+      Action.pre('showEventsOnDate', authenticate.refreshToken)
+      .pre('showEventsOnDate', timezoneHandler.getTimeZone)
 
       var action = new Action();
       action.showEventsOnDate(options, callback);
@@ -62,7 +62,8 @@ function parseAction(req, res, callback){
     //Description: #Currently the bot dont handle locations.
     case 'show_locations' :
       Action.prototype.showLocations = locationHandler.showLocations;
-      Action.pre('showLocations', authenticate.refreshToken);
+      Action.pre('showLocations', authenticate.refreshToken)
+      .pre('showLocations', timezoneHandler.getTimeZone)
       var action = new Action();
       action.showLocations(options, callback);
       break;
@@ -72,7 +73,8 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
-      Action.pre('scheduleMeeting', authenticate.refreshToken);
+      Action.pre('scheduleMeeting', authenticate.refreshToken)
+      .pre('scheduleMeeting', timezoneHandler.getTimeZone)
       var action = new Action();
       action.scheduleMeeting(options, callback);
       break;
@@ -105,6 +107,7 @@ function parseAction(req, res, callback){
         Action.prototype.checkUser = userHandler.checkUser;
         //PRE
         Action.pre('checkUser', authenticate.refreshToken)
+        .pre('checkUser', timezoneHandler.getTimeZone)
         .pre('checkUser',userHandler.preSearchUser)
         //.pre('checkUser',userHandler.searchUser)
         var action = new Action();
@@ -115,14 +118,24 @@ function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
       options.simpleInfo = false;
-      calendarHandler.showEventDetails(options, callback);
+      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
+        //PRE
+        Action.pre('showEventDetails', authenticate.refreshToken)
+        .pre('showEventDetails', timezoneHandler.getTimeZone)
+        var action = new Action();
+        action.showEventDetails(options, callback);
       break;
 
     //Case: createEventBegin
     //Description: This case is trigger when all the information of the event creation is collected and then proced to show the event body to the user
     case 'createEventBegin' :
       options.simpleInfo = true;
-      calendarHandler.showEventDetails(options, callback);
+      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
+        //PRE
+        Action.pre('showEventDetails', authenticate.refreshToken)
+        .pre('showEventDetails', timezoneHandler.getTimeZone)
+        var action = new Action();
+        action.showEventDetails(options, callback);
       break;
 
     //Case: Default Answer
