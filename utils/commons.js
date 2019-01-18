@@ -41,15 +41,18 @@ function getAttendees(invites){
 }
 
 
-function getDate(date, time, extraTime,isSubstraction){
+function getDate(date, time, extraTime,isSubstraction,timezoneTime){
   try {
+    
       var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
       if (isSubstraction){
+        console.log("startime extraValue =" +timezoneTime - extraTime )
         var extraValue = 6 - extraTime;
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         return newDate
       }
       else{
+        console.log("endtime extraValue =" +timezoneTime + extraTime )
         var extraValue =  6 +  extraTime;
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
         return newDate
@@ -63,8 +66,10 @@ function getDate(date, time, extraTime,isSubstraction){
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
   console.log("timezone is here="+JSON.stringify(timezone))
-  var startDate = getDate(date, time,startTimeMargin,true);
-  var endDate = getDate(date, time,endTimeMargin,false);
+  var startDate = getDate(date, time,startTimeMargin,true,parseInt(timezone.time));
+  var endDate = getDate(date, time,endTimeMargin,false,parseInt(timezone.time));
+
+  console.log("STARTX " +startDate+ " ENDX " +endDate)
   var result = {
     "timeslots": [
       {
@@ -85,12 +90,9 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
 }
 
 function parseDate(date,timezone){
-  console.log("timezone is here="+JSON.stringify(timezone))
-  console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(timezone.time), 'hours'))
-  console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours'))
-
- var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours')  
- return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
+  console.log("timezone is here="+JSON.stringify(timezone)+"NEW TIMEZONE" + moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(timezone.time), 'hours'))
+  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(timezone.time), 'hours') 
+  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 
 
