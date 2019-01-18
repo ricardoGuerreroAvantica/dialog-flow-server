@@ -47,11 +47,11 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
       var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
       if (isSubstraction){
         console.log("-------"  )
-        console.log("ORIGINAL" +moment(date+' '+time))
+        console.log("ORIGINAL " +moment(date+' '+time).format(format))
         newDate2 = moment(date+' '+time).add(timezoneTime,"hours").format(format);
-        console.log("PLUS :"+timezoneTime+" EQUAL: " +newDate2 )
+        console.log("PLUS : "+timezoneTime+" EQUAL: " +newDate2 )
         newDate2 = moment(newDate2).subtract(extraTime,"hours").format(format);
-        console.log("MINUS" +extraTime+" EQUAL: " +newDate2 )
+        console.log("MINUS : " +extraTime+" EQUAL: " +newDate2 )
 
 
         var extraValue = 6 - extraTime;
@@ -60,11 +60,11 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
       }
       else{
         console.log("-------"  )
-        console.log("ORIGINAL" +moment(date+' '+time))
+        console.log("ORIGINAL" +moment(date+' '+time).format(format))
         newDate2 = moment(date+' '+time).add(timezoneTime,"hours").format(format);
-        console.log("PLUS :"+timezoneTime+" EQUAL: " +newDate2 )
+        console.log("PLUS : "+timezoneTime+" EQUAL: " +newDate2 )
         newDate2 = moment(newDate2).add(extraTime,"hours").format(format);
-        console.log("PLUS" +extraTime+" EQUAL: " +newDate2 )
+        console.log("PLUS : " +extraTime+" EQUAL: " +newDate2 )
 
         var extraValue =  6 +  extraTime;
         newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
