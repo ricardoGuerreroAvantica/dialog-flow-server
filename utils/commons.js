@@ -46,24 +46,11 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
     
       var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
       if (isSubstraction){
-        console.log("---- extraTime:"+extraTime+" timezoneTime: "+timezoneTime+"----"  )
-        console.log("ORIGINAL " +moment(date+' '+time).format(format))
-        newDate2 = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format);
-        console.log(" EQUAL: " +newDate2 )
-
-
-        var extraValue = 6 - extraTime;
-        newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
+        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format);
         return newDate
       }
       else{
-        console.log("---- extraTime:"+extraTime+" timezoneTime: "+timezoneTime+"----"  )
-        console.log("ORIGINAL " +moment(date+' '+time).format(format))
-        newDate2 = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format);
-        console.log(" EQUAL: " +newDate2 )
-
-        var extraValue =  6 +  extraTime;
-        newDate = moment(date+' '+time).add(extraValue,"hours").format(format);
+        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format);
         return newDate
       }
   }
