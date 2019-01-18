@@ -49,7 +49,7 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
         console.log("-------"  )
         newDate2 = moment(date+' '+time).add(timezoneTime,"hours").format(format);
         console.log("startime extraValue =" +newDate2 )
-        newDate2 = newDate2.subtract(timezoneTime,"hours").format(format);
+        newDate2 = newDate2.subtract(extraTime,"hours").format(format);
         console.log("startime extraValue =" +newDate2 )
 
 
@@ -61,7 +61,7 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
         console.log("-------"  )
         newDate2 = moment(date+' '+time).add(timezoneTime,"hours").format(format);
         console.log("startime extraValue =" +newDate2 )
-        newDate2 = newDate2.add(timezoneTime,"hours").format(format);
+        newDate2 = newDate2.add(extraTime,"hours").format(format);
         console.log("startime extraValue =" +newDate2 )
 
         var extraValue =  6 +  extraTime;
