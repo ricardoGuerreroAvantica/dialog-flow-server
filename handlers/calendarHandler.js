@@ -43,12 +43,14 @@ function showEventDetails(options,callback){
     message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
   }
   else{
+    console.log("#44 "+invitesContext.parameters.invites)
     message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
     message += "Your invites:"+'\n';
     var invitesContext = commons.getContext(options.contexts, 'invites');
     if (!invitesContext){
       message += "There are no invitations yet.";
       options.message = message;
+      console.log("#56")
       callback(options);
     }
     var invites = invitesContext.parameters.invites;
@@ -56,6 +58,7 @@ function showEventDetails(options,callback){
       message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
     });
   }
+  console.log("#55")
   options.message = message;
   callback(options)
 }
