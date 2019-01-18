@@ -61,7 +61,8 @@ function getDate(date, time, extraTime,isSubstraction){
 }
 
 
-function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
+function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
+  console.log("timezone is here="+JSON.stringify(timezone))
   var startDate = getDate(date, time,startTimeMargin,true);
   var endDate = getDate(date, time,endTimeMargin,false);
   var result = {
@@ -83,7 +84,8 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin){
 
 }
 
-function parseDate(date){
+function parseDate(date,timezone){
+  console.log("timezone is here="+JSON.stringify(timezone))
  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').subtract(6, 'hours')  
  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }

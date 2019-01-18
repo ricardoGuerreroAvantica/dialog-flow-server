@@ -17,47 +17,31 @@ function replaceSpecialCharacteres(name){
 //This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
   try{
-    console.log("LOOK HERE:")
     var eventContext = commons.getContext(options.contexts, 'createevent');
-
-
     var name = eventContext.parameters.eventName;
     name = replaceSpecialCharacteres(name)
-    console.log("createevent getContext:"+JSON.stringify(eventContext.parameters))
-    console.log("createevent getContext:"+JSON.stringify(eventContext.parameters.time))
-    
-
-
-
     var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
     var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
     var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
     var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
-
     if(options.source== 'ios'){
-      console.log("#31 ")
       var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
     }
     else{
-      console.log("#32 ")
       var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
     }
     if (options.simpleInfo==true){
-      console.log("#33 ")
-
       message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
     }
     
 
     else{
-      console.log("#34 ")
       message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
       message += "Your invites:"+'\n';
       var invitesContext = commons.getContext(options.contexts, 'invites');
       if (!invitesContext){
         message += "There are no invitations yet.";
         options.message = message;
-        console.log("#56")
         callback(options);
       }
       var invites = invitesContext.parameters.invites;
@@ -65,12 +49,11 @@ function showEventDetails(options,callback){
         message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
       });
     }
-    console.log("#55")
     options.message = message;
     callback(options)
   }
   catch(error){
-    console.log("error: " +error);
+    console.log("error in : function showEventDetails" +error);
     callback(options)
 
   }
@@ -104,7 +87,7 @@ function scheduleMeeting(options, callback){
     }
     options.message = options.speech = response.subject + ' created' + '\n';
     options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
-    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime) + '\n' +
+    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime,options.userTimezone) + '\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
           'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n';
@@ -155,7 +138,7 @@ function PrefindMeetingTimes(next, options, callback){
     let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
     var postBody = {
       attendees: commons.getAttendees([user]),
-      timeConstraint : commons.getTimeConstraint(date, time, 0, 2),
+      timeConstraint : commons.getTimeConstraint(date, time, 0, 2,options.userTimezone),
       isOrganizerOptional: isOrganizerInRequest
     };
 
@@ -169,8 +152,8 @@ function PrefindMeetingTimes(next, options, callback){
           
           //Found open meeting times in the requested TimeConstrain
           meetings.forEach((meeting) => {
-            let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
-                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime) +"."+ '\n';
+            let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime,options.userTimezone) + ' to ' +
+                        commons.parseDate(meeting.meetingTimeSlot.end.dateTime,options.userTimezone) +"."+ '\n';
             if(!options.message.includes(timeSet)){
               options.message += timeSet
             }
@@ -198,7 +181,7 @@ function checkMeetingTimes(options, callback){
         let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
         var postBody = {
           attendees: commons.getAttendees([user]),
-          timeConstraint : commons.getTimeConstraint(date, time, 2, 4),
+          timeConstraint : commons.getTimeConstraint(date, time, 2, 4,options.userTimezone),
           isOrganizerOptional: isOrganizerInRequest
         };
         //The request to microsoft 365 is executed here:
@@ -210,8 +193,8 @@ function checkMeetingTimes(options, callback){
           if (meetings.length > 0){
             //Found open meeting times in the requested TimeConstrain
             meetings.forEach((meeting) => {
-              let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime) + ' to ' +
-                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime)+"." + '\n';
+              let timeSet = commons.parseDate(meeting.meetingTimeSlot.start.dateTime,options.userTimezone) + ' to ' +
+                            commons.parseDate(meeting.meetingTimeSlot.end.dateTime,options.userTimezone)+"." + '\n';
               if(!options.message.includes(timeSet)){
                 options.message += timeSet
               }
@@ -260,8 +243,8 @@ function showEventsOnDate(options, callback){
         options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
         options.message += 'Subject        : '    + event.subject +'\n';
         options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')+'\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +'\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +'\n';
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });
@@ -315,8 +298,8 @@ function showEvents(options, callback){
         options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
         options.message += 'Subject        : '    + event.subject +'\n';
         options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+'\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime) +'\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime) +'\n';
+        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
+        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });

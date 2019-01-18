@@ -1,5 +1,4 @@
 var OAuth = require('oauth');
-var commons = require('../utils/commons.js');
 
 var credentials = {
   authority: 'https://login.microsoftonline.com/common',
@@ -20,7 +19,6 @@ var tokens = {};
 
 //CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
-  //var session = commons.getContext(req.body.result.contexts, 'session');
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};
   console.log("The Body:"+JSON.stringify(reqJSONBody));
@@ -60,20 +58,17 @@ function validUser(next, req, res, callback){
     }
     
   }
-  //console.log('validUser.options : ' + JSON.stringify(this.options));
   next(req, res, callback);
 }
 
 
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
-    //console.log("IOS dont need refresh token");
     options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
     options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
     next(options, callback);
   }
   else{
-    //console.log('refreshToken.options.pre.httpCall : ' + JSON.stringify(options));
     var OAuth2 = OAuth.OAuth2;
     var oauth2 = new OAuth2(
       credentials.client_id,
@@ -115,17 +110,16 @@ function signIn(req, res){
     console.log("Error" + error)
   }
   if (reqJSONBody.state=="IOS"){
-    tokens[reqJSONBody.session_state] = {ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body, REFRESH_TOKEN_CACHE_KEY : ""}
+    tokens[reqJSONBody.session_state] = {ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body
+                                        , REFRESH_TOKEN_CACHE_KEY : ""}
 
     return res.json({ response : { description : "Login Successful in ios mobile" } });
   }
   else{
     if (!code) {
-      //console.log('signIn.error : Missing code');
       return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
     }
     if (!state) {
-      //console.log('signIn.error : Missing state');
       return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
@@ -135,7 +129,6 @@ function signIn(req, res){
 
         return res.sendFile(__dirname + '/signIn.html');
       }else{
-        //console.log(JSON.parse(error.data).error_description);
         res.status(500);
         return res.json({ error : { name : 'State error', description : error.data } });
       }
