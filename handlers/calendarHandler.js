@@ -16,57 +16,65 @@ function replaceSpecialCharacteres(name){
 
 //This functions take all the current event values and invites from the contexts then generates a new message showing them.
 function showEventDetails(options,callback){
-  console.log("LOOK HERE:")
-  var eventContext = commons.getContext(options.contexts, 'createevent');
+  try{
+    console.log("LOOK HERE:")
+    var eventContext = commons.getContext(options.contexts, 'createevent');
 
 
-  var name = eventContext.parameters.eventName;
-  name = replaceSpecialCharacteres(name)
-  console.log("createevent getContext:"+JSON.stringify(eventContext.parameters))
-  console.log("createevent getContext:"+JSON.stringify(eventContext.parameters.time))
-  
+    var name = eventContext.parameters.eventName;
+    name = replaceSpecialCharacteres(name)
+    console.log("createevent getContext:"+JSON.stringify(eventContext.parameters))
+    console.log("createevent getContext:"+JSON.stringify(eventContext.parameters.time))
+    
 
 
 
-  var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
-  var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
-  var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
+    var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
+    var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+    var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
+    var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
 
-  if(options.source== 'ios'){
-    console.log("#31 ")
-    var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
-  }
-  else{
-    console.log("#32 ")
-    var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
-  }
-  if (options.simpleInfo==true){
-    console.log("#33 ")
-
-    message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
-  }
-  
-
-  else{
-    console.log("#34 ")
-    message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
-    message += "Your invites:"+'\n';
-    var invitesContext = commons.getContext(options.contexts, 'invites');
-    if (!invitesContext){
-      message += "There are no invitations yet.";
-      options.message = message;
-      console.log("#56")
-      callback(options);
+    if(options.source== 'ios'){
+      console.log("#31 ")
+      var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
     }
-    var invites = invitesContext.parameters.invites;
-    invites.forEach((invite) => {
-      message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
-    });
+    else{
+      console.log("#32 ")
+      var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
+    }
+    if (options.simpleInfo==true){
+      console.log("#33 ")
+
+      message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
+    }
+    
+
+    else{
+      console.log("#34 ")
+      message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
+      message += "Your invites:"+'\n';
+      var invitesContext = commons.getContext(options.contexts, 'invites');
+      if (!invitesContext){
+        message += "There are no invitations yet.";
+        options.message = message;
+        console.log("#56")
+        callback(options);
+      }
+      var invites = invitesContext.parameters.invites;
+      invites.forEach((invite) => {
+        message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
+      });
+    }
+    console.log("#55")
+    options.message = message;
+    callback(options)
   }
-  console.log("#55")
-  options.message = message;
-  callback(options)
+  catch(error){
+    console.log("error: " +error);
+    callback(options)
+
+  }
+  
 }
 
 //this function is in charge of creating the new event in the established time values.
