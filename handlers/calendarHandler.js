@@ -34,16 +34,22 @@ function showEventDetails(options,callback){
   var startTime = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('h:mm a');
 
   if(options.source== 'ios'){
+    console.log("#31 ")
     var message = "The event : "+name + ', will be created on ' +startDate+ '\nAt: ' + startTime  + " with a duration of: "+  duration.amount +" "+ duration.unit+"."+ '\n';
   }
   else{
+    console.log("#32 ")
     var message = "The event : *"+name + '*, will be created on *' +startDate+ '*\nAt: *' + startTime  + "* with a duration of: *"+  duration.amount +" "+ duration.unit+"*."+ '\n';
   }
   if (options.simpleInfo==true){
+    console.log("#33 ")
+
     message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n' +"Remember You can:"+'\n'+"▶ Change the name, date, time or duration of the event."+'\n'+"▶ Make some invites."+'\n\n'+"If you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information."
   }
+  
+
   else{
-    console.log("#44 "+invitesContext.parameters.invites)
+    console.log("#34 ")
     message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
     message += "Your invites:"+'\n';
     var invitesContext = commons.getContext(options.contexts, 'invites');
