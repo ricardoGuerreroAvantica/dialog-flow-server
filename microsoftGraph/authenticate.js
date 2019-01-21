@@ -22,6 +22,7 @@ function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};
   console.log("The Body:"+JSON.stringify(reqJSONBody));
+  console.log("Information"+JSON.stringify(req.body.originalRequest.data))
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     this.options.sessionId = req.body.originalRequest.data.data.user.id;
     this.options.source = 'skype';
@@ -47,6 +48,9 @@ function filter(jsonObject) {
 
 //CHECK IF USER LOGED IN
 function validUser(next, req, res, callback){
+  console.log("valid User start:")
+  console.log("TOKENS: "+ JSON.stringify(tokens[sessionId]))
+
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
   if (!this.options.sessionTokens){
