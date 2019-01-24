@@ -17,14 +17,12 @@ var credentials = {
 };
 var tokens = {};
 
-//CHECK FOR VALID DEVICES
 function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
-  this.options = {};
-  console.log("The Body:"+JSON.stringify(reqJSONBody));
-  console.log("Information"+JSON.stringify(req.body.originalRequest.data))
+  this.options = {};  
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
-    if(req.body.originalRequest.data.user.id){
+    //LOGIN SKYPE
+    if(typeof req.body.originalRequest.data.user.id != "undefined"){
       console.log("1 data")
       this.options.sessionId = req.body.originalRequest.data.user.id;
     }
@@ -36,7 +34,7 @@ function validSession(next, req, res, callback){
     this.options.source = 'skype';
 
   }else {
-    //LOGIN IN IOS
+    //LOGIN MOBILE
     var IOSId = reqJSONBody.result.contexts;
 
     IOSFiltered = IOSId.filter(filter)
@@ -56,9 +54,6 @@ function filter(jsonObject) {
 
 //CHECK IF USER LOGED IN
 function validUser(next, req, res, callback){
-  console.log("valid User start:")
-  console.log("TOKENS: "+ JSON.stringify(tokens[sessionId]))
-
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
   if (!this.options.sessionTokens){
@@ -98,10 +93,8 @@ function refreshToken(next, options, callback) {
       },
       function(error, access_token, refresh_token, results){
         if (error){
-          //console.log('refreshToken.error : ' + JSON.stringify(error));
           next(new Error());
         }
-        //console.log('refreshToken.options : ' + JSON.stringify(options));
         options.access_token = access_token;
         options.refresh_token = refresh_token;
         next(options, callback);
