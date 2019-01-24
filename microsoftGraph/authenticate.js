@@ -20,17 +20,19 @@ var tokens = {};
 function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};  
-  console.log(JSON.stringify(req.body.originalRequest))
+  console.log(JSON.stringify('#1'+reqJSONBody.originalRequest))
+  console.log(JSON.stringify('#2'+reqJSONBody.originalRequest.data))
+  console.log(JSON.stringify('#3'+reqJSONBody.originalRequest.data.data))
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //LOGIN SKYPE
     
-    if(req.body.originalRequest.data.user.id){
+    if(reqJSONBody.originalRequest.data){
       console.log("1 data")
-      this.options.sessionId = req.body.originalRequest.data.user.id;
+      this.options.sessionId = reqJSONBody.originalRequest.data.user.id;
     }
     else{
       console.log("2 data")
-      this.options.sessionId = req.body.originalRequest.data.data.user.id;
+      this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id;
     }
     
     this.options.source = 'skype';
