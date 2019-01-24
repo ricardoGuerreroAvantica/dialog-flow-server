@@ -1,6 +1,7 @@
 var axios = require('axios');
-
-//This function is in charge of searching for the user and check if it exists in the microsoft graph database
+/**
+ * This function is in charge of searching for the user and check if it exists in the microsoft graph database
+ */
 function preSearchUser(next, options, callback){
   try{
     var parameters = options.parameters;
@@ -18,7 +19,6 @@ function preSearchUser(next, options, callback){
                   +"')"));
     filter= filter.replace("   "," ").replace("  "," ");
     var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    //console.log("preSearchUser.graph filter: "+url+filter)
     axios.get(url + filter, {
       headers : {
         'Content-Type': 

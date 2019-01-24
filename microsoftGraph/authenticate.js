@@ -17,18 +17,20 @@ var credentials = {
 };
 var tokens = {};
 
+
+/**
+ * This function check from where the information comes "Skype" or "Mobile"
+ * and proceed to save all the basic information from the user in the options property.
+ */
 function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
   this.options = {};  
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //LOGIN SKYPE
-    
     if(reqJSONBody.originalRequest.data.user){
-      console.log("1 data")
       this.options.sessionId = reqJSONBody.originalRequest.data.user.id;
     }
     else{
-      console.log("2 data")
       this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id;
     }
     
@@ -49,11 +51,22 @@ function validSession(next, req, res, callback){
   next(req, res, callback);
 }
 
+
+/**
+ * This is a helper function is a helper to filter all the context to find the token send 
+ * by the mobile application 
+ */
 function filter(jsonObject) {
-  return jsonObject.name != "createevent" && jsonObject.name != "invites"&& jsonObject.name != "helperhandler" && jsonObject.name != "check_available_context";
+  return jsonObject.name != "createevent" && 
+         jsonObject.name != "invites" && 
+         jsonObject.name != "helperhandler" && 
+         jsonObject.name != "check_available_context";
 }
 
-//CHECK IF USER LOGED IN
+/**
+ * This function checks if the access token of the user is saved in memory
+ * if not, return the link access to log in the app. 
+ */
 function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
   this.options.sessionTokens = tokens[sessionId];
@@ -69,7 +82,9 @@ function validUser(next, req, res, callback){
   next(req, res, callback);
 }
 
-
+/**
+ * Checks if the user token is expired and proceed to refresh it.
+ */
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
     options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
@@ -105,7 +120,10 @@ function refreshToken(next, options, callback) {
   
 }
 
-
+/**
+ * This function receive the tokens form the user and save the credentials of the user
+ * in the memory of the app.
+ */
 function signIn(req, res){
   var state = req.query.state;
   var code = req.query.code;
@@ -142,11 +160,10 @@ function signIn(req, res){
   }
 }
 
-
-
-
-
-
+/**
+ * this function contact azure to get the token form a Auth 
+ * request to microsoft graph
+ */
 function getTokenFromCode(code, callback) {
   var OAuth2 = OAuth.OAuth2;
   var oauth2 = new OAuth2(
@@ -171,6 +188,11 @@ function getTokenFromCode(code, callback) {
 }
 
 
+/**
+ * returns the access link to microsoft graph authentication 
+ * this link will be send to the skype user so they can access get
+ * the access token and send it to be registered.
+ */
 function getAuthUrl(state) {
   return credentials.authority + credentials.authorize_endpoint +
     '?client_id=' + credentials.client_id +
