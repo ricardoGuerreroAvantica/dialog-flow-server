@@ -22,7 +22,8 @@ function validSession(next, req, res, callback){
   this.options = {};  
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //LOGIN SKYPE
-    if(typeof req.body.originalRequest.data.user.id != "undefined"){
+    
+    if(typeof(req.body.originalRequest.data.user.id)!== "undefined"){
       console.log("1 data")
       this.options.sessionId = req.body.originalRequest.data.user.id;
     }
