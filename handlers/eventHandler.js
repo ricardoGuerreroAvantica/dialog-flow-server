@@ -1,7 +1,11 @@
-var request = require('../microsoftGraph/request.js');
 var commons = require('../utils/commons.js');
 
-//This function is in charge of adding a user to the invites inside the dialogflow contexts.
+/**
+ * This function is in charge of adding a user to the invites inside the dialogflow contexts.
+ * @param {JSON} options.invites contains all the current invitations of the event.
+ * @param {JSON} options.user contains the user information obtained after the authentication.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function inviteUser(options, callback){
   if (options.message == ""){
     var user = options.user;
@@ -35,7 +39,13 @@ function inviteUser(options, callback){
   callback(options);
 }
 
-//this function is in charge of showing to the user all the current invites stored in dialogflow contexts.
+/**
+ * this function is in charge of showing to the user all the current invites stored in dialogflow contexts.
+ * @param {JSON} options.invites contains all the current invitations of the event.
+ * @param {JSON} options.user contains the user information obtained after the authentication.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
+
 function showInvites(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   if (!invitesContext){
@@ -50,7 +60,12 @@ function showInvites(options, callback){
   callback(options);
 }
 
-//This function will delete a invite from the dialogflow temporal contexts
+/**
+ * This function will delete a invite from the dialogflow temporal contexts
+ * @param {JSON} options.invites contains all the current invitations of the event.
+ * @param {JSON} options.parameters this value contains all the information from the user obtained from dialog flow.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function deleteInvite(options, callback){
   var parameters = options.parameters;
   var userData = { name : parameters.name, lastname : parameters.lastname, email : parameters.email }

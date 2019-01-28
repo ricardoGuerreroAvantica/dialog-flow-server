@@ -1,6 +1,8 @@
 var axios = require('axios');
 /**
- * This function is in charge of searching for the user and check if it exists in the microsoft graph database
+ * This function is in charge of searching for the user and check if it exists in the (avantica) microsoft graph database
+ * @param {JSON} options.parameters this value contains all the information from the user obtained from dialog flow.
+ * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
 function preSearchUser(next, options, callback){
   try{
@@ -51,7 +53,7 @@ function preSearchUser(next, options, callback){
         displayName : response.data.value[0].displayName,
         givenName : response.data.value[0].givenName,
         mail : response.data.value[0].mail,
-        surname : response.data.value[0].surname,
+        surname : response.data.value[0].surname
         }
       }
         next(options, callback);
@@ -66,7 +68,12 @@ function preSearchUser(next, options, callback){
   }
 }
 
-//If the username sended was found and store, it will change the message to Ask for the next parameter(Date)
+/**
+ * This function checks if the user is register in the options.
+ * If the username send was found and store, it will change the message to Ask for the next parameter(Date)
+ * @param {JSON} options.user contains the user information obtained after the authentication.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function checkUser(options, callback){
   if(options.user){
     options.message = "What is the date?"
@@ -75,8 +82,12 @@ function checkUser(options, callback){
   callback(options);
 }
 
-
-//This functions create and send all the helper messages
+/**
+ * This functions create and send all the helper messages according to "options.parameters.helperId"
+ * @param {JSON} options.parameters.helperId this variable is defined in dialog flow and defines what kind of helper
+ * the user is asking for.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function helper(options, callback){
   if (options.parameters.helperId == "basic"){
     options.message = "Can you tell me how I can help you?"
