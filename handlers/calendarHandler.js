@@ -69,14 +69,20 @@ function showEventDetails(options,callback){
     callback(options)
   }
   catch(error){
-    console.log("error in : function showEventDetails" +error);
+    console.log("error in : function showEventDetails" + error);
     callback(options)
 
   }
   
 }
 
-//this function is in charge of creating the new event in the established time values.
+/**
+ * this function is in charge of creating the new event in the established time values.
+ * @param {JSON} options.contexts contains all the context stored in dialog flow temporal memory.
+ * @param {JSON} options.contexts.parameters this value contains all the information from the the current event
+ *  stored in dialog flow.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function scheduleMeeting(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
@@ -122,14 +128,10 @@ function scheduleMeeting(options, callback){
   });
 }
 
-//This function is in charge of geeting the basic information of the user
-
 /**
- * This functions take all the current event values and invites from the contexts then generates a new message showing them.
- * @param {JSON} options.contexts contains all the context stored in dialog flow temporal memory.
- * @param {JSON} options.contexts.parameters this value contains all the information from the the current event
- *  stored in dialog flow.
- * @param {JSON} options.message contains the return message that will be send to dialog flow
+ * This function is in charge of getting the basic information of the user
+ * @param {JSON} options.userName contains all the basic user information obtained from microsoft graph
+ * @param {JSON} options.access_token contains the token generated with the user credentials to access microsoft graph
  */
 function userData(next,options, callback){
   axios.get('https://graph.microsoft.com/v1.0/me', {
@@ -149,8 +151,14 @@ function userData(next,options, callback){
   });;
 }
 
+
+/**
+ * This function takes the information(email, name, lastname) of the employee that the user is asking for, and 
+ * make a request to microsoft graph to check if this user exists in the avantica user database.
+ * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
+ * @param {JSON} options.user contains the token generated with the user credentials to access microsoft graph
+ */
 function PrefindMeetingTimes(next, options, callback){
-    //If the function didnt find the requested data-time as available, it will execute the function again with diferent times/
     var parameters = options.parameters;
     var date = parameters.date;
     var user = options.user;
@@ -158,8 +166,8 @@ function PrefindMeetingTimes(next, options, callback){
     options.message += options.speech = "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n';
     
     time = options.parameters.time;
-    // The postBody is created with the new timerConstraing
     let isOrganizerInRequest = options.user.displayName != options.userName; //Compares if the current user is asking for their availability
+    // The postBody is created with the new timerConstraing
     var postBody = {
       attendees: commons.getAttendees([user]),
       timeConstraint : commons.getTimeConstraint(date, time, 0, 2,options.userTimezone),
@@ -190,10 +198,16 @@ function PrefindMeetingTimes(next, options, callback){
       })
     }
 
+/**
+ * This function ask for the calendar of the employee and check if there is any free space between two
+ * times/dates.
+ * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
+ * @param {JSON} options.user contains the token generated with the user credentials to access microsoft graph
+ */
 function checkMeetingTimes(options, callback){
       if (options.message == "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n'){
-        //if FiindingMeetingTimes didnt find any meeting the system will proceed to make another search
-        //with more extense time margin:
+        //if FindingMeetingTimes didn't find any meeting the system will proceed to make another search
+        //with more extensive time margin:
         options.message = options.speech = "I didn't found space at the requested time, but I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n';
         
         var parameters = options.parameters;
@@ -240,7 +254,11 @@ function checkMeetingTimes(options, callback){
       }
 }
 
-//this function is in charge of taking two different dates and show the events between them.
+/**
+ * this function is in charge of taking two different dates and show the events between them.
+ * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
+ * @param {JSON} options.message this value contains the return message that will be send to dialog flow
+ */
 function showEventsOnDate(options, callback){
   var parameters = options.parameters;
   var date = parameters.date;
@@ -285,7 +303,11 @@ function showEventsOnDate(options, callback){
 
 }
 
-// this function ask to microsoft graph for a list of all the current events of the user.
+/**
+ * this function ask to microsoft graph for a list of all the current events of the user.
+ * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
+ * @param {JSON} options.message this value contains the return message that will be send to dialog flow
+ */
 function showEvents(options, callback){
   var parameters = options.parameters;
   var name = parameters.name;

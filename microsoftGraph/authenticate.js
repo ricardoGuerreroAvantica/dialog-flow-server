@@ -21,6 +21,8 @@ var tokens = {};
 /**
  * This function check from where the information comes "Skype" or "Mobile"
  * and proceed to save all the basic information from the user in the options property.
+ * @param {JSON} req.body this part of request contains the access token to microsoft graph, 
+ * source of the request (skype or mobile) and the Id to identify the device
  */
 function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body));
@@ -55,6 +57,7 @@ function validSession(next, req, res, callback){
 /**
  * This is a helper function is a helper to filter all the context to find the token send 
  * by the mobile application 
+ * @param {JSON} jsonObject contains all the context send by dialogflow.
  */
 function filter(jsonObject) {
   return jsonObject.name != "createevent" && 
@@ -66,6 +69,9 @@ function filter(jsonObject) {
 /**
  * This function checks if the access token of the user is saved in memory
  * if not, return the link access to log in the app. 
+ * @param {string} options.sessionId The identifier of the device used by the user.
+ * @param {JSON} options.sessionTokens this json is a dictionary that contains all the tokens store in memory 
+ * {Key: options.sessionId, Value: Token}.
  */
 function validUser(next, req, res, callback){
   var sessionId = this.options.sessionId;
@@ -84,6 +90,10 @@ function validUser(next, req, res, callback){
 
 /**
  * Checks if the user token is expired and proceed to refresh it.
+ * @param {string} options.access_token The token to access microsoft graph services.
+ * @param {string} options.refresh_token The token to refresh the access_token.
+ * @param {JSON} options.sessionTokens this json is a dictionary that contains all the tokens store in memory 
+ * {Key: options.sessionId, Value: Token}.
  */
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
@@ -123,6 +133,7 @@ function refreshToken(next, options, callback) {
 /**
  * This function receive the tokens form the user and save the credentials of the user
  * in the memory of the app.
+ * @param {string} req.query.state This variable only specifies if the request come from Mobile or Skype 
  */
 function signIn(req, res){
   var state = req.query.state;

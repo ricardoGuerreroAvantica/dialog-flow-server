@@ -9,7 +9,15 @@ var timezoneHandler =require("./../handlers/timezoneHandler.js")
 for (var k in hooks) {
   Action[k] = hooks[k];
 }
-
+/**
+ * This is the function on charge of checking wha is the request action(options.action) send by dialog flow and then
+ * execute the methods according to this action
+ * @param {JSON} options.parameters The parameters are all the information from the current request (event name, user name, 
+ * user lastname, event date, ...)
+ * @param {JSON} options.contexts The contexts are the information passed down between intents, like event invites, user
+ * access token, ...)
+ * @param {JSON} options.action the action defines which functions needs to be executed in order to complete the user request.
+ */
 function parseAction(req, res, callback){
   var options = this.options;
   options.contexts = req.body.result.contexts || [];
@@ -21,8 +29,6 @@ function parseAction(req, res, callback){
     //Case: calendar_user_available
     //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
-    console.log("DATA:  # 1")
-
       Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', timezoneHandler.getTimeZone)
@@ -36,16 +42,12 @@ function parseAction(req, res, callback){
     //Case: helper
     //Description: This case is trigger when the user ask for "Help" 
     case 'helper' :
-    console.log("DATA:  # 2")
-
       userHandler.helper(options, callback);
       break;
 
     //Case: show_events
     //Description: This case is trigger when the user ask for "Show my events" 
     case 'show_events' :
-    console.log("DATA:  # 3")
-
       Action.prototype.showEvents = calendarHandler.showEvents;
       Action.pre('showEvents', authenticate.refreshToken)
       .pre('showEvents', timezoneHandler.getTimeZone)      ;
@@ -56,8 +58,6 @@ function parseAction(req, res, callback){
     //Case: show_events_on_date
     //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
-    console.log("DATA:  # 4")
-
       Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
       Action.pre('showEventsOnDate', authenticate.refreshToken)
       .pre('showEventsOnDate', timezoneHandler.getTimeZone)
@@ -69,8 +69,6 @@ function parseAction(req, res, callback){
     //Case: show_locations
     //Description: #Currently the bot dont handle locations.
     case 'show_locations' :
-    console.log("DATA:  # 5")
-
       Action.prototype.showLocations = locationHandler.showLocations;
       Action.pre('showLocations', authenticate.refreshToken)
       .pre('showLocations', timezoneHandler.getTimeZone)
@@ -82,8 +80,6 @@ function parseAction(req, res, callback){
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-    console.log("DATA:  # 6")
-
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
       Action.pre('scheduleMeeting', authenticate.refreshToken)
       .pre('scheduleMeeting', timezoneHandler.getTimeZone)
@@ -94,8 +90,6 @@ function parseAction(req, res, callback){
     //Case: create_event_invite
     //Description: This case is trigger when the user ask for "invite [name]"
     case 'create_event_invite' :
-    console.log("DATA:  # 7")
-
       Action.prototype.inviteUser = eventHandler.inviteUser;
       Action.pre('inviteUser', authenticate.refreshToken)
         .pre('inviteUser',userHandler.preSearchUser);
@@ -106,23 +100,18 @@ function parseAction(req, res, callback){
     //Case: create_event_uninvite
     //Description: This case is trigger when the user ask for "Uninvite [name]"
     case 'create_event_uninvite' :
-    console.log("DATA:  # 8")
-
       eventHandler.deleteInvite(options, callback);
       break;
     
     //Case: create_event_show_invites
     //Description: This case is trigger when the user ask for "Show my invites", and the bot proceed to show all the current invites for the event.
     case 'create_event_show_invites' :
-    console.log("DATA:  # 9")
       eventHandler.showInvites(options, callback);
       break;
 
     //Case: check_available_Only_name
     //Description: this case is trigger when the user search for a employee using only the name of the employee
     case 'check_available_Only_name' :
-    console.log("DATA:  # 10")
-
         Action.prototype.checkUser = userHandler.checkUser;
         //PRE
         Action.pre('checkUser', authenticate.refreshToken)
@@ -136,8 +125,6 @@ function parseAction(req, res, callback){
     //Case: Show_event_Info
     //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
-    console.log("DATA:  # 11")
-
       options.simpleInfo = false;
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
         //PRE
@@ -150,8 +137,6 @@ function parseAction(req, res, callback){
     //Case: createEventBegin
     //Description: This case is trigger when all the information of the event creation is collected and then proced to show the event body to the user
     case 'createEventBegin' :
-    console.log("DATA:  # 12")
-
       options.simpleInfo = true;
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
         //PRE
@@ -162,10 +147,8 @@ function parseAction(req, res, callback){
       break;
 
     //Case: Default Answer
-    //Description: This is the default answer sended when there is no other case that match the request case.
+    //Description: This is the default answer send when there is no other case that match the request case.
     default:
-    console.log("DATA:  # 13")
-
       this.options.message = 'Could you repeat that?';
       this.options.speech = 'Could you repeat that?';
       callback(this.options);
