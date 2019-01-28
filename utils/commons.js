@@ -89,8 +89,8 @@ function parseDate(date,timezone){
   console.log("time is timezone="+JSON.stringify(timezone))
   var time = timezone.time;
   console.log("time is here="+time)
-  console.log("Date is here"+moment(date, 'YYYY-MM-DDThh:mm:ss.SSS'))
-  console.log("Date plus is here"+moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours'))
+  console.log("Date is here"+moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'))
+  console.log("Date plus is here"+ moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours').format('LT'))
 
 
   var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours') 
