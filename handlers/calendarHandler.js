@@ -56,11 +56,14 @@ function showEventDetails(options,callback){
         options.message = message;
         callback(options);
       }
+      
       console.log("Contexts"+JSON.stringify(options.contexts))
       var invites = invitesContext.parameters.invites;
-      invites.forEach((invite) => {
-        message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
-      });
+      if(invites!== undefined){
+        invites.forEach((invite) => {
+          message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
+        });
+      }
     }
     options.message = message;
     callback(options)
