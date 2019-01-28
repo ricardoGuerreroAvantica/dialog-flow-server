@@ -3,7 +3,11 @@ var moment = require('moment');
 var axios = require('axios');
 var commons = require('../utils/commons.js');
 
-//dialogflow replace " ' and '' with diferent values to represent them, this fuction return the message to it original characters.
+/**
+ * dialogflow replace " ' and '' with different values to represent them, this function return the message 
+ * to it original characters.
+ * @param {string} name contains all the current invitations of the event.
+ */
 function replaceSpecialCharacteres(name){
   name = name.replace("&quot;","\"");
   name = name.replace("quot;","\"");
@@ -14,7 +18,13 @@ function replaceSpecialCharacteres(name){
   return name
 }
 
-//This functions take all the current event values and invites from the contexts then generates a new message showing them.
+/**
+ * This functions take all the current event values and invites from the contexts then generates a new message showing them.
+ * @param {JSON} options.contexts contains all the context stored in dialog flow temporal memory.
+ * @param {JSON} options.contexts.parameters this value contains all the information from the the current event
+ *  stored in dialog flow.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function showEventDetails(options,callback){
   try{
     var eventContext = commons.getContext(options.contexts, 'createevent');
@@ -39,11 +49,14 @@ function showEventDetails(options,callback){
       message += '\n' +'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯'+'\n';
       message += "Your invites:"+'\n';
       var invitesContext = commons.getContext(options.contexts, 'invites');
+      console.log("invites contexts"+JSON.stringify(invitesContext))
+
       if (!invitesContext){
         message += "There are no invitations yet.";
         options.message = message;
         callback(options);
       }
+      console.log("Contexts"+JSON.stringify(options.contexts))
       var invites = invitesContext.parameters.invites;
       invites.forEach((invite) => {
         message += invite.emailAddress.name + " Email: " + invite.emailAddress.address + '\n';
@@ -107,6 +120,14 @@ function scheduleMeeting(options, callback){
 }
 
 //This function is in charge of geeting the basic information of the user
+
+/**
+ * This functions take all the current event values and invites from the contexts then generates a new message showing them.
+ * @param {JSON} options.contexts contains all the context stored in dialog flow temporal memory.
+ * @param {JSON} options.contexts.parameters this value contains all the information from the the current event
+ *  stored in dialog flow.
+ * @param {JSON} options.message contains the return message that will be send to dialog flow
+ */
 function userData(next,options, callback){
   axios.get('https://graph.microsoft.com/v1.0/me', {
     headers : {
