@@ -104,7 +104,7 @@ function scheduleMeeting(options, callback){
     options.message = options.speech = response.subject + ' created' + '\n';
     options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime,options.userTimezone) + '\n' +
-          'Ends at: ' + commons.parseDate(response.end.dateTime) + '\n' +
+          'Ends at: ' + commons.parseDate(response.end.dateTime,options.userTimezone) + '\n' +
           'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
           'Organizer: ' + response.organizer.emailAddress.name + '\n';
     if (response.attendees && response.attendees.length > 0){
