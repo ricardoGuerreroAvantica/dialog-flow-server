@@ -89,17 +89,13 @@ function scheduleMeeting(options, callback){
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
-  //if there is no duration defined will be 1 hour by default
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  console.log("dateOnTimezone" + date + JSON.stringify(options.userTimezone) )
-  var dateOnTimezone = commons.parseDate(date,options.userTimezone)
-  console.log("dateOnTimezone" + dateOnTimezone)
-  var startDate = moment(dateOnTimezone, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DDTHH:mm:ss');
+  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
-  var endDate = moment(dateOnTimezone, 'YYYY-MM-DD HH:mm:ss').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
   var body = {
     "subject": name,
     "attendees": invites,
