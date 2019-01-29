@@ -91,7 +91,7 @@ function scheduleMeeting(options, callback){
   name = replaceSpecialCharacteres(name)
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  console.log(options.userTimezone +" checking date")
+  console.log(JSON.stringify(options) +" checking date")
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
   if (duration.unit === 'h') duration.unit = 'hours';
@@ -110,6 +110,7 @@ function scheduleMeeting(options, callback){
     }
     options.message = options.speech = response.subject + ' created' + '\n';
     options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
+    console.log(options.userTimezone +" checking date")
     options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime,options.userTimezone) + '\n' +
           'Ends at: ' + commons.parseDate(response.end.dateTime,options.userTimezone) + '\n' +
           'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
