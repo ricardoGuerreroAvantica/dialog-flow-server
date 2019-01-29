@@ -107,8 +107,10 @@ function scheduleMeeting(options, callback){
     "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
-  console.log(JSON.stringify(options.userTimezone) +" checking date3")
-
+  for(i=0;i>=50;i++){
+    console.log(JSON.stringify(options.userTimezone) +" checking date3")
+  }
+  setTimeout(function2, 3000);
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     console.log(JSON.stringify(options.userTimezone) +" checking date4")
     if (error){
