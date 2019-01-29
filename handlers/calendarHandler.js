@@ -110,7 +110,6 @@ function scheduleMeeting(options, callback){
   for(i=0;i>=50;i++){
     console.log(JSON.stringify(options.userTimezone) +" checking date3")
   }
-  setTimeout(function2, 3000);
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     console.log(JSON.stringify(options.userTimezone) +" checking date4")
     if (error){
