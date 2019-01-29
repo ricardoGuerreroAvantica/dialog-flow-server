@@ -89,8 +89,10 @@ function scheduleMeeting(options, callback){
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
   var name = eventContext.parameters.eventName;
   name = replaceSpecialCharacteres(name)
+
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  console.log(JSON.stringify(options) +" checking JSON")
   console.log(JSON.stringify(options.userTimezone) +" checking date")
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
