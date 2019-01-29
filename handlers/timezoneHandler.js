@@ -11,6 +11,7 @@ var axios = require('axios');
  * @param {JSON} options.userTimezone contains the current user timezone in a JSON {timezone, time}
  */
 function getTimeZone(next, options, callback){
+    console.log("Esta entrando")
     try {
         axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
         headers : {
@@ -21,6 +22,8 @@ function getTimeZone(next, options, callback){
         }
         })
         .then((response) => {
+            console.log("Esta dentro")
+
         if (response.data.value.length != 0){
             for (i = 0; i < timezones.timezones.length; i++) {
             if(timezones.timezones[i].name == response.data.value){

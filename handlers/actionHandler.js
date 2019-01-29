@@ -16,7 +16,7 @@ for (var k in hooks) {
  * user lastname, event date, ...)
  * @param {JSON} options.contexts The contexts are the information passed down between intents, like event invites, user
  * access token, ...)
- * @param {JSON} options.action the action defines which functions needs to be executed in order to complete the user request.
+ * @param {String} options.action the action defines which functions needs to be executed in order to complete the user request.
  */
 function parseAction(req, res, callback){
   var options = this.options;

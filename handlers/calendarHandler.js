@@ -93,13 +93,10 @@ function scheduleMeeting(options, callback){
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   console.log(JSON.stringify(options) +" checking JSON")
-  console.log(JSON.stringify(options.userTimezone) +" checking date1")
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
-  console.log(JSON.stringify(options.userTimezone) +" checking date2")
-
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
   var body = {
     "subject": name,
@@ -109,7 +106,6 @@ function scheduleMeeting(options, callback){
   }
 
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
-    console.log(JSON.stringify(options.userTimezone) +" checking date4")
     if (error){
       console.log('scheduleMeeting.error : ' + JSON.stringify(error));
       errorHandler.actionError(error);
