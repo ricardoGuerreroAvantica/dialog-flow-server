@@ -92,7 +92,9 @@ function scheduleMeeting(options, callback){
   //if there is no duration defined will be 1 hour by default
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  console.log("dateOnTimezone" + date + JSON.stringify(options.userTimezone) )
   var dateOnTimezone = commons.parseDate(date,options.userTimezone)
+  console.log("dateOnTimezone" + dateOnTimezone)
   var startDate = moment(dateOnTimezone, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DDTHH:mm:ss');
 
   if (duration.unit === 'h') duration.unit = 'hours';
