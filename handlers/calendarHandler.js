@@ -91,6 +91,7 @@ function scheduleMeeting(options, callback){
   name = replaceSpecialCharacteres(name)
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+  console.log(options.userTimezone +" checking date")
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
   if (duration.unit === 'h') duration.unit = 'hours';
