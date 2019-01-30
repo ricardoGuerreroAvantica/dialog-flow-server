@@ -82,7 +82,7 @@ function getTimeZone(next, options, callback){
         });
           
     }
-    let result = await timezonePromise;
+    let result = await timezonePromise();
     return result;
   }
 
