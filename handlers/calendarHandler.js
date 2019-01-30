@@ -95,7 +95,16 @@ function scheduleMeeting(options, callback){
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
   console.log("Start await")
-  let result = await timezoneHandler.setTimeZone(options.access_token);
+
+  var data = new Promise(
+                function (resolve, reject) {
+                    var message = 'Hey friend, I have a new ' +
+                        phone.color + ' ' + phone.brand + ' phone';
+                    resolve(message);
+                }
+            );
+
+  let result = await data;
   console.log(JSON.stringify(result))
 
   if (duration.unit === 'h') duration.unit = 'hours';
