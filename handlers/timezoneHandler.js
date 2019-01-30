@@ -49,40 +49,40 @@ function getTimeZone(next, options, callback){
 
   async function setTimeZone(token){
       console.log("Start")
-    if (!commons.getContext(options.contexts, 'invites')){
-        console.log("Start#1")
-
-        var timezonePromise = new Promise((resolve, reject) => {
+        let timezonePromise = new Promise((resolve, reject) => {
             var selectedTimeZone;
-            console.log("Start#2")
+            try {
+                console.log("Start#2")
 
-            axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
-            headers : {
-                'Content-Type': 
-                'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ' + token
-            }
-            })
-            .then((response) => {
-                console.log("Start#3")
+                axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
+                headers : {
+                    'Content-Type': 
+                    'application/json',
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+                })
+                .then((response) => {
+                    console.log("Start#3")
 
-            if (response.data.value.length != 0){
-                for (i = 0; i < timezones.timezones.length; i++) {
-                    console.log("Start#4:" + JSON.stringify(timezones.timezones[i]))
+                if (response.data.value.length != 0){
+                    for (i = 0; i < timezones.timezones.length; i++) {
+                        console.log("Start#4:" + JSON.stringify(timezones.timezones[i]))
 
-                    if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                        selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
-                        resolve(selectedTimeZone);
-                        break;
+                        if(timezones.timezones[i].name == response.data.value){//cambiar por find
+                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
+                            resolve(selectedTimeZone);
+                            break;
+                        }
                     }
                 }
-            }
-            })
-        });
-          
-    }
-    let result = await timezonePromise();
+                })
+              }
+              catch(err) {
+                console.log(err);
+              }
+          });
+    let result = await timezonePromise;
     return result;
   }
 
