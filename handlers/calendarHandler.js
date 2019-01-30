@@ -2,6 +2,7 @@ var request = require('../microsoftGraph/request.js');
 var moment = require('moment');
 var axios = require('axios');
 var commons = require('../utils/commons.js');
+var timezoneHandler =require("./../handlers/timezoneHandler.js")
 
 /**
  * dialogflow replace " ' and '' with different values to represent them, this function return the message 
@@ -15,7 +16,7 @@ function replaceSpecialCharacteres(name){
   name = name.replace("&apos;","\'");
   name = name.replace("apos;","\'");
   name = name.replace("&apos","\'");
-  return name
+  return name;
 }
 
 /**
@@ -29,7 +30,7 @@ function showEventDetails(options,callback){
   try{
     var eventContext = commons.getContext(options.contexts, 'createevent');
     var name = eventContext.parameters.eventName;
-    name = replaceSpecialCharacteres(name)
+    name = replaceSpecialCharacteres(name);
     var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
     var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
     var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').format('L');
@@ -88,13 +89,14 @@ function scheduleMeeting(options, callback){
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
-  var name = eventContext.parameters.eventName;
-  name = replaceSpecialCharacteres(name)
-
+  var name = replaceSpecialCharacteres(eventContext.parameters.eventName);
   var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  console.log(JSON.stringify(options) +" checking JSON")
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+
+  console.log("Start await")
+  let result = await timezoneHandler.setTimeZone(options.access_token);
+  console.log(JSON.stringify(result))
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
@@ -105,11 +107,6 @@ function scheduleMeeting(options, callback){
     "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
-  console.log("contexts: timezone")
-  console.log(JSON.stringify(options.contexts))
-
-  console.log(JSON.stringify(commons.getContext(options.contexts, 'timezone')))
-
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
     if (error){
       console.log('scheduleMeeting.error : ' + JSON.stringify(error));
