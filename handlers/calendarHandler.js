@@ -65,6 +65,7 @@ function showEventDetails(options,callback){
         });
       }
     }
+    console.log(JSON.stringify(options.contexts))
     options.message = message;
     callback(options)
   }
