@@ -49,8 +49,8 @@ function getTimeZone(next, options, callback){
 
   async function setTimeZone(token){
       console.log("Start")
-        let timezonePromise = new Promise((resolve, reject) => {
-            var selectedTimeZone;
+      var selectedTimeZone;
+      let timezonePromise = new Promise((resolve, reject) => {
             try {
                 console.log("Start#2")
 
@@ -77,12 +77,16 @@ function getTimeZone(next, options, callback){
                     }
                 }
                 })
-              }
-              catch(err) {
+                }
+                catch(err) {
                 console.log(err);
-              }
-          });
+                }
+            });
     let result = await timezonePromise;
+    console.log("-------------------")
+    console.log(selectedTimeZone)
+    console.log(result)
+    console.log("-------------------")
     return result;
   }
 
