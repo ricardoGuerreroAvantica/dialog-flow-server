@@ -49,32 +49,37 @@ function getTimeZone(next, options, callback){
 
   async function setTimeZone(token){
     if (!commons.getContext(options.contexts, 'invites')){
-        var selectedTimeZone;
-        try {
-            axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
-            headers : {
-                'Content-Type': 
-                'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ' + token
-            }
-            })
-            .then((response) => {
-            if (response.data.value.length != 0){
-                for (i = 0; i < timezones.timezones.length; i++) {
-                    if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                        selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
-                        return selectedTimeZone;
-                        break;
+        
+        let promise = new Promise((resolve, reject) => {
+            var selectedTimeZone;
+            try {
+                axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
+                headers : {
+                    'Content-Type': 
+                    'application/json',
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+                })
+                .then((response) => {
+                if (response.data.value.length != 0){
+                    for (i = 0; i < timezones.timezones.length; i++) {
+                        if(timezones.timezones[i].name == response.data.value){//cambiar por find
+                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
+                            return selectedTimeZone;
+                            break;
+                        }
                     }
                 }
-            }
-            })
-          }
-          catch(err) {
-            console.log(err);
-          }
+                })
+              }
+              catch(err) {
+                console.log(err);
+              }
+          });
+          resolve(selectedTimeZone)
     }
+    await promise();
   }
 
   exports.getTimeZone = getTimeZone;

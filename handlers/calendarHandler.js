@@ -97,8 +97,7 @@ function scheduleMeeting(options, callback){
   console.log("Start await")
 
   var data = timezoneHandler.setTimeZone(options.access_token);
-  let result = await data;
-  console.log(JSON.stringify(result));
+  console.log("data"+ data)
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
