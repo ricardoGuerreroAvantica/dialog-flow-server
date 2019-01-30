@@ -86,7 +86,7 @@ function showEventDetails(options,callback){
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
 function scheduleMeeting(options, callback){
-  options.userTimezone = timezoneHandler.setTimeZone(options.access_token);
+  options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
 
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
