@@ -83,7 +83,6 @@ function parseAction(req, res, callback){
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
       Action.pre('scheduleMeeting', authenticate.refreshToken)
       .pre('scheduleMeeting', timezoneHandler.getTimeZone)
-      .pre('scheduleMeeting', timezoneHandler.getTimeZone)
       var action = new Action();
       action.scheduleMeeting(options, callback);
       break;
