@@ -24,6 +24,8 @@ function parseAction(req, res, callback){
   options.action = req.body.result.action;
   options.parameters = req.body.result.parameters;
   console.log("Case: " +JSON.stringify(options.action))
+
+ 
   switch (options.action) {
     
     //Case: calendar_user_available
@@ -80,6 +82,8 @@ function parseAction(req, res, callback){
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
+      timezoneHandler.setTimeZone(options, callback);
+
       Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
       Action.pre('scheduleMeeting', authenticate.refreshToken)
       .pre('scheduleMeeting', timezoneHandler.getTimeZone)
@@ -122,6 +126,7 @@ function parseAction(req, res, callback){
         action.checkUser(options, callback);
       break;
 
+      
     //Case: Show_event_Info
     //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
@@ -135,7 +140,7 @@ function parseAction(req, res, callback){
       break;
 
     //Case: createEventBegin
-    //Description: This case is trigger when all the information of the event creation is collected and then proced to show the event body to the user
+    //Description: This case is trigger when all the information of the event creation is collected and then proceed to show the event body to the user
     case 'createEventBegin' :
       options.simpleInfo = true;
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;

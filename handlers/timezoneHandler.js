@@ -47,4 +47,40 @@ function getTimeZone(next, options, callback){
 
 
 
+  function setTimeZone(options, callback){
+    console.log("getTimeZone start")
+    if (!commons.getContext(options.contexts, 'invites')){
+        try {
+            axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
+            headers : {
+                'Content-Type': 
+                'application/json',
+                Accept: 'application/json',
+                Authorization: 'Bearer ' + options.access_token
+            }
+            })
+            .then((response) => {
+            if (response.data.value.length != 0){
+                for (i = 0; i < timezones.timezones.length; i++) {
+                    if(timezones.timezones[i].name == response.data.value){
+                        var selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
+                        options.contexts.push({ "name": "timezone", "parameters":  { "timezone" : selectedTimeZone }, "lifespan": 60 });
+                        options.userTimezone= selectedTimeZone;
+                        console.log("getTimeZone end: "+ JSON.stringify(options.contexts))
+
+                        break;
+                    }
+                }
+            }
+            })
+          }
+          catch(err) {
+            console.log(err);
+          }
+    }
+    callback(options);
+  }
+
   exports.getTimeZone = getTimeZone;
+  exports.setTimeZone = setTimeZone;
+
