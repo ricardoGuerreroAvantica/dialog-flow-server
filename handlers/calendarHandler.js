@@ -105,6 +105,8 @@ function scheduleMeeting(options, callback){
     "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
   }
   console.log("contexts: timezone")
+  console.log(JSON.stringify(options.contexts))
+
   console.log(JSON.stringify(commons.getContext(options.contexts, 'timezone')))
 
   request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {

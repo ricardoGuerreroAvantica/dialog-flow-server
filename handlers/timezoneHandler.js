@@ -12,6 +12,7 @@ var axios = require('axios');
  * @param {JSON} options.userTimezone contains the current user timezone in a JSON {timezone, time}
  */
 function getTimeZone(next, options, callback){
+    console.log("getTimeZone start")
     if (!commons.getContext(options.contexts, 'invites')){
         try {
             axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
@@ -29,6 +30,8 @@ function getTimeZone(next, options, callback){
                         var selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
                         options.contexts.push({ "name": "timezone", "parameters":  { "timezone" : selectedTimeZone }, "lifespan": 60 });
                         options.userTimezone= selectedTimeZone;
+                        console.log("getTimeZone end: "+ JSON.stringify(options.contexts))
+
                         break;
                     }
                 }
