@@ -86,6 +86,8 @@ function showEventDetails(options,callback){
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
 function scheduleMeeting(options, callback){
+  options.userTimezone = timezoneHandler.setTimeZone(options.access_token);
+
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
   var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
@@ -94,14 +96,13 @@ function scheduleMeeting(options, callback){
   var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
-  console.log("Start await")
 
-  var data = timezoneHandler.setTimeZone(options.access_token);
-  console.log("data"+ JSON.stringify(data))
+  
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+  console.log("JSON.stringify(options.userTimezone: "+JSON.stringify(options.userTimezone))
   var body = {
     "subject": name,
     "attendees": invites,
