@@ -90,7 +90,7 @@ function parseDate(date,timezone){
   console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
   console.log(parseInt(time)+ "hrs");
 
-  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours');
+  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(time), 'hours');
   console.log(moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
 
   return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');

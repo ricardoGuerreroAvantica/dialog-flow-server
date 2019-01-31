@@ -93,6 +93,10 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Mauritius Standard Time"                   ,time:"+04"},
                     {name:"UTC"                                       ,time:"0"},
                     {name:"Paraguay Standard Time"                    ,time:"-04"},
+                    {name:"Paraguay Standard Time"                    ,time:"-04"},
+                    {name:"Paraguay Standard Time"                    ,time:"-04"},
+                    {name:"Paraguay Standard Time"                    ,time:"-04"},
+                    {name:"Afghanistan Standard Time"                 ,time:"+4.30"},
                     {name:"Kamchatka Standard Time"                   ,time:"+12"}];
 
 exports.timezones = timezones;
