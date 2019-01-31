@@ -18,7 +18,7 @@ for (var k in hooks) {
  * access token, ...)
  * @param {String} options.action the action defines which functions needs to be executed in order to complete the user request.
  */
-function parseAction(req, res, callback){
+async function parseAction(req, res, callback){
   var options = this.options;
   options.contexts = req.body.result.contexts || [];
   options.action = req.body.result.action;
@@ -82,9 +82,9 @@ function parseAction(req, res, callback){
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-      options = authenticate.promiseRefreshToken(options);
+      options = await authenticate.promiseRefreshToken(options);
       console.log("start--------"+options.access_token);
-      options.userTimezone =timezoneHandler.setTimeZone(options.access_token);
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
       console.log("end--------");
       console.log(JSON.stringify(options))
 
