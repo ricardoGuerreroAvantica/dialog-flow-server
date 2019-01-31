@@ -127,8 +127,57 @@ function refreshToken(next, options, callback) {
       }
     );
   }
-  
 }
+
+
+/**
+ * Checks if the user token is expired and proceed to refresh it.
+ * @param {string} options.access_token The token to access microsoft graph services.
+ * @param {string} options.refresh_token The token to refresh the access_token.
+ * @param {JSON} options.sessionTokens this json is a dictionary that contains all the tokens store in memory 
+ * {Key: options.sessionId, Value: Token}.
+ */
+function promiseRefreshToken(options) {
+  let refreshTokenPromise = new Promise((resolve, reject) => {
+    if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
+      options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
+      options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
+      next(options, callback);
+    }
+    else{
+      var OAuth2 = OAuth.OAuth2;
+      var oauth2 = new OAuth2(
+        credentials.client_id,
+        credentials.client_secret,
+        credentials.authority,
+        credentials.authorize_endpoint,
+        credentials.token_endpoint
+      );
+      oauth2.getOAuthAccessToken(
+        options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
+        {
+          grant_type: 'refresh_token',
+          redirect_uri: credentials.redirect_uri,
+          resource: credentials.resouce
+        },
+        function(error, access_token, refresh_token, results){
+          if (error){
+            reject("Error");
+          }
+          options.access_token = access_token;
+          options.refresh_token = refresh_token;
+          resolve("Success");
+        }
+      );
+    }
+  });
+  let result = await refreshTokenPromise;
+  console.log(refreshTokenPromise)
+  return options;
+
+}
+
+
 
 /**
  * This function receive the tokens form the user and save the credentials of the user
@@ -214,7 +263,7 @@ function getAuthUrl(state) {
 }
 
 
-
+exports.promiseRefreshToken = promiseRefreshToken;
 exports.refreshToken = refreshToken;
 exports.validSession = validSession;
 exports.validUser = validUser;
