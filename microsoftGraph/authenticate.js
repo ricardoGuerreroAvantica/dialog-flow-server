@@ -138,41 +138,42 @@ function refreshToken(next, options, callback) {
  * {Key: options.sessionId, Value: Token}.
  */
 function promiseRefreshToken(options) {
-  let refreshTokenPromise = new Promise((resolve, reject) => {
-    if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
-      options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
-      options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
-      resolve("Success");
-    }
-    else{
-      var OAuth2 = OAuth.OAuth2;
-      var oauth2 = new OAuth2(
-        credentials.client_id,
-        credentials.client_secret,
-        credentials.authority,
-        credentials.authorize_endpoint,
-        credentials.token_endpoint
-      );
-      oauth2.getOAuthAccessToken(
-        options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
-        {
-          grant_type: 'refresh_token',
-          redirect_uri: credentials.redirect_uri,
-          resource: credentials.resouce
-        },
-        function(error, access_token, refresh_token, results){
-          if (error){
-            reject("Error");
+  let timezonePromise = new Promise((resolve, reject) => {
+      if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
+        options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
+        options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
+        resolve("Success");
+      }
+      else{
+        var OAuth2 = OAuth.OAuth2;
+        var oauth2 = new OAuth2(
+          credentials.client_id,
+          credentials.client_secret,
+          credentials.authority,
+          credentials.authorize_endpoint,
+          credentials.token_endpoint
+        );
+        oauth2.getOAuthAccessToken(
+          options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
+          {
+            grant_type: 'refresh_token',
+            redirect_uri: credentials.redirect_uri,
+            resource: credentials.resouce
+          },
+          function(error, access_token, refresh_token, results){
+            if (error){
+              reject("Error");
+            }
+            options.access_token = access_token;
+            options.refresh_token = refresh_token;
+            resolve("Success");
           }
-          options.access_token = access_token;
-          options.refresh_token = refresh_token;
-          resolve("Success");
-        }
-      );
-    }
-  });
-  let result = await refreshTokenPromise;
-  console.log(refreshTokenPromise)
+        );
+      }
+    });
+let result = await timezonePromise;
+
+  console.log('refreshTokenPromise'+timezonePromise)
   return options;
 
 }
