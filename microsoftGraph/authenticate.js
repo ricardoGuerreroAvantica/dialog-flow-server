@@ -142,7 +142,7 @@ function promiseRefreshToken(options) {
     if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
       options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
       options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
-      next(options, callback);
+      resolve("Success");
     }
     else{
       var OAuth2 = OAuth.OAuth2;
