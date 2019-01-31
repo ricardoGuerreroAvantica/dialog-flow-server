@@ -137,8 +137,8 @@ function refreshToken(next, options, callback) {
  * @param {JSON} options.sessionTokens this json is a dictionary that contains all the tokens store in memory 
  * {Key: options.sessionId, Value: Token}.
  */
-function promiseRefreshToken(options) {
-  let timezonePromise = new Promise((resolve, reject) => {
+async function promiseRefreshToken(options) {
+  let refreshTokenPromise = new Promise((resolve, reject) => {
       if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
         options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
         options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
@@ -171,9 +171,9 @@ function promiseRefreshToken(options) {
         );
       }
     });
-let result = await timezonePromise;
+  let result = await refreshTokenPromise;
 
-  console.log('refreshTokenPromise'+timezonePromise)
+  console.log('refreshTokenPromise: '+result)
   return options;
 
 }
