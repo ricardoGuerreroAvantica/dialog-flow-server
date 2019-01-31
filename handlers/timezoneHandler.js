@@ -64,9 +64,8 @@ function getTimeZone(next, options, callback){
                 if (response.data.value.length != 0){
                     for (i = 0; i < timezones.timezones.length; i++) {
                         console.log(`timezones.timezones[${i}]:` + JSON.stringify(timezones.timezones[i]))
-
                         if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
+                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseFloat(timezones.timezones[i].time)};
                             resolve(selectedTimeZone);
                             break;
                         }
