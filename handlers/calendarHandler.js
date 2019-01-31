@@ -88,8 +88,7 @@ function showEventDetails(options,callback){
 async function scheduleMeeting(options){
   let promise = new Promise((resolve, reject) => {
     //Set all the basic variables for the event creation.
-    if (duration.unit === 'h') duration.unit = 'hours';
-    else if(duration.unit === 'min') duration.unit = 'minutes';
+    
     var invitesContext = commons.getContext(options.contexts, 'invites');
     var eventContext = commons.getContext(options.contexts, 'createevent');
     var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
@@ -98,7 +97,8 @@ async function scheduleMeeting(options){
     var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
     var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
     var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-    
+    if (duration.unit === 'h') duration.unit = 'hours';
+    else if(duration.unit === 'min') duration.unit = 'minutes';
     var body = {
       "subject": name,
       "attendees": invites,
