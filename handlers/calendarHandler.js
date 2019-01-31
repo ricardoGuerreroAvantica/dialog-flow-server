@@ -99,8 +99,8 @@ async function scheduleMeeting(options){
     console.log(moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('YYYY-MM-DDTHH:mm:ss'))
     console.log(date)
     console.log(parseInt(options.userTimezone.time))
-    var startDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss');
-    var endDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(options.userTimezone.time), 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+    var startDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseInt(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    var endDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseInt(options.userTimezone.time), 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
     console.log("times: " +startDate+"   "+endDate)
     if (duration.unit === 'h') duration.unit = 'hours';
     else if(duration.unit === 'min') duration.unit = 'minutes';
