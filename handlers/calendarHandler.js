@@ -86,6 +86,7 @@ function showEventDetails(options,callback){
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
 function scheduleMeeting(options, callback){
+  options.userTimezone = timezoneHandler.setTimeZone(options.access_token);
 
   var invitesContext = commons.getContext(options.contexts, 'invites');
   var eventContext = commons.getContext(options.contexts, 'createevent');
@@ -96,46 +97,12 @@ function scheduleMeeting(options, callback){
   var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
 
 
-  var selectedTimeZone;
-      let timezonePromise = new Promise((resolve, reject) => {
-            try {
-                console.log("Startx2")
-
-                axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
-                headers : {
-                    'Content-Type': 
-                    'application/json',
-                    Accept: 'application/json',
-                    Authorization: 'Bearer ' + token
-                }
-                })
-                .then((response) => {
-                    console.log("Startx3")
-
-                if (response.data.value.length != 0){
-                    for (i = 0; i < timezones.timezones.length; i++) {
-                        console.log("Startx4:" + JSON.stringify(timezones.timezones[i]))
-
-                        if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
-                            resolve(selectedTimeZone);
-                            break;
-                        }
-                    }
-                }
-                })
-                }
-                catch(err) {
-                console.log(err);
-                }
-            });
-    let result = await timezonePromise;
   
 
   if (duration.unit === 'h') duration.unit = 'hours';
   else if(duration.unit === 'min') duration.unit = 'minutes';
   var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-  console.log("JSON.stringify(options.userTimezone: "+JSON.stringify(result))
+  console.log("data is here: "+JSON.stringify(options.userTimezone))
   var body = {
     "subject": name,
     "attendees": invites,

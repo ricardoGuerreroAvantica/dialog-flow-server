@@ -52,8 +52,6 @@ function getTimeZone(next, options, callback){
       var selectedTimeZone;
       let timezonePromise = new Promise((resolve, reject) => {
             try {
-                console.log("Start#2")
-
                 axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
                 headers : {
                     'Content-Type': 
@@ -63,11 +61,9 @@ function getTimeZone(next, options, callback){
                 }
                 })
                 .then((response) => {
-                    console.log("Start#3")
-
                 if (response.data.value.length != 0){
                     for (i = 0; i < timezones.timezones.length; i++) {
-                        console.log("Start#4:" + JSON.stringify(timezones.timezones[i]))
+                        console.log(`timezones.timezones[${i}]:` + JSON.stringify(timezones.timezones[i]))
 
                         if(timezones.timezones[i].name == response.data.value){//cambiar por find
                             selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseInt(timezones.timezones[i].time)};
