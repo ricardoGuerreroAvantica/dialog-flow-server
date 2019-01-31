@@ -82,15 +82,13 @@ async function parseAction(req, res, callback){
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-      options = await authenticate.promiseRefreshToken(options);
+      options = awaitauthenticate.promiseRefreshToken(options);
       console.log("start--------"+options.access_token);
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
       console.log("end--------");
       console.log(JSON.stringify(options))
+      let resultCreateEvent= await action.scheduleMeeting(options);
 
-      Action.prototype.scheduleMeeting = calendarHandler.scheduleMeeting;
-      var action = new Action();
-      action.scheduleMeeting(options, callback);
       break;
     
     //Case: create_event_invite

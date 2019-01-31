@@ -85,50 +85,53 @@ function showEventDetails(options,callback){
  *  stored in dialog flow.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function scheduleMeeting(options, callback){
-  options.userTimezone = timezoneHandler.setTimeZone(options.access_token);
-
-  var invitesContext = commons.getContext(options.contexts, 'invites');
-  var eventContext = commons.getContext(options.contexts, 'createevent');
-  var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
-  var name = replaceSpecialCharacteres(eventContext.parameters.eventName);
-  var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
-  var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-  var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
-  if (duration.unit === 'h') duration.unit = 'hours';
-  else if(duration.unit === 'min') duration.unit = 'minutes';
-  var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-  console.log("data is here: "+JSON.stringify(options.userTimezone))
-  var body = {
-    "subject": name,
-    "attendees": invites,
-    "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
-    "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
-  }
-  request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
-    if (error){
-      console.log('scheduleMeeting.error : ' + JSON.stringify(error));
-      errorHandler.actionError(error);
+async function scheduleMeeting(options){
+  let promise = new Promise((resolve, reject) => {
+    //Set all the basic variables for the event creation.
+    if (duration.unit === 'h') duration.unit = 'hours';
+    else if(duration.unit === 'min') duration.unit = 'minutes';
+    var invitesContext = commons.getContext(options.contexts, 'invites');
+    var eventContext = commons.getContext(options.contexts, 'createevent');
+    var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || [];
+    var name = replaceSpecialCharacteres(eventContext.parameters.eventName);
+    var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
+    var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
+    var startDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    var endDate = moment.utc(date, 'YYYY-MM-DD HH:mm:ss').add(6, 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
+    
+    var body = {
+      "subject": name,
+      "attendees": invites,
+      "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
+      "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
     }
-    options.message = options.speech = response.subject + ' created' + '\n';
-    options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
-    options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime,options.userTimezone) + '\n' +
-          'Ends at: ' + commons.parseDate(response.end.dateTime,options.userTimezone) + '\n' +
-          'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
-          'Organizer: ' + response.organizer.emailAddress.name + '\n';
-    if (response.attendees && response.attendees.length > 0){
-      options.message += '\n';
-      options.message += 'Invites: \n\n';
-      response.attendees.forEach((attendee) => {
-        options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n';
-      });
-    }
+    request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
+      if (error){
+        console.log('scheduleMeeting.error : ' + JSON.stringify(error));
+        errorHandler.actionError(error);
+        reject("Error in scheduleMeeting")
+      }
+      options.message = options.speech = response.subject + ' created' + '\n';
+      options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n';
+      options.message += 'Starts at: ' + commons.parseDate(response.start.dateTime,options.userTimezone) + '\n' +
+            'Ends at: ' + commons.parseDate(response.end.dateTime,options.userTimezone) + '\n' +
+            'Location: ' +((response.location && response.location.displayName) ? (response.location.displayName) : 'to be announced') + '\n' +
+            'Organizer: ' + response.organizer.emailAddress.name + '\n';
+      if (response.attendees && response.attendees.length > 0){
+        options.message += '\n';
+        options.message += 'Invites: \n\n';
+        response.attendees.forEach((attendee) => {
+          options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + '\n';
+        });
+      }
 
-    eventContext.lifespan = 0;
-    if (invitesContext)
-      invitesContext.lifespan = 0;
-    callback(options);
+      eventContext.lifespan = 0;
+      if (invitesContext)
+        invitesContext.lifespan = 0;
+      resolve("Success");
+    });
   });
+  let response = await promise;
 }
 
 /**
