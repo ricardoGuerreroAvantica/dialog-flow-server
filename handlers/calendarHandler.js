@@ -110,6 +110,7 @@ async function scheduleMeeting(options){
       "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
       "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
     }
+    console.log(JSON.stringify(body))
     request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
       if (error){
         console.log('scheduleMeeting.error : ' + JSON.stringify(error));

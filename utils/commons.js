@@ -87,7 +87,12 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
 
 function parseDate(date,timezone){
   var time = timezone.time;
-  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours') 
+  console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
+  console.log(parseInt(time)+ "hrs");
+
+  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseInt(time), 'hours');
+  console.log(moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
+
   return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 
