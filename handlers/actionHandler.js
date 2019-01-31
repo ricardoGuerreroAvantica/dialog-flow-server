@@ -82,7 +82,8 @@ function parseAction(req, res, callback){
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-      console.log("start--------");
+      console.log("start--------"+options.access_token);
+
       timezoneHandler.setTimeZone(options.access_token);
       console.log("end--------");
 
