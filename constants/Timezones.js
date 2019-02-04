@@ -16,10 +16,22 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Haiti Standard Time"                       ,time:"-05"},//x
                     {name:"Central America Standard Time"             ,time:"-06"},//x
                     {name:"Turks And Caicos Standard Time"            ,time:"-05"},//x
-                    {name:"Central America Standard Time"             ,time:"-06"},//x
+                    {name:"Libya Standard Time"                       ,time:"+02"},//x
                     {name:"Magallanes Standard Time"                  ,time:"-03"},//x
                     {name:"Tocantins Standard Time"                   ,time:"-03"},//x
                     {name:"SA Eastern Standard Time"                  ,time:"-03"},//x
+                    {name:"Saint Pierre Standard Time"                ,time:"-03"},
+                    {name:"Bahia Standard Time"                       ,time:"-03"},
+                    {name:"West Bank Standard Time"                   ,time:"+02"},
+                    {name:"Kaliningrad Standard Time"                 ,time:"+02"},
+                    {name:"Sudan Standard Time"                       ,time:"+02"},
+                    {name:"Belarus Standard Time"                     ,time:"+03"},
+                    {name:"Astrakhan Standard Time"                   ,time:"+04"},
+                    {name:"Russia Time Zone 3"                        ,time:"+04"},
+                    {name:"Saratov Standard Time"                     ,time:"+04"},
+                    {name:"Volgograd Standard Time"             ,time:"+04"},
+                    {name:""             ,time:"+"},
+
                     {name:"Eastern Standard Time"                     ,time:"-05"},//x
                     {name:"US Eastern Standard Time"                  ,time:"-05"},//X
                     {name:"SA Pacific Standard Time"                  ,time:"-05"},
@@ -49,7 +61,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Arab Standard Time"                        ,time:"+03"},
                     {name:"E. Africa Standard Time"                   ,time:"+03"},
                     {name:"Arabic Standard Time"                      ,time:"+03"},
-                    {name:"Iran Standard Time"                        ,time:"+03"},
+                    {name:"Iran Standard Time"                        ,time:"+03.5"},
                     {name:"Arabian Standard Time"                     ,time:"+04"},
                     {name:"Caucasus Standard Time"                    ,time:"+04"},
                     {name:"Transitional Islamic State of Afghanistan" ,time:"+04"},

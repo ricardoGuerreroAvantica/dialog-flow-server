@@ -87,7 +87,7 @@ async function parseAction(req, res, callback){
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
       console.log("end--------");
       console.log(JSON.stringify(options))
-      let resultCreateEvent= await calendarHandler.scheduleMeeting(options);
+      let result= await calendarHandler.scheduleMeeting(options);
       callback(options);
       break;
     
@@ -134,7 +134,6 @@ async function parseAction(req, res, callback){
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
         //PRE
         Action.pre('showEventDetails', authenticate.refreshToken)
-        .pre('showEventDetails', timezoneHandler.getTimeZone)
         var action = new Action();
         action.showEventDetails(options, callback);
       break;
