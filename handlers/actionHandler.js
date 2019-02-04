@@ -145,7 +145,6 @@ async function parseAction(req, res, callback){
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
         //PRE
         Action.pre('showEventDetails', authenticate.refreshToken)
-        .pre('showEventDetails', timezoneHandler.getTimeZone)
         var action = new Action();
         action.showEventDetails(options, callback);
       break;
