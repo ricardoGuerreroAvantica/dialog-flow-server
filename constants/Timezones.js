@@ -2,7 +2,8 @@
 //This constant contains all the supported timezones defined in microsoft graph:
 const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12"},
                     {name:"Samoa Standard Time"                       ,time:"-11"},
-                    {name:"Hawaiian Standard Time"                    ,time:"-10"},
+                    {name:"Hawaiian Standard Time"                    ,time:"-10"},//x
+                    {name:"Marquesas Standard Time"                   ,time:"-9.5"},//x
                     {name:"Alaskan Standard Time"                     ,time:"-09"},
                     {name:"Pacific Standard Time"                     ,time:"-08"},
                     {name:"Mountain Standard Time"                    ,time:"-07"},
