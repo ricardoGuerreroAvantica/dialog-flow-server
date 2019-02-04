@@ -5,10 +5,10 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Hawaiian Standard Time"                    ,time:"-10"},//x
                     {name:"Marquesas Standard Time"                   ,time:"-9.5"},//x
                     {name:"Alaskan Standard Time"                     ,time:"-09"},//x
-                    {name:"Pacific Standard Time"                     ,time:"-08"},
-                    {name:"Mountain Standard Time"                    ,time:"-07"},
+                    {name:"Pacific Standard Time"                     ,time:"-08"},//x
+                    {name:"Mountain Standard Time"                    ,time:"-07"},//x
                     {name:"Mexico Standard Time 2"                    ,time:"-07"},
-                    {name:".S. Mountain Standard Time"                ,time:"-07"},
+                    {name:"US Mountain Standard Time"                 ,time:"-07"},
                     {name:"Central Standard Time"                     ,time:"-06"},
                     {name:"Canada Central Standard Time"              ,time:"-06"},
                     {name:"Mexico Standard Time"                      ,time:"-06"},
