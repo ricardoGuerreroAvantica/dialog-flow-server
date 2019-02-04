@@ -13,17 +13,21 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Canada Central Standard Time"              ,time:"-06"},//x
                     {name:"Mexico Standard Time"                      ,time:"-06"},//X
                     {name:"Cuba Standard Time"                        ,time:"-05"},//X
-                    {name:"Haiti Standard Time"                       ,time:"-05"},
-                    {name:"Central America Standard Time"             ,time:"-06"},
+                    {name:"Haiti Standard Time"                       ,time:"-05"},//x
+                    {name:"Central America Standard Time"             ,time:"-06"},//x
+                    {name:"Turks And Caicos Standard Time"            ,time:"-05"},//x
+                    {name:"Central America Standard Time"             ,time:"-06"},//x
+                    {name:"Magallanes Standard Time"                  ,time:"-03"},//x
+                    {name:"Tocantins Standard Time"                   ,time:"-03"},//x
+                    {name:"SA Eastern Standard Time"                  ,time:"-03"},//x
                     {name:"Eastern Standard Time"                     ,time:"-05"},//x
                     {name:"US Eastern Standard Time"                  ,time:"-05"},//X
                     {name:"SA Pacific Standard Time"                  ,time:"-05"},
-                    {name:"Atlantic Standard Time"                    ,time:"-04"},
-                    {name:"SA Western Standard Time"                  ,time:"-04"},
-                    {name:"Pacific SA Standard Time"                  ,time:"-04"},
-                    {name:"Newfoundland and Labrador Standard Time"   ,time:"-03"},
-                    {name:"E. South America Standard Time"            ,time:"-03"},
-                    {name:"S.A. Eastern Standard Time"                ,time:"-03"},
+                    {name:"Atlantic Standard Time"                    ,time:"-04"},//x
+                    {name:"SA Western Standard Time"                  ,time:"-04"},//x
+                    {name:"Pacific SA Standard Time"                  ,time:"-04"},//x
+                    {name:"Newfoundland Standard Time"                ,time:"-03"},//x
+                    {name:"E. South America Standard Time"            ,time:"-03"},//x
                     {name:"Greenland Standard Time"                   ,time:"-03"},
                     {name:"Mid-Atlantic Standard Time"                ,time:"-02"},
                     {name:"Azores Standard Time"                      ,time:"-01"},
@@ -57,7 +61,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Sri Lanka Standard Time"                   ,time:"+06"},
                     {name:"N. Central Asia Standard Time"             ,time:"+06"},
                     {name:"Myanmar Standard Time"                     ,time:"+06"},
-                    {name:"S.E. Asia Standard Time"                   ,time:"+07"},
+                    {name:"SE Asia Standard Time"                   ,time:"+07"},
                     {name:"North Asia Standard Time"                  ,time:"+07"},
                     {name:"China Standard Time"                       ,time:"+08"},
                     {name:"Singapore Standard Time"                   ,time:"+08"},
@@ -69,7 +73,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Yakutsk Standard Time"                     ,time:"+09"},
                     {name:"A.U.S. Central Standard Time"              ,time:"+09"},
                     {name:"Cen. Australia Standard Time"              ,time:"+09"},
-                    {name:"A.U.S. Eastern Standard Time"              ,time:"+10"},
+                    {name:"AUS Eastern Standard Time"              ,time:"+10"},
                     {name:"E. Australia Standard Time"                ,time:"+10"},
                     {name:"Tasmania Standard Time"                    ,time:"+10"},
                     {name:"Vladivostok Standard Time"                 ,time:"+10"},
@@ -100,19 +104,16 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Pacific Standard Time (Mexico)"            ,time:"-08"},
                     {name:"Namibia Standard Time"                     ,time:"+02"},
                     {name:"Georgian Standard Time"                    ,time:"+03"},
-                    {name:"Central Brazilian Standard Time"           ,time:"-04"},
+                    {name:"Central Brazilian Standard Time"           ,time:"-04"},//x
                     {name:"Montevideo Standard Time"                  ,time:"-03"},
                     {name:"Armenian Standard Time"                    ,time:"+04"},
-                    {name:"Venezuela Standard Time"                   ,time:"-04"},
+                    {name:"Venezuela Standard Time"                   ,time:"-04"},//x
                     {name:"Argentina Standard Time"                   ,time:"-03"},
                     {name:"Morocco Standard Time"                     ,time:"000"},
                     {name:"Pakistan Standard Time"                    ,time:"+05"},
                     {name:"Mauritius Standard Time"                   ,time:"+04"},
                     {name:"UTC"                                       ,time:"0"},
-                    {name:"Paraguay Standard Time"                    ,time:"-04"},
-                    {name:"Paraguay Standard Time"                    ,time:"-04"},
-                    {name:"Paraguay Standard Time"                    ,time:"-04"},
-                    {name:"Paraguay Standard Time"                    ,time:"-04"},
+                    {name:"Paraguay Standard Time"                    ,time:"-04"},//n
                     {name:"Afghanistan Standard Time"                 ,time:"+4.5"},
                     {name:"Kamchatka Standard Time"                   ,time:"+12"}];
 
