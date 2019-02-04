@@ -62,6 +62,7 @@ function getTimeZone(next, options, callback){
                 })
                 .then((response) => {
                 if (response.data.value.length != 0){
+                    console.log('the timezone:' + JSON.stringify(response.data))
                     for (i = 0; i < timezones.timezones.length; i++) {
                         console.log(`timezones.timezones[${i}]:` + JSON.stringify(timezones.timezones[i]))
                         if(timezones.timezones[i].name == response.data.value){//cambiar por find
