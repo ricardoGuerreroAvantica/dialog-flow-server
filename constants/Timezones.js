@@ -1,5 +1,5 @@
 
-//This constant contains all the supported timezones of microsoft graph:
+//This constant contains all the supported timezones defined in microsoft graph:
 const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12"},
                     {name:"Samoa Standard Time"                       ,time:"-11"},
                     {name:"Hawaiian Standard Time"                    ,time:"-10"},
@@ -72,7 +72,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Vladivostok Standard Time"                 ,time:"+10"},
                     {name:"West Pacific Standard Time"                ,time:"+10"},
                     {name:"Central Pacific Standard Time"             ,time:"+11"},
-                    {name:"UTC-11"                                    ,time:"-11"},
+                    {name:"UTC-11"                                    ,time:"-11"},//x
                     {name:"UTC-10"                                    ,time:"-10"},
                     {name:"UTC-9"                                     ,time:"-9"},
                     {name:"UTC-8"                                     ,time:"-8"},
@@ -83,6 +83,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"UTC-3"                                     ,time:"-3"},
                     {name:"UTC-2"                                     ,time:"-2"},
                     {name:"UTC-1"                                     ,time:"-1"},
+                    {name:"Aleutian Standard Time"                    ,time:"-10"},//x
                     {name:"Fiji Islands Standard Time"                ,time:"+12"},
                     {name:"New Zealand Standard Time"                 ,time:"+12"},
                     {name:"Tonga Standard Time"                       ,time:"+13"},
