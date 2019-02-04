@@ -4,7 +4,7 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Samoa Standard Time"                       ,time:"-11"},
                     {name:"Hawaiian Standard Time"                    ,time:"-10"},//x
                     {name:"Marquesas Standard Time"                   ,time:"-9.5"},//x
-                    {name:"Alaskan Standard Time"                     ,time:"-09"},
+                    {name:"Alaskan Standard Time"                     ,time:"-09"},//x
                     {name:"Pacific Standard Time"                     ,time:"-08"},
                     {name:"Mountain Standard Time"                    ,time:"-07"},
                     {name:"Mexico Standard Time 2"                    ,time:"-07"},
@@ -75,15 +75,15 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Central Pacific Standard Time"             ,time:"+11"},
                     {name:"UTC-11"                                    ,time:"-11"},//x
                     {name:"UTC-10"                                    ,time:"-10"},
-                    {name:"UTC-9"                                     ,time:"-9"},
-                    {name:"UTC-8"                                     ,time:"-8"},
-                    {name:"UTC-7"                                     ,time:"-7"},
-                    {name:"UTC-6"                                     ,time:"-6"},
-                    {name:"UTC-5"                                     ,time:"-5"},
-                    {name:"UTC-4"                                     ,time:"-4"},
-                    {name:"UTC-3"                                     ,time:"-3"},
-                    {name:"UTC-2"                                     ,time:"-2"},
-                    {name:"UTC-1"                                     ,time:"-1"},
+                    {name:"UTC-09"                                     ,time:"-9"},
+                    {name:"UTC-08"                                     ,time:"-8"},
+                    {name:"UTC-07"                                     ,time:"-7"},
+                    {name:"UTC-06"                                     ,time:"-6"},
+                    {name:"UTC-05"                                     ,time:"-5"},
+                    {name:"UTC-04"                                     ,time:"-4"},
+                    {name:"UTC-03"                                     ,time:"-3"},
+                    {name:"UTC-02"                                     ,time:"-2"},
+                    {name:"UTC-01"                                     ,time:"-1"},
                     {name:"Aleutian Standard Time"                    ,time:"-10"},//x
                     {name:"Fiji Islands Standard Time"                ,time:"+12"},
                     {name:"New Zealand Standard Time"                 ,time:"+12"},
