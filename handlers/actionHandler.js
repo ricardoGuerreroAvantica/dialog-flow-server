@@ -52,7 +52,7 @@ async function parseAction(req, res, callback){
     case 'show_events' :
       options = await authenticate.promiseRefreshToken(options)
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
-      await showEvents(options)
+      await calendarHandler.showEvents(options)
       callback(options)
       break;
 
