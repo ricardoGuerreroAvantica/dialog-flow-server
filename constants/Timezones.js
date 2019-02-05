@@ -50,8 +50,6 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"Fiji Standard Time"                        ,time:"+12"},
                     {name:"Chatham Islands Standard Time"             ,time:"+12.75"},
                     {name:"Line Islands Standard Time"                ,time:"+14"},
-                    {name:"Bangladesh Standard Time"                  ,time:"+0"},
-                    {name:"Bangladesh Standard Time"                  ,time:"+0"},
                     {name:"Eastern Standard Time"                     ,time:"-05"},
                     {name:"US Eastern Standard Time"                  ,time:"-05"},
                     {name:"SA Pacific Standard Time"                  ,time:"-05"},
