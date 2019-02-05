@@ -7,7 +7,7 @@ var hooks = require('hooks');
 var Action = require('./../handlers/Action.js');
 var timezoneHandler =require("./../handlers/timezoneHandler.js")
 for (var k in hooks) {
-  Action[k] = hooks[k];
+  Action[k] = hooks[k]
 }
 /**
  * This is the function on charge of checking wha is the request action(options.action) send by dialog flow and then
@@ -19,10 +19,10 @@ for (var k in hooks) {
  * @param {String} options.action the action defines which functions needs to be executed in order to complete the user request.
  */
 async function parseAction(req, res, callback){
-  var options = this.options;
-  options.contexts = req.body.result.contexts || [];
-  options.action = req.body.result.action;
-  options.parameters = req.body.result.parameters;
+  var options = this.options
+  options.contexts = req.body.result.contexts || []
+  options.action = req.body.result.action
+  options.parameters = req.body.result.parameters
   console.log("Case: " +JSON.stringify(options.action))
 
  
@@ -31,14 +31,14 @@ async function parseAction(req, res, callback){
     //Case: calendar_user_available
     //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
-      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes;
+      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes
       Action.pre('checkMeetingTimes', authenticate.refreshToken)
       .pre('checkMeetingTimes', timezoneHandler.getTimeZone)
       .pre('checkMeetingTimes', calendarHandler.userData)
       .pre('checkMeetingTimes',userHandler.preSearchUser)
-      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes);
-      var action = new Action();
-      action.checkMeetingTimes(options, callback);
+      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
+      var action = new Action()
+      action.checkMeetingTimes(options, callback)
       break;
 
     //Case: helper
@@ -50,11 +50,10 @@ async function parseAction(req, res, callback){
     //Case: show_events
     //Description: This case is trigger when the user ask for "Show my events" 
     case 'show_events' :
-      Action.prototype.showEvents = calendarHandler.showEvents;
-      Action.pre('showEvents', authenticate.refreshToken)
-      .pre('showEvents', timezoneHandler.getTimeZone)      ;
-      var action = new Action();
-      action.showEvents(options, callback);
+      options = await authenticate.promiseRefreshToken(options)
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      await showEvents(options)
+      callback(options)
       break;
 
     //Case: show_events_on_date

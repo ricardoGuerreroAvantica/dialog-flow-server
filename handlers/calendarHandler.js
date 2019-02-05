@@ -131,7 +131,7 @@ async function scheduleMeeting(options){
       resolve("Success");
     });
   });
-  let response = await promise;
+  await promise;
 }
 
 /**
@@ -313,57 +313,59 @@ function showEventsOnDate(options, callback){
  * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
-function showEvents(options, callback){
+async function showEvents(options){
   var parameters = options.parameters;
   var name = parameters.name;
   var period = parameters.period;
   var filter = '';
   var url = '';
+  let promise = new Promise((resolve, reject) => {
+      if (name){
+        filter = "$filter=startswith(subject,'" + name + "')";
+        url = 'https://graph.microsoft.com/v1.0/me/events?';
+      }else if (period){
+        period = period.split("/");
+        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add(30,'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
+        url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+      }else{
+        filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+        url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+      }
 
-  if (name){
-    filter = "$filter=startswith(subject,'" + name + "')";
-    url = 'https://graph.microsoft.com/v1.0/me/events?';
-  }else if (period){
-    period = period.split("/");
-    filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add(30,'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
-    url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  }else{
-    filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-            '&enddatetime=' + moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
-    url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  }
-
-  axios.get(url + filter, {
-    headers : {
-      'Content-Type':
-      'application/json',
-      Accept: 'application/json',
-      Authorization: 'Bearer ' + options.access_token }
-  })
-  .then((response) => {
-    var events = response.data.value;
-    if (events.length > 0){
-      options.message = options.speech = 'Found these events:\n';
-      events.forEach((event) => {
-        options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
-        options.message += 'Subject        : '    + event.subject +'\n';
-        options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+'\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
+      axios.get(url + filter, {
+        headers : {
+          'Content-Type':
+          'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + options.access_token }
+      })
+      .then((response) => {
+        var events = response.data.value;
+        if (events.length > 0){
+          options.message = options.speech = 'Found these events:\n';
+          events.forEach((event) => {
+            options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
+            options.message += 'Subject        : '    + event.subject +'\n';
+            options.message += 'Date           : '  + moment().format('YYYY-MM-DD')+'\n';
+            options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
+            options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
+            options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
+            options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
+          });
+          resolve("Success");
+        }else{
+          options.message = options.speech = 'There is nothing on your agenda';
+          resolve("Success");
+        }
+      })
+      .catch((error) => {
+        reject("error")
+        errorHandler.actionError(error);      
       });
-      callback(options);
-    }else{
-      options.message = options.speech = 'There is nothing on your agenda';
-      callback(options);
-    }
-  })
-  .catch((error) => {
-    console.log('showEvents.error : ' + error);
-    errorHandler.actionError(error);
   });
+  await promise;
 }
 
 exports.showEventsOnDate = showEventsOnDate;
