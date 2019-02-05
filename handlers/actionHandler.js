@@ -59,12 +59,10 @@ async function parseAction(req, res, callback){
     //Case: show_events_on_date
     //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
-      Action.prototype.showEventsOnDate = calendarHandler.showEventsOnDate;
-      Action.pre('showEventsOnDate', authenticate.refreshToken)
-      .pre('showEventsOnDate', timezoneHandler.getTimeZone)
-
-      var action = new Action();
-      action.showEventsOnDate(options, callback);
+      options = await authenticate.promiseRefreshToken(options);
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
+      await calendarHandler.showEventsOnDate(options);
+      callback(options)
       break;
 
     //Case: show_locations

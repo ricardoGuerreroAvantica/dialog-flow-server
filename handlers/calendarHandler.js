@@ -265,47 +265,48 @@ function checkMeetingTimes(options, callback){
  * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
-function showEventsOnDate(options, callback){
-  var parameters = options.parameters;
-  var date = parameters.date;
-  var filter = '';
-  var url = '';
-  var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-  filter = 'startdatetime=' + startDate+ 'Z' +
-            '&enddatetime=' + endDate+ 'Z';
-  url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  axios.get(url + filter, {
-    headers : {
-      'Content-Type':
-      'application/json',
-      Accept: 'application/json',
-      Authorization: 'Bearer ' + options.access_token }
-  })
-  .then((response) => {
-    var events = response.data.value;
-    if (events.length > 0){
-      options.message = options.speech = 'Found these events:\n';
-      events.forEach((event) => {
-        options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
-        options.message += 'Subject        : '    + event.subject +'\n';
-        options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')+'\n';
-        options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
-        options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
-        options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
-        options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
-      });
-      callback(options);
-    }else{
-      options.message = options.speech = 'There is nothing on your agenda';
-      callback(options);
-    }
-  })
-  .catch((error) => {
-    console.log('showEvents.error : ' + error);
-    errorHandler.actionError(error);
+async function showEventsOnDate(options){
+  let promise = new Promise((resolve, reject) => {
+    var parameters = options.parameters;
+    var date = parameters.date;
+    var filter = '';
+    var url = '';
+    var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+    var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+    filter = 'startdatetime=' + startDate+ 'Z' +
+              '&enddatetime=' + endDate+ 'Z';
+    url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+    axios.get(url + filter, {
+      headers : {
+        'Content-Type':
+        'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + options.access_token }
+    })
+    .then((response) => {
+      var events = response.data.value;
+      if (events.length > 0){
+        options.message = options.speech = 'Found these events:\n';
+        events.forEach((event) => {
+          options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
+          options.message += 'Subject        : '    + event.subject +'\n';
+          options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')+'\n';
+          options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
+          options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
+          options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
+          options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
+        });
+        resolve("Success");
+      }else{
+        options.message = options.speech = 'There is nothing on your agenda';
+        resolve("Success");      }
+    })
+    .catch((error) => {
+      reject('showEvents.error : ' + error);
+      errorHandler.actionError(error);
+    });
   });
-
+  await promise;
 }
 
 /**
