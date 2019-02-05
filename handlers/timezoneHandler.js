@@ -12,7 +12,6 @@ var axios = require('axios');
  * @param {JSON} options.userTimezone contains the current user timezone in a JSON {timezone, time}
  */
 function getTimeZone(next, options, callback){
-    console.log("getTimeZone start")
     if (!commons.getContext(options.contexts, 'invites')){
         try {
             axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
@@ -48,7 +47,6 @@ function getTimeZone(next, options, callback){
 
 
   async function setTimeZone(token){
-      console.log("Start")
       var selectedTimeZone;
       let timezonePromise = new Promise((resolve, reject) => {
             try {
@@ -62,9 +60,7 @@ function getTimeZone(next, options, callback){
                 })
                 .then((response) => {
                 if (response.data.value.length != 0){
-                    console.log('the timezone:' + JSON.stringify(response.data))
                     for (i = 0; i < timezones.timezones.length; i++) {
-                        console.log(`timezones.timezones[${i}]:` + JSON.stringify(timezones.timezones[i]))
                         if(timezones.timezones[i].name == response.data.value){//cambiar por find
                             selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseFloat(timezones.timezones[i].time)};
                             resolve(selectedTimeZone);
@@ -75,14 +71,12 @@ function getTimeZone(next, options, callback){
                 })
                 }
                 catch(err) {
+                reject(JSON.stringify(err))
                 console.log(err);
                 }
             });
     let result = await timezonePromise;
-    console.log("-------------------")
-    console.log(selectedTimeZone)
-    console.log(result)
-    console.log("-------------------")
+
     return result;
   }
 

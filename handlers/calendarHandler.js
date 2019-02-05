@@ -95,13 +95,8 @@ async function scheduleMeeting(options){
     var name = replaceSpecialCharacteres(eventContext.parameters.eventName);
     var duration = eventContext.parameters.duration || {amount : 1, unit : 'hours'};
     var date = eventContext.parameters.date + ' ' + eventContext.parameters.time;
-    console.log("Times checkout")
-    console.log(moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('YYYY-MM-DDTHH:mm:ss'))
-    console.log(date)
-    console.log(parseFloat(options.userTimezone.time))
     var startDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss');
     var endDate = moment.utc(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseFloat(options.userTimezone.time), 'hours').add(duration.amount, duration.unit).format('YYYY-MM-DDTHH:mm:ss');
-    console.log("times: " +startDate+"   "+endDate)
     if (duration.unit === 'h') duration.unit = 'hours';
     else if(duration.unit === 'min') duration.unit = 'minutes';
     var body = {
@@ -110,7 +105,6 @@ async function scheduleMeeting(options){
       "start": { "dateTime": startDate + '.000Z', "timeZone": "UTC" },
       "end": { "dateTime": endDate + '.000Z', "timeZone": "UTC" }
     }
-    console.log(JSON.stringify(body))
     request.postData('graph.microsoft.com','/v1.0/me/events', options.access_token, JSON.stringify(body), (error, response) => {
       if (error){
         console.log('scheduleMeeting.error : ' + JSON.stringify(error));
@@ -281,7 +275,6 @@ function showEventsOnDate(options, callback){
   filter = 'startdatetime=' + startDate+ 'Z' +
             '&enddatetime=' + endDate+ 'Z';
   url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
-  //console.log(url+filter)
   axios.get(url + filter, {
     headers : {
       'Content-Type':
@@ -361,7 +354,6 @@ function showEvents(options, callback){
         options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
         options.message += 'Organizer      : '  + event.organizer.emailAddress.name;
       });
-      //console.log('findMeetingTimes.options : ' + JSON.stringify(options, null, 2));
       callback(options);
     }else{
       options.message = options.speech = 'There is nothing on your agenda';
@@ -369,7 +361,7 @@ function showEvents(options, callback){
     }
   })
   .catch((error) => {
-    //console.log('showEvents.error : ' + error);
+    console.log('showEvents.error : ' + error);
     errorHandler.actionError(error);
   });
 }

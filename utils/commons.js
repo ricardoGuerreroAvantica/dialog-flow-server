@@ -1,11 +1,8 @@
 var moment = require('moment');
 
 function getContext(contexts, name){
-  console.log("IgetContext: ")
   for (var i in contexts){
-    console.log("is "+name+" equal to "+contexts[i].name + (contexts[i].name === name).toString());
     if (contexts[i].name === name){
-      console.log("Selected:  "+contexts[i])
       return contexts[i];
     }
   }
@@ -61,11 +58,8 @@ function getDate(date, time, extraTime,isSubstraction,timezoneTime){
 
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
-  console.log("timezone is here="+JSON.stringify(timezone))
   var startDate = getDate(date, time,startTimeMargin,true,parseInt(timezone.time));
   var endDate = getDate(date, time,endTimeMargin,false,parseInt(timezone.time));
-
-  console.log("STARTX " +startDate+ " ENDX " +endDate)
   var result = {
     "timeslots": [
       {
@@ -87,12 +81,7 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
 
 function parseDate(date,timezone){
   var time = timezone.time;
-  console.log(moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
-  console.log(parseInt(time)+ "hrs");
-
   var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(time), 'hours');
-  console.log(moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT'));
-
   return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
 }
 

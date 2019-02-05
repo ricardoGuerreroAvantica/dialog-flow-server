@@ -83,11 +83,8 @@ async function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
       options = await authenticate.promiseRefreshToken(options);
-      console.log("start--------"+options.access_token);
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
-      console.log("end--------");
-      console.log(JSON.stringify(options))
-      let result= await calendarHandler.scheduleMeeting(options);
+      await calendarHandler.scheduleMeeting(options);
       callback(options);
       break;
     
@@ -117,11 +114,9 @@ async function parseAction(req, res, callback){
     //Description: this case is trigger when the user search for a employee using only the name of the employee
     case 'check_available_Only_name' :
         Action.prototype.checkUser = userHandler.checkUser;
-        //PRE
         Action.pre('checkUser', authenticate.refreshToken)
         .pre('checkUser', timezoneHandler.getTimeZone)
         .pre('checkUser',userHandler.preSearchUser)
-        //.pre('checkUser',userHandler.searchUser)
         var action = new Action();
         action.checkUser(options, callback);
       break;
@@ -132,7 +127,6 @@ async function parseAction(req, res, callback){
     case 'Show_event_Info' :
       options.simpleInfo = false;
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
-        //PRE
         Action.pre('showEventDetails', authenticate.refreshToken)
         var action = new Action();
         action.showEventDetails(options, callback);
@@ -143,7 +137,6 @@ async function parseAction(req, res, callback){
     case 'createEventBegin' :
       options.simpleInfo = true;
       Action.prototype.showEventDetails = calendarHandler.showEventDetails;
-        //PRE
         Action.pre('showEventDetails', authenticate.refreshToken)
         var action = new Action();
         action.showEventDetails(options, callback);
