@@ -334,8 +334,8 @@ async function showEvents(options){
         url = 'https://graph.microsoft.com/v1.0/me/events?';
       }else if (period){
         period = period.split("/");
-        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').add((parseInt(options.userTimezone.time)).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add((24+parseInt(options.userTimezone.time))),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
+        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add((24+parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }else{
         filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
