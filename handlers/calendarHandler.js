@@ -298,7 +298,7 @@ async function showEventsOnDate(options){
         events.forEach((event) => {
           options.message += '\n'+'¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' +'\n';
           options.message += 'Subject        : '    + event.subject +'\n';
-          options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(6, 'hours').format('DD-MM-YYYY')+'\n';
+          options.message += 'Date           : '  + moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(options.userTimezone.time, 'hours').format('DD-MM-YYYY')+'\n';
           options.message += 'Starts at      : '  + commons.parseDate(event.start.dateTime,options.userTimezone) +'\n';
           options.message += 'Ends at        : '    + commons.parseDate(event.end.dateTime,options.userTimezone) +'\n';
           options.message += 'Location       : '   + ((event.location.displayName) ? event.location.displayName : ' to be announced') + '\n';
@@ -334,15 +334,16 @@ async function showEvents(options){
         url = 'https://graph.microsoft.com/v1.0/me/events?';
       }else if (period){
         period = period.split("/");
-        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT06:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add(30,'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
+        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').add((parseInt(options.userTimezone.time)).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add((24+parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }else{
         filter = 'startdatetime=' + moment().format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
                 '&enddatetime=' + moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
+        
       }
-
+      console.log(url + filter)
       axios.get(url + filter, {
         headers : {
           'Content-Type':
