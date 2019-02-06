@@ -279,8 +279,8 @@ async function showEventsOnDate(options){
     var date = parameters.date;
     var filter = '';
     var url = '';
-    var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(options.userTimezone.time, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
-    var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(options.userTimezone.time, 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+    var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
+    var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
     filter = 'startdatetime=' + startDate+ 'Z' +
               '&enddatetime=' + endDate+ 'Z';
     url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
@@ -344,9 +344,8 @@ async function showEvents(options){
         console.log(moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
 
         console.log(moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000'))
-        console.log(moment().endOf('day').add((24+parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
+        console.log(moment().endOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
         
-
         filter = 'startdatetime=' + moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
                 '&enddatetime=' + moment().startOf('day').add(24+(parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
