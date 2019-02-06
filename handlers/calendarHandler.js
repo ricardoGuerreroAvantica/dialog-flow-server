@@ -286,7 +286,7 @@ async function showEventsOnDate(options){
     console.log(moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours'))
     console.log("------------")
     console.log((date+('T23:59:59.000')))
-    console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').format('YYYY-MM-DDThh:mm:ss.SSS'))
+    console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').format('YYYY-MM-DDTHH:mm:ss.SSS'))
     console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').format('YYYY-MM-DDThh:mm:ss.SSS'))
     console.log("------------")
 
