@@ -32,15 +32,11 @@ async function preSearchUser(options){
         }
       })
       .then((response) => {
+        console.log("response.data" + JSON.stringify(response.data))
         options.message = "";
-        if (response.data.value.length === 0){
-          options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
-          +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
-          resolve("Success");
-        }
         if (response.data.value.length > 1){
           options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
-          console.log("response.data" + JSON.stringify(response.data))
+          
           for(i = 0; i < response.data.value.length; i++ ){
             if ( i!= response.data.value.length-1){
               options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
@@ -49,6 +45,12 @@ async function preSearchUser(options){
               options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
             }
           }
+          resolve("Success");
+        }
+
+        if (response.data.value.length === 0){
+          options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
+          +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
           resolve("Success");
         }
         else{
@@ -67,8 +69,8 @@ async function preSearchUser(options){
       }
     }
     catch(err){
-      reject("error")
       console.log(err)
+      reject("error")
     }
   });
   await promise;
