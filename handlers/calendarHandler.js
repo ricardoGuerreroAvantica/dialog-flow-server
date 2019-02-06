@@ -287,7 +287,7 @@ async function showEventsOnDate(options){
 
     console.log((date+('T23:59:59.000')))
     console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS'))
-    console.log(moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS'))
+    console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS'))
     var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
     var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDThh:mm:ss.SSS');
     filter = 'startdatetime=' + startDate+ 'Z' +
