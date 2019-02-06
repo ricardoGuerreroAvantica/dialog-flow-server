@@ -4,68 +4,73 @@ var axios = require('axios');
  * @param {JSON} options.parameters this value contains all the information from the user obtained from dialog flow.
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
-function preSearchUser(next, options, callback){
-  try{
-    var parameters = options.parameters;
-    var userData = { name : parameters.name,
-    lastname : parameters.lastname,
-    secondName : parameters.secondName,
-    secondLastname : parameters.secondLastname,
-    email : parameters.email }
-  if( userData.secondName || userData.name){
-    var filter =  ((("startswith(displayName,'" +
-                  ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : "")+
-                  ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : "")+
-                  ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
-                  ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
-                  +"')"));
-    filter= filter.replace("   "," ").replace("  "," ");
-    var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
-    axios.get(url + filter, {
-      headers : {
-        'Content-Type': 
-        'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + options.access_token
-      }
-    })
-    .then((response) => {
-      options.message = "";
-      if (response.data.value.length === 0){
-        options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
-        +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
-        callback(options);
-      }
-      if (response.data.value.length > 1){
-        options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
-        for(i = 0; i < response.data.value.length; i++ ){
-          if ( i!= response.data.value.length-1){
-            options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
+async function preSearchUser(options){
+  let promise = new Promise((resolve, reject) => {
+    try{
+      var parameters = options.parameters;
+      var userData = { name : parameters.name,
+      lastname : parameters.lastname,
+      secondName : parameters.secondName,
+      secondLastname : parameters.secondLastname,
+      email : parameters.email }
+    if( userData.secondName || userData.name){
+      var filter =  ((("startswith(displayName,'" +
+                    ((parameters.name) ? (unescape(encodeURIComponent(String(userData.name)))) : "")+
+                    ((parameters.secondName) ? (unescape(encodeURIComponent(" " + userData.secondName))) : "")+
+                    ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
+                    ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
+                    +"')"));
+      filter= filter.replace("   "," ").replace("  "," ");
+      var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
+      axios.get(url + filter, {
+        headers : {
+          'Content-Type': 
+          'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + options.access_token
+        }
+      })
+      .then((response) => {
+        options.message = "";
+        if (response.data.value.length === 0){
+          options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
+          +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
+          resolve("Success");
+        }
+        if (response.data.value.length > 1){
+          options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
+          for(i = 0; i < response.data.value.length; i++ ){
+            if ( i!= response.data.value.length-1){
+              options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
+            }
+            else{
+              options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
+            }
           }
-          else{
-            options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
+          resolve("Success");
+        }
+        else{
+          options.user = {
+          displayName : response.data.value[0].displayName,
+          givenName : response.data.value[0].givenName,
+          mail : response.data.value[0].mail,
+          surname : response.data.value[0].surname
           }
         }
-        callback(options);
+        resolve("Success");
+        })
       }
       else{
-        options.user = {
-        displayName : response.data.value[0].displayName,
-        givenName : response.data.value[0].givenName,
-        mail : response.data.value[0].mail,
-        surname : response.data.value[0].surname
-        }
+        resolve("Success");
       }
-        next(options, callback);
-      })
     }
-    else{
-      next(options, callback);
+    catch(err){
+      reject("error")
+      console.log(err)
     }
-  }
-  catch(err){
-    console.log(err)
-  }
+  });
+  await promise;
+  return options
 }
 
 /**

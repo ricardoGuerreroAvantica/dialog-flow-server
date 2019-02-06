@@ -139,22 +139,26 @@ async function scheduleMeeting(options){
  * @param {JSON} options.userName contains all the basic user information obtained from microsoft graph
  * @param {JSON} options.access_token contains the token generated with the user credentials to access microsoft graph
  */
-function userData(next,options, callback){
-  axios.get('https://graph.microsoft.com/v1.0/me', {
-    headers : {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: 'Bearer ' + options.access_token
-    }
-  })
-  .then((response) => {
-    options.userName = response.data.displayName;
-    next(options, callback);
-  })
-  .catch((error) => {
-    console.log('showLocations.error : ' + error);
-    next(options, callback);
-  });;
+async function userData(options){
+  let promise = new Promise((resolve, reject) => {
+    axios.get('https://graph.microsoft.com/v1.0/me', {
+      headers : {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + options.access_token
+      }
+    })
+    .then((response) => {
+      options.userName = response.data.displayName;
+      resolve("Success");
+    })
+    .catch((error) => {
+      console.log('showLocations.error : ' + error);
+      reject("Error");
+    });;
+  });
+  await promise
+  return options
 }
 
 
@@ -164,7 +168,8 @@ function userData(next,options, callback){
  * @param {JSON} options.parameters contains all the basic user information obtained from microsoft graph
  * @param {JSON} options.user contains the token generated with the user credentials to access microsoft graph
  */
-function PrefindMeetingTimes(next, options, callback){
+async function PrefindMeetingTimes(options){
+  let promise = new Promise((resolve, reject) => {
     var parameters = options.parameters;
     var date = parameters.date;
     var user = options.user;
@@ -196,12 +201,21 @@ function PrefindMeetingTimes(next, options, callback){
               options.message += timeSet
             }
           });
-          next(options,callback);
+          resolve("Success");
         }else{
-          //If didnt find any meeting time at this time just skip to the next time.
-            next(options, callback);
-        }
+            //Didnt find any meeting time .
+            if(response.emptySuggestionsReason == "Unknown"){
+              options.message = "Couldn't access to " + options.user.displayName + " shedule, the calendar of this employee may be restricted at this time."
+            }
+            else{
+              options.message = "Didn't find any available slot in the calendar of "+ options.user.displayName +"."
+            }
+            resolve("Success");
+          }
       })
+    });
+    await promise;
+    return options
     }
 
 /**
@@ -211,6 +225,7 @@ function PrefindMeetingTimes(next, options, callback){
  * @param {JSON} options.user contains the token generated with the user credentials to access microsoft graph
  */
 function checkMeetingTimes(options, callback){
+
       if (options.message == "I found some space at: "+'\n'+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+'\n'+"From:"+'\n'){
         //if FindingMeetingTimes didn't find any meeting the system will proceed to make another search
         //with more extensive time margin:
@@ -244,14 +259,6 @@ function checkMeetingTimes(options, callback){
               }
             });
             callback(options);
-          }else{
-            if(response.emptySuggestionsReason == "Unknown"){
-              options.message = "Couldn't access to " + options.user.displayName + " shedule, the calendar of this employee may be restricted at this time."
-            }
-            else{
-              options.message = "Didn't find any available slot in the calendar of "+ options.user.displayName +"."
-            }
-              callback(options);
           }
         })
       }

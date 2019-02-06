@@ -31,14 +31,12 @@ async function parseAction(req, res, callback){
     //Case: calendar_user_available
     //Description: This case is trigger when the user ask for "Is [name] available [date]", search if the employee exists and then proceed to show the disponibility of them.
     case 'calendar_user_available' :
-      Action.prototype.checkMeetingTimes = calendarHandler.checkMeetingTimes
-      Action.pre('checkMeetingTimes', authenticate.refreshToken)
-      .pre('checkMeetingTimes', timezoneHandler.getTimeZone)
-      .pre('checkMeetingTimes', calendarHandler.userData)
-      .pre('checkMeetingTimes',userHandler.preSearchUser)
-      .pre('checkMeetingTimes', calendarHandler.PrefindMeetingTimes)
-      var action = new Action()
-      action.checkMeetingTimes(options, callback)
+      options = await authenticate.promiseRefreshToken(options)
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      options = calendarHandler.userData(options)
+      options = userHandler.preSearchUser(options)
+      options = calendarHandler.PrefindMeetingTimes(options)
+      callback(options)
       break;
 
     //Case: helper
