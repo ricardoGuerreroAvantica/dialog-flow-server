@@ -21,8 +21,8 @@ async function preSearchUser(options){
                     ((parameters.lastname) ? (unescape(encodeURIComponent(" " + userData.lastname))) : "")+
                     ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
                     +"')"));
-      filter= filter.replace("   "," ").replace("  "," ");
-      var url = 'https://graph.microsoft.com/v1.0/users?$filter=';
+      filter= filter.replace("   "," ").replace("  "," ")
+      var url = 'https://graph.microsoft.com/v1.0/users?$filter='
       axios.get(url + filter, {
         headers : {
           'Content-Type': 
@@ -45,15 +45,12 @@ async function preSearchUser(options){
               options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
             }
           }
-          resolve("Success");
         }
-
         if (response.data.value.length === 0){
           options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
           +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
-          resolve("Success");
         }
-        else{
+        if (response.data.value.length == 1){
           options.user = {
           displayName : response.data.value[0].displayName,
           givenName : response.data.value[0].givenName,
@@ -61,12 +58,10 @@ async function preSearchUser(options){
           surname : response.data.value[0].surname
           }
         }
-        resolve("Success");
         })
       }
-      else{
-        resolve("Success");
-      }
+      resolve("Success");
+
     }
     catch(err){
       console.log(err)
