@@ -33,9 +33,9 @@ async function parseAction(req, res, callback){
     case 'calendar_user_available' :
       options = await authenticate.promiseRefreshToken(options)
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
-      options = calendarHandler.userData(options)
-      options = userHandler.preSearchUser(options)
-      options = calendarHandler.PrefindMeetingTimes(options)
+      options = await calendarHandler.userData(options)
+      options = await userHandler.preSearchUser(options)
+      options = await calendarHandler.PrefindMeetingTimes(options)
       callback(options)
       break;
 
