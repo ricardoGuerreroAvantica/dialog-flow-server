@@ -6,6 +6,7 @@ var axios = require('axios');
  */
 async function preSearchUser(options){
   let promise = new Promise((resolve, reject) => {
+    console.log("the options: "+JSON.stringify(options))
     try{
       var parameters = options.parameters;
       var userData = { name : parameters.name,
