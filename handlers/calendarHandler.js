@@ -344,11 +344,11 @@ async function showEvents(options){
         console.log(moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
 
         console.log(moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000'))
-        console.log(moment().endOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
+        console.log(moment().endOf('day').add((24+parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
         
 
         filter = 'startdatetime=' + moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment().endOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+                '&enddatetime=' + moment().startOf('day').add(24+(parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }
       console.log(url +filter)
