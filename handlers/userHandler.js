@@ -5,8 +5,8 @@ var axios = require('axios');
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
 async function preSearchUser(options){
+  console.log("the options: "+JSON.stringify(options))
   let promise = new Promise((resolve, reject) => {
-    console.log("the options: "+JSON.stringify(options))
     try{
       var parameters = options.parameters;
       var userData = { name : parameters.name,
@@ -40,6 +40,7 @@ async function preSearchUser(options){
         }
         if (response.data.value.length > 1){
           options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
+          console.log("response.data" + JSON.stringify(response.data))
           for(i = 0; i < response.data.value.length; i++ ){
             if ( i!= response.data.value.length-1){
               options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n';
