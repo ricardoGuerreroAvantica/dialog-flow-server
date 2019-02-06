@@ -338,8 +338,8 @@ async function showEvents(options){
                 '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add((24+parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }else{
-        filter = 'startdatetime=' + moment().startOf('day').add((parseInt(options.userTimezone.time)).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment().endOf('day').add((parseInt(options.userTimezone.time)).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+        filter = 'startdatetime=' + moment().startOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment().endOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }
       console.log(url +filter)
