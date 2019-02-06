@@ -45,10 +45,12 @@ async function preSearchUser(options){
               options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.';
             }
           }
+          resolve("Success");
         }
         if (response.data.value.length === 0){
           options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
           +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "");
+          resolve("Success");
         }
         if (response.data.value.length == 1){
           options.user = {
@@ -58,10 +60,12 @@ async function preSearchUser(options){
           surname : response.data.value[0].surname
           }
         }
+        resolve("Success");
         })
       }
-      resolve("Success");
-
+      else{
+        resolve("Success");
+      }
     }
     catch(err){
       console.log(err)
