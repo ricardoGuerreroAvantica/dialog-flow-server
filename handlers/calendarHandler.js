@@ -294,7 +294,7 @@ async function showEventsOnDate(options){
     console.log(startDate)
 
     var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.SSS');
-    console.log(starendDatetDate)
+    console.log(endDate)
 
     filter = 'startdatetime=' + startDate+ 'Z' +
               '&enddatetime=' + endDate+ 'Z';
