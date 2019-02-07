@@ -42,6 +42,5 @@ async function setTimeZone(token){
     return result;
   }
 
-  exports.getTimeZone = getTimeZone;
   exports.setTimeZone = setTimeZone;
 
