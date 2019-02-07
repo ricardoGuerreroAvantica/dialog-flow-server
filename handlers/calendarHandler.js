@@ -342,7 +342,7 @@ async function showEvents(options){
         period = period.split("/");
         console.log('period')
         filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DDT00:00:00.000').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment(period[1], 'YYYY-MM-DDT23:59:59.000').add((-parseFloat(options.userTimezone.time)), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
+                '&enddatetime=' + moment(period[1], 'YYYY-MM-DDT00:00:00.000').add((24+(-parseFloat(options.userTimezone.time))), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }else{
         
