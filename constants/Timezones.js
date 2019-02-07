@@ -145,6 +145,6 @@ const timezones=[   {name:"Dateline Standard Time"                    ,time:"-12
                     {name:"UTC"                                       ,time:"0"},
                     {name:"Paraguay Standard Time"                    ,time:"-04"},
                     {name:"Afghanistan Standard Time"                 ,time:"+4.5"},
-                    {name:"Kamchatka Standard Time"                   ,time:"+12"}];
+                    {name:"Kamchatka Standard Time"                   ,time:"+12"}]
 
-exports.timezones = timezones;
+exports.timezones = timezones

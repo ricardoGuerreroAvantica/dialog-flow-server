@@ -1,10 +1,10 @@
-var authenticate = require('../microsoftGraph/authenticate.js');
-var calendarHandler = require('../handlers/calendarHandler.js');
-var userHandler = require('../handlers/userHandler.js');
-var eventHandler = require('../handlers/eventHandler.js');
-var locationHandler = require('../handlers/locationHandler.js');
-var hooks = require('hooks');
-var Action = require('./../handlers/Action.js');
+var authenticate = require('../microsoftGraph/authenticate.js')
+var calendarHandler = require('../handlers/calendarHandler.js')
+var userHandler = require('../handlers/userHandler.js')
+var eventHandler = require('../handlers/eventHandler.js')
+var locationHandler = require('../handlers/locationHandler.js')
+var hooks = require('hooks')
+var Action = require('./../handlers/Action.js')
 var timezoneHandler =require("./../handlers/timezoneHandler.js")
 for (var k in hooks) {
   Action[k] = hooks[k]
@@ -39,13 +39,13 @@ async function parseAction(req, res, callback){
         options = await calendarHandler.PrefindMeetingTimes(options)
       }
       callback(options)
-      break;
+      break
 
     //Case: helper
     //Description: This case is trigger when the user ask for "Help" 
     case 'helper' :
-      userHandler.helper(options, callback);
-      break;
+      userHandler.helper(options, callback)
+      break
 
     //Case: show_events
     //Description: This case is trigger when the user ask for "Show my events" 
@@ -54,57 +54,57 @@ async function parseAction(req, res, callback){
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
       await calendarHandler.showEvents(options)
       callback(options)
-      break;
+      break
 
     //Case: show_events_on_date
     //Description: This case is trigger when the user ask for "Show my events for [date]"
     case 'show_events_on_date' :
-      options = await authenticate.promiseRefreshToken(options);
-      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
-      await calendarHandler.showEventsOnDate(options);
+      options = await authenticate.promiseRefreshToken(options)
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      await calendarHandler.showEventsOnDate(options)
       callback(options)
-      break;
+      break
 
     //Case: show_locations
     //Description: #Currently the bot dont handle locations.
     case 'show_locations' :
-      Action.prototype.showLocations = locationHandler.showLocations;
+      Action.prototype.showLocations = locationHandler.showLocations
       Action.pre('showLocations', authenticate.refreshToken)
-      var action = new Action();
-      action.showLocations(options, callback);
-      break;
+      var action = new Action()
+      action.showLocations(options, callback)
+      break
 
 
     //Case: create_event_finish
     //Description: This case is trigger when the user ask for "Done" and proceed to create the event in their calendars
     case 'create_event_finish' :
-      options = await authenticate.promiseRefreshToken(options);
-      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token);
-      await calendarHandler.scheduleMeeting(options);
-      callback(options);
-      break;
+      options = await authenticate.promiseRefreshToken(options)
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      await calendarHandler.scheduleMeeting(options)
+      callback(options)
+      break
     
     //Case: create_event_invite
     //Description: This case is trigger when the user ask for "invite [name]"
     case 'create_event_invite' :
-      Action.prototype.inviteUser = eventHandler.inviteUser;
+      Action.prototype.inviteUser = eventHandler.inviteUser
       Action.pre('inviteUser', authenticate.refreshToken)
-        .pre('inviteUser',userHandler.preSearchUser);
-      var action = new Action();
-      action.inviteUser(options, callback);
-      break;
+        .pre('inviteUser',userHandler.preSearchUser)
+      var action = new Action()
+      action.inviteUser(options, callback)
+      break
 
     //Case: create_event_uninvite
     //Description: This case is trigger when the user ask for "Uninvite [name]"
     case 'create_event_uninvite' :
-      eventHandler.deleteInvite(options, callback);
-      break;
+      eventHandler.deleteInvite(options, callback)
+      break
     
     //Case: create_event_show_invites
     //Description: This case is trigger when the user ask for "Show my invites", and the bot proceed to show all the current invites for the event.
     case 'create_event_show_invites' :
-      eventHandler.showInvites(options, callback);
-      break;
+      eventHandler.showInvites(options, callback)
+      break
 
     //Case: check_available_Only_name
     //Description: this case is trigger when the user search for a employee using only the name of the employee
@@ -115,42 +115,40 @@ async function parseAction(req, res, callback){
       options = await userHandler.preSearchUser(options)
       if(options.user){
         options.message = "What is the date?"
-        callback(options);
+        callback(options)
       }
       callback(options)
-
-
-      break;
+      break
 
       
     //Case: Show_event_Info
     //Description: This case is trigger when the user ask for "Show my event info" request, and will show the user the event body of the current event creation
     case 'Show_event_Info' :
-      options.simpleInfo = false;
-      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
+      options.simpleInfo = false
+      Action.prototype.showEventDetails = calendarHandler.showEventDetails
         Action.pre('showEventDetails', authenticate.refreshToken)
-        var action = new Action();
-        action.showEventDetails(options, callback);
-      break;
+        var action = new Action()
+        action.showEventDetails(options, callback)
+      break
 
     //Case: createEventBegin
     //Description: This case is trigger when all the information of the event creation is collected and then proceed to show the event body to the user
     case 'createEventBegin' :
-      options.simpleInfo = true;
-      Action.prototype.showEventDetails = calendarHandler.showEventDetails;
+      options.simpleInfo = true
+      Action.prototype.showEventDetails = calendarHandler.showEventDetails
         Action.pre('showEventDetails', authenticate.refreshToken)
-        var action = new Action();
-        action.showEventDetails(options, callback);
-      break;
+        var action = new Action()
+        action.showEventDetails(options, callback)
+      break
 
     //Case: Default Answer
     //Description: This is the default answer send when there is no other case that match the request case.
     default:
-      this.options.message = 'Could you repeat that?';
-      this.options.speech = 'Could you repeat that?';
-      callback(this.options);
+      this.options.message = 'Could you repeat that?'
+      this.options.speech = 'Could you repeat that?'
+      callback(this.options)
   }
 
 }
 
-exports.parseAction = parseAction;
+exports.parseAction = parseAction

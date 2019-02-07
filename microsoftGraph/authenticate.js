@@ -1,4 +1,4 @@
-var OAuth = require('oauth');
+var OAuth = require('oauth')
 
 var credentials = {
   authority: 'https://login.microsoftonline.com/common',
@@ -14,8 +14,8 @@ var credentials = {
           '%20User.ReadWrite',
   redirect_uri: 'https://sjo-calendar-bot.azurewebsites.net/signIn',
   resouce: 'https://graph.microsoft.com/'
-};
-var tokens = {};
+}
+var tokens = {}
 
 
 /**
@@ -25,32 +25,32 @@ var tokens = {};
  * source of the request (skype or mobile) and the Id to identify the device
  */
 function validSession(next, req, res, callback){
-  var reqJSONBody= JSON.parse(JSON.stringify(req.body));
-  this.options = {};  
+  var reqJSONBody= JSON.parse(JSON.stringify(req.body))
+  this.options = {}  
   if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
     //LOGIN SKYPE
     if(reqJSONBody.originalRequest.data.user){
-      this.options.sessionId = reqJSONBody.originalRequest.data.user.id;
+      this.options.sessionId = reqJSONBody.originalRequest.data.user.id
     }
     else{
-      this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id;
+      this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id
     }
     
-    this.options.source = 'skype';
+    this.options.source = 'skype'
 
   }else {
     //LOGIN MOBILE
-    var IOSId = reqJSONBody.result.contexts;
+    var IOSId = reqJSONBody.result.contexts
 
     IOSFiltered = IOSId.filter(filter)
-    var IOSName=IOSFiltered[0].name;
+    var IOSName=IOSFiltered[0].name
     if (IOSName && IOSName != "session"){
-    this.options.sessionId = IOSName;
-    this.options.source = 'ios';
+    this.options.sessionId = IOSName
+    this.options.source = 'ios'
 
     }
   }
-  next(req, res, callback);
+  next(req, res, callback)
 }
 
 
@@ -63,7 +63,7 @@ function filter(jsonObject) {
   return jsonObject.name != "createevent" && 
          jsonObject.name != "invites" && 
          jsonObject.name != "helperhandler" && 
-         jsonObject.name != "check_available_context";
+         jsonObject.name != "check_available_context"
 }
 
 /**
@@ -74,18 +74,18 @@ function filter(jsonObject) {
  * {Key: options.sessionId, Value: Token}.
  */
 function validUser(next, req, res, callback){
-  var sessionId = this.options.sessionId;
-  this.options.sessionTokens = tokens[sessionId];
+  var sessionId = this.options.sessionId
+  this.options.sessionTokens = tokens[sessionId]
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
-      return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" });
+      return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" })
     }
     else{
-      return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" });
+      return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" })
     }
     
   }
-  next(req, res, callback);
+  next(req, res, callback)
 }
 
 /**
@@ -97,19 +97,19 @@ function validUser(next, req, res, callback){
  */
 function refreshToken(next, options, callback) {
   if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
-    options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
-    options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
-    next(options, callback);
+    options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY
+    options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY
+    next(options, callback)
   }
   else{
-    var OAuth2 = OAuth.OAuth2;
+    var OAuth2 = OAuth.OAuth2
     var oauth2 = new OAuth2(
       credentials.client_id,
       credentials.client_secret,
       credentials.authority,
       credentials.authorize_endpoint,
       credentials.token_endpoint
-    );
+    )
     oauth2.getOAuthAccessToken(
       options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
       {
@@ -119,13 +119,13 @@ function refreshToken(next, options, callback) {
       },
       function(error, access_token, refresh_token, results){
         if (error){
-          next(new Error());
+          next(new Error())
         }
-        options.access_token = access_token;
-        options.refresh_token = refresh_token;
-        next(options, callback);
+        options.access_token = access_token
+        options.refresh_token = refresh_token
+        next(options, callback)
       }
-    );
+    )
   }
 }
 
@@ -140,19 +140,19 @@ function refreshToken(next, options, callback) {
 async function promiseRefreshToken(options) {
   let refreshTokenPromise = new Promise((resolve, reject) => {
       if(options.sessionTokens.REFRESH_TOKEN_CACHE_KEY ==""){
-        options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY;
-        options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY;
-        resolve("Success");
+        options.access_token = options.sessionTokens.ACCESS_TOKEN_CACHE_KEY
+        options.refresh_token = options.sessionTokens.REFRESH_TOKEN_CACHE_KEY
+        resolve("Success")
       }
       else{
-        var OAuth2 = OAuth.OAuth2;
+        var OAuth2 = OAuth.OAuth2
         var oauth2 = new OAuth2(
           credentials.client_id,
           credentials.client_secret,
           credentials.authority,
           credentials.authorize_endpoint,
           credentials.token_endpoint
-        );
+        )
         oauth2.getOAuthAccessToken(
           options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
           {
@@ -162,19 +162,19 @@ async function promiseRefreshToken(options) {
           },
           function(error, access_token, refresh_token, results){
             if (error){
-              reject("Error");
+              reject("Error")
             }
-            options.access_token = access_token;
-            options.refresh_token = refresh_token;
-            resolve("Success");
+            options.access_token = access_token
+            options.refresh_token = refresh_token
+            resolve("Success")
           }
-        );
+        )
       }
-    });
-  let result = await refreshTokenPromise;
+    })
+  let result = await refreshTokenPromise
 
   console.log('refreshTokenPromise: '+result)
-  return options;
+  return options
 
 }
 
@@ -186,10 +186,10 @@ async function promiseRefreshToken(options) {
  * @param {string} req.query.state This variable only specifies if the request come from Mobile or Skype 
  */
 function signIn(req, res){
-  var state = req.query.state;
-  var code = req.query.code;
+  var state = req.query.state
+  var code = req.query.code
   try{
-    var reqJSONBody = JSON.parse(JSON.stringify(req.body));
+    var reqJSONBody = JSON.parse(JSON.stringify(req.body))
   }
   catch(error){
     console.log("Error" + error)
@@ -198,26 +198,26 @@ function signIn(req, res){
     tokens[reqJSONBody.session_state] = {ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body
                                         , REFRESH_TOKEN_CACHE_KEY : ""}
 
-    return res.json({ response : { description : "Login Successful in ios mobile" } });
+    return res.json({ response : { description : "Login Successful in ios mobile" } })
   }
   else{
     if (!code) {
-      return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } });
+      return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } })
     }
     if (!state) {
-      return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } });
+      return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } })
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
         tokens[state] = {ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token}
 
 
-        return res.sendFile(__dirname + '/signIn.html');
+        return res.sendFile(__dirname + '/signIn.html')
       }else{
-        res.status(500);
-        return res.json({ error : { name : 'State error', description : error.data } });
+        res.status(500)
+        return res.json({ error : { name : 'State error', description : error.data } })
       }
-    });
+    })
   }
 }
 
@@ -226,14 +226,14 @@ function signIn(req, res){
  * request to microsoft graph
  */
 function getTokenFromCode(code, callback) {
-  var OAuth2 = OAuth.OAuth2;
+  var OAuth2 = OAuth.OAuth2
   var oauth2 = new OAuth2(
     credentials.client_id,
     credentials.client_secret,
     credentials.authority,
     credentials.authorize_endpoint,
     credentials.token_endpoint
-  );
+  )
 
   oauth2.getOAuthAccessToken(
     code,
@@ -243,9 +243,9 @@ function getTokenFromCode(code, callback) {
       resource: credentials.resouce
     },
     function(e, access_token, refresh_token, results){
-      callback(e, access_token, refresh_token);
+      callback(e, access_token, refresh_token)
     }
-  );
+  )
 }
 
 
@@ -260,12 +260,12 @@ function getAuthUrl(state) {
     '&response_type=code' +
     '&scope=' + credentials.scope +
     '&redirect_uri=' + credentials.redirect_uri +
-    '&state=' + state;
+    '&state=' + state
 }
 
 
-exports.promiseRefreshToken = promiseRefreshToken;
-exports.refreshToken = refreshToken;
-exports.validSession = validSession;
-exports.validUser = validUser;
-exports.signIn = signIn;
+exports.promiseRefreshToken = promiseRefreshToken
+exports.refreshToken = refreshToken
+exports.validSession = validSession
+exports.validUser = validUser
+exports.signIn = signIn

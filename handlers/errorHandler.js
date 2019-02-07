@@ -7,11 +7,11 @@ const ERROR_CODES = {
 
 // this function raise the error when its called
 function raiseError(res, code){
-  message = ERROR_CODES[code];
+  message = ERROR_CODES[code]
 
   return res.json({
     speech: speech,
     displayText: message,
     source: "dialog-server-flow"
-  });
+  })
 }

@@ -1,18 +1,18 @@
-var moment = require('moment');
+var moment = require('moment')
 
 function getContext(contexts, name){
   for (var i in contexts){
     if (contexts[i].name === name){
-      return contexts[i];
+      return contexts[i]
     }
   }
   console.log("notfound")
-  return undefined;
+  return undefined
 }
 
 function getChangeLine(source){
   if (source == "ios"){
-    return '\n';
+    return '\n'
   }
   else{
     return "\n\n"
@@ -21,7 +21,7 @@ function getChangeLine(source){
 
 
 function getAttendees(invites){
-  var result = [];
+  var result = []
 
   for (var i in invites){
     result.push({
@@ -30,10 +30,10 @@ function getAttendees(invites){
         "name": invites[i].displayName
       },
       "type": "Required"
-    });
+    })
   }
 
-  return result;
+  return result
 
 }
 
@@ -41,25 +41,25 @@ function getAttendees(invites){
 function getDate(date, time, extraTime,isSubstraction,timezoneTime){
   try {
     
-      var format = 'YYYY-MM-DDTHH:mm:ss.SSS';
+      var format = 'YYYY-MM-DDTHH:mm:ss.SSS'
       if (isSubstraction){
-        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format);
+        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format)
         return newDate
       }
       else{
-        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format);
+        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format)
         return newDate
       }
   }
   catch(err) {
-      console.log(err);
+      console.log(err)
   }
 }
 
 
 function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
-  var startDate = getDate(date, time,startTimeMargin,true,parseInt(timezone.time));
-  var endDate = getDate(date, time,endTimeMargin,false,parseInt(timezone.time));
+  var startDate = getDate(date, time,startTimeMargin,true,parseInt(timezone.time))
+  var endDate = getDate(date, time,endTimeMargin,false,parseInt(timezone.time))
   var result = {
     "timeslots": [
       {
@@ -74,20 +74,20 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
       }
     ]
   }
-  return result;
+  return result
 
 
 }
 
 function parseDate(date,timezone){
-  var time = timezone.time;
-  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(time), 'hours');
-  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT');
+  var time = timezone.time
+  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(time), 'hours')
+  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT')
 }
 
 
-exports.getChangeLine = getChangeLine;
-exports.getContext = getContext;
-exports.parseDate = parseDate;
-exports.getAttendees = getAttendees;
-exports.getTimeConstraint = getTimeConstraint;
+exports.getChangeLine = getChangeLine
+exports.getContext = getContext
+exports.parseDate = parseDate
+exports.getAttendees = getAttendees
+exports.getTimeConstraint = getTimeConstraint

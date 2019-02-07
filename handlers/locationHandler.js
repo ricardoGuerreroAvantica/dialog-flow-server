@@ -8,25 +8,25 @@ function showLocations(options, callback){
   })
   .then((response) => {
     if (response.data.value.length > 0){
-      var locations = response.data.value;
-      options.message = options.speech = "Found these locations: \n\n";
-      options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n';
+      var locations = response.data.value
+      options.message = options.speech = "Found these locations: \n\n"
+      options.message += '¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n'
       locations.forEach((location) => {
-        message += location.name + '\n\n';
-      });
-      callback(options);
+        message += location.name + '\n\n'
+      })
+      callback(options)
     }else{
-      options.message = options.speech = "There aren't any location available \n\n";
-      callback(options);
+      options.message = options.speech = "There aren't any location available \n\n"
+      callback(options)
     }
   })
   .catch((error) => {
-    //console.log('showLocations.error : ' + error);
-    errorHandler.actionError(error);
-  });
+    //console.log('showLocations.error : ' + error)
+    errorHandler.actionError(error)
+  })
 
 }
 
 
 
-exports.showLocations = showLocations;
+exports.showLocations = showLocations

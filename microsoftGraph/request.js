@@ -1,4 +1,4 @@
-var https = require('https');
+var https = require('https')
 
 /**
  * Generates a GET request to the specified host
@@ -17,20 +17,20 @@ function getJson(host, path, accessToken, callback) {
       Accept: 'application/json',
       Authorization: 'Bearer ' + accessToken
     }
-  };
+  }
 
   https.get(options, function (response) {
-    var body = '';
+    var body = ''
     response.on('data', function (d) {
-      body += d;
-    });
+      body += d
+    })
     response.on('end', function () {
-      callback(null, JSON.parse(body));
-    });
+      callback(null, JSON.parse(body))
+    })
     response.on('error', function (e) {
-      callback(e, null);
-    });
-  });
+      callback(e, null)
+    })
+  })
 }
 
 /**
@@ -46,31 +46,31 @@ function postData(host, path, accessToken, data, callback) {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + accessToken,
     'Content-Length': data.length
-  };
+  }
   var options = {
     host: host,
     path: path,
     method: 'POST',
     headers: outHeaders
-  };
+  }
 
   // Set up the request
   var post = https.request(options, function (res) {
     res.on('data', function (chunk) {
-      callback(null, JSON.parse(chunk));
-    });
-  });
+      callback(null, JSON.parse(chunk))
+    })
+  })
 
 
   // write the outbound data to it
-  post.write(data);
+  post.write(data)
   // we're done!
-  post.end();
+  post.end()
 
   post.on('error', function (e) {
-    callback(e, null);
-  });
+    callback(e, null)
+  })
 }
 
-exports.getJson = getJson;
-exports.postData = postData;
+exports.getJson = getJson
+exports.postData = postData

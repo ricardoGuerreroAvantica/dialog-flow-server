@@ -1,5 +1,5 @@
-var timezones = require('./../constants/Timezones.js');
-var axios = require('axios');
+var timezones = require('./../constants/Timezones.js')
+var axios = require('axios')
 
 
 
@@ -9,7 +9,7 @@ var axios = require('axios');
  * @param {JSON} token contains the access token used to make request to microsoft graph
  */
 async function setTimeZone(token){
-      var selectedTimeZone;
+      var selectedTimeZone
       let timezonePromise = new Promise((resolve, reject) => {
             try {
                 axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
@@ -24,9 +24,9 @@ async function setTimeZone(token){
                 if (response.data.value.length != 0){
                     for (i = 0; i < timezones.timezones.length; i++) {
                         if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseFloat(timezones.timezones[i].time)};
-                            resolve(selectedTimeZone);
-                            break;
+                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseFloat(timezones.timezones[i].time)}
+                            resolve(selectedTimeZone)
+                            break
                         }
                     }
                 }
@@ -34,13 +34,13 @@ async function setTimeZone(token){
                 }
                 catch(err) {
                 reject(JSON.stringify(err))
-                console.log(err);
+                console.log(err)
                 }
-            });
-    let result = await timezonePromise;
+            })
+    let result = await timezonePromise
 
-    return result;
+    return result
   }
 
-  exports.setTimeZone = setTimeZone;
+  exports.setTimeZone = setTimeZone
 
