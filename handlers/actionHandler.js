@@ -70,7 +70,6 @@ async function parseAction(req, res, callback){
     case 'show_locations' :
       Action.prototype.showLocations = locationHandler.showLocations;
       Action.pre('showLocations', authenticate.refreshToken)
-      .pre('showLocations', timezoneHandler.getTimeZone)
       var action = new Action();
       action.showLocations(options, callback);
       break;
@@ -110,12 +109,20 @@ async function parseAction(req, res, callback){
     //Case: check_available_Only_name
     //Description: this case is trigger when the user search for a employee using only the name of the employee
     case 'check_available_Only_name' :
-        Action.prototype.checkUser = userHandler.checkUser;
-        Action.pre('checkUser', authenticate.refreshToken)
-        .pre('checkUser', timezoneHandler.getTimeZone)
-        .pre('checkUser',userHandler.preSearchUser)
-        var action = new Action();
-        action.checkUser(options, callback);
+      options = await authenticate.promiseRefreshToken(options)
+      options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      options = await calendarHandler.userData(options)
+      options = await userHandler.preSearchUser(options)
+      if(options.user){
+        options = await calendarHandler.PrefindMeetingTimes(options)
+      }
+      if(options.user){
+        options.message = "What is the date?"
+        callback(options);
+      }
+      callback(options)
+
+
       break;
 
       

@@ -76,19 +76,6 @@ async function preSearchUser(options){
   return options
 }
 
-/**
- * This function checks if the user is register in the options.
- * If the username send was found and store, it will change the message to Ask for the next parameter(Date)
- * @param {JSON} options.user contains the user information obtained after the authentication.
- * @param {JSON} options.message contains the return message that will be send to dialog flow
- */
-function checkUser(options, callback){
-  if(options.user){
-    options.message = "What is the date?"
-    callback(options);
-  }
-  callback(options);
-}
 
 /**
  * This functions create and send all the helper messages according to "options.parameters.helperId"
@@ -153,4 +140,3 @@ function helper(options, callback){
 
 exports.preSearchUser = preSearchUser;
 exports.helper = helper;
-exports.checkUser = checkUser;
