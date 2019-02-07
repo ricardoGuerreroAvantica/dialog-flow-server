@@ -114,9 +114,6 @@ async function parseAction(req, res, callback){
       options = await calendarHandler.userData(options)
       options = await userHandler.preSearchUser(options)
       if(options.user){
-        options = await calendarHandler.PrefindMeetingTimes(options)
-      }
-      if(options.user){
         options.message = "What is the date?"
         callback(options);
       }
