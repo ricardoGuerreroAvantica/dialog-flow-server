@@ -279,21 +279,11 @@ async function showEventsOnDate(options){
     var date = parameters.date;
     var filter = '';
     var url = '';
-    console.log(options.userTimezone.time)
 
-    console.log(date+('T00:00:00.000'))
-    console.log(moment((date+('T00:00:00.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').format('YYYY-MM-DDThh:mm:ss.SSS'))
-    console.log(moment((date+('T00:00:00.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours'))
-    console.log("------------")
-    console.log((date+('T23:59:59.000')))
-    console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').format('YYYY-MM-DDTHH:mm:ss.SSS'))
-    console.log(moment((date+('T23:59:59.000')), 'YYYY-MM-DDTHH:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.SSS'))
-    console.log("------------")
-
-    var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    var startDate=moment((date+('T00:00:00.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss');
     console.log(startDate)
 
-    var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    var endDate=moment((date+('T23:59:59.000')), 'YYYY-MM-DDThh:mm:ss.SSS').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss');
     console.log(endDate)
 
     filter = 'startdatetime=' + startDate+ 'Z' +
@@ -350,19 +340,13 @@ async function showEvents(options){
         url = 'https://graph.microsoft.com/v1.0/me/events?';
       }else if (period){
         period = period.split("/");
-        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT00:00:00.000') + 'Z' +
-                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add((24+parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
+        filter = 'startdatetime=' + moment(period[0], 'YYYY-MM-DD').format('YYYY-MM-DDT00:00:00.000').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.000'); + 'Z' +
+                '&enddatetime=' + moment(period[1], 'YYYY-MM-DD').add(24+(-parseFloat(options.userTimezone.time)), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z'; // Here are added 30 hours to get end of the day 23:59 in UTC format
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }else{
-        console.log((parseFloat(options.userTimezone.time)))
-        console.log(moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.000'))
-        console.log(moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
-
-        console.log(moment().endOf('day').format('YYYY-MM-DDTHH:mm:ss.000'))
-        console.log(moment().endOf('day').add((parseInt(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000'))
         
-        filter = 'startdatetime=' + moment().startOf('day').add((parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
-                '&enddatetime=' + moment().startOf('day').add(24+(parseFloat(options.userTimezone.time)),'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+        filter = 'startdatetime=' + moment().startOf('day').add(-parseFloat(options.userTimezone.time), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z' +
+                '&enddatetime=' + moment().startOf('day').add(24+(-parseFloat(options.userTimezone.time)), 'hours').format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
         url = 'https://graph.microsoft.com/v1.0/me/calendarview?';
       }
       console.log(url +filter)
