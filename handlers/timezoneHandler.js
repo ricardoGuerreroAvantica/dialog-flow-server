@@ -22,23 +22,20 @@ async function setTimeZone(token){
                 })
                 .then((response) => {
                 if (response.data.value.length != 0){
-                    for (i = 0; i < timezones.timezones.length; i++) {
-                        if(timezones.timezones[i].name == response.data.value){//cambiar por find
-                            selectedTimeZone = {timezone:timezones.timezones[i].name,time:parseFloat(timezones.timezones[i].time)}
-                            resolve(selectedTimeZone)
-                            break
-                        }
-                    }
+                    selectedTimeZone = timezones.timezones.find(function(element) {
+                        return element.name == response.data.value
+                      });
+                    resolve(selectedTimeZone)
                 }
                 })
                 }
                 catch(err) {
-                reject(JSON.stringify(err))
                 console.log(err)
+                reject(JSON.stringify(err))
                 }
             })
     let result = await timezonePromise
-
+    console.log('setTimeZone: '+result)
     return result
   }
 
