@@ -10,6 +10,8 @@ var axios = require('axios')
  */
 async function setTimeZone(token){
       var selectedTimeZone
+      console.log('setTimeZone: begin')
+
       let timezonePromise = new Promise((resolve, reject) => {
             try {
                 axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {

@@ -51,6 +51,7 @@ async function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Show my events" 
     case 'show_events' :
       options = await authenticate.promiseRefreshToken(options)
+      console.log(JSON.stringify(options))
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
       await calendarHandler.showEvents(options)
       callback(options)
