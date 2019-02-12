@@ -6,7 +6,7 @@ var commons = require('../utils/commons.js')
  * @param {JSON} options.user contains the user information obtained after the authentication.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function inviteUser(options){
+async function inviteUser(options){
   let promise = new Promise((resolve, reject) => {
   if (options.message == ""){
       var user = options.user
@@ -25,19 +25,19 @@ function inviteUser(options){
             var isEqual = JSON.stringify(userEntry) === JSON.stringify(userStored)
             if (isEqual){
               options.message = options.speech = user.displayName + ' is already invited'
-              resolve("Success");
+              resolve("Success")
             }
           })
           options.message = options.speech += user.displayName +", email: "+ user.mail
           context.parameters.invites.push(invite)
-          resolve("Success");
+          resolve("Success")
         }
       })
       options.message = options.speech = " Couldn't uninvite " + user.displayName
-      resolve("Success");
+      resolve("Success")
     }
-  });
-  await promise;
+  })
+  await promise
   return options
 }
 
