@@ -6,37 +6,39 @@ var commons = require('../utils/commons.js')
  * @param {JSON} options.user contains the user information obtained after the authentication.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function inviteUser(options, callback){
+function inviteUser(options){
+  let promise = new Promise((resolve, reject) => {
   if (options.message == ""){
-    var user = options.user
-    var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
-    if (!commons.getContext(options.contexts, 'invites')){
-      options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 60 })
-    }
-    options.contexts.forEach((context) => {
-      if (context.name === 'invites'){
-        options.message = options.speech = 'Current invitation list:\n'
-        context.parameters.invites.forEach((invite) => {
-
-          let userEntry = new String(user.mail)
-          let userStored = new String(invite.emailAddress.address)
-          options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
-          var isEquel = JSON.stringify(userEntry) === JSON.stringify(userStored)
-          if (isEquel){
-            options.message = options.speech = user.displayName + ' is already invited'
-            callback(options)
-          }
-        })
-        options.message = options.speech += user.displayName +", email: "+ user.mail
-        context.parameters.invites.push(invite)
-
-        callback(options)
+      var user = options.user
+      var invite = { "emailAddress": { "address":user.mail, "name": user.displayName }, "type": "required" }
+      if (!commons.getContext(options.contexts, 'invites')){
+        options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 60 })
       }
-    })
-    options.message = options.speech = " Couldn't uninvite " + user.displayName
-    callback(options)
-  }
-  callback(options)
+      options.contexts.forEach((context) => {
+        if (context.name === 'invites'){
+          options.message = options.speech = 'Current invitation list:\n'
+          context.parameters.invites.forEach((invite) => {
+
+            let userEntry = new String(user.mail)
+            let userStored = new String(invite.emailAddress.address)
+            options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
+            var isEqual = JSON.stringify(userEntry) === JSON.stringify(userStored)
+            if (isEqual){
+              options.message = options.speech = user.displayName + ' is already invited'
+              resolve("Success");
+            }
+          })
+          options.message = options.speech += user.displayName +", email: "+ user.mail
+          context.parameters.invites.push(invite)
+          resolve("Success");
+        }
+      })
+      options.message = options.speech = " Couldn't uninvite " + user.displayName
+      resolve("Success");
+    }
+  });
+  await promise;
+  return options
 }
 
 /**

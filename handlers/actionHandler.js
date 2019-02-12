@@ -88,11 +88,10 @@ async function parseAction(req, res, callback){
     //Case: create_event_invite
     //Description: This case is trigger when the user ask for "invite [name]"
     case 'create_event_invite' :
-      Action.prototype.inviteUser = eventHandler.inviteUser
-      Action.pre('inviteUser', authenticate.refreshToken)
-        .pre('inviteUser',userHandler.preSearchUser)
-      var action = new Action()
-      action.inviteUser(options, callback)
+      options = await authenticate.promiseRefreshToken(options)
+      options = await userHandler.preSearchUser(options)
+      options = await eventHandler.inviteUser(options);
+      callback(options)
       break
 
     //Case: create_event_uninvite
