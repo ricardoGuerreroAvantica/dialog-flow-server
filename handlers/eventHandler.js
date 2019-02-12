@@ -18,6 +18,7 @@ async function inviteUser(options){
       console.log("data2")
 
       options.contexts.forEach((context) => {
+        console.log(context.name)
         if (context.name === 'invites'){
           options.message = options.speech = 'Current invitation list:\n'
           context.parameters.invites.forEach((invite) => {
@@ -39,6 +40,7 @@ async function inviteUser(options){
           resolve("Success")
         }
       })
+      console.log("message : " + options.message);
       options.message = options.speech = " Couldn't uninvite " + user.displayName
       resolve("Success")
     }
