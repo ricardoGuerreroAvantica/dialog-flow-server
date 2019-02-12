@@ -7,6 +7,7 @@ var commons = require('../utils/commons.js')
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
 async function inviteUser(options){
+  console.log("data1")
   let promise = new Promise((resolve, reject) => {
   if (options.message == ""){
       var user = options.user
@@ -14,15 +15,20 @@ async function inviteUser(options){
       if (!commons.getContext(options.contexts, 'invites')){
         options.contexts.push({ "name": "invites", "parameters":  { "invites" : [] }, "lifespan": 60 })
       }
+      console.log("data2")
+
       options.contexts.forEach((context) => {
         if (context.name === 'invites'){
           options.message = options.speech = 'Current invitation list:\n'
           context.parameters.invites.forEach((invite) => {
+            console.log("data3")
 
             let userEntry = new String(user.mail)
             let userStored = new String(invite.emailAddress.address)
             options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
             var isEqual = JSON.stringify(userEntry) === JSON.stringify(userStored)
+            console.log("data4"+isEqual)
+
             if (isEqual){
               options.message = options.speech = user.displayName + ' is already invited'
               resolve("Success")
@@ -36,6 +42,7 @@ async function inviteUser(options){
       options.message = options.speech = " Couldn't uninvite " + user.displayName
       resolve("Success")
     }
+    resolve("Success")
   })
   await promise
   return options

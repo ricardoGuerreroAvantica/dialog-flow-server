@@ -89,8 +89,11 @@ async function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "invite [name]"
     case 'create_event_invite' :
       options = await authenticate.promiseRefreshToken(options)
+      console.log("stage1")
       options = await userHandler.preSearchUser(options)
-      options = await eventHandler.inviteUser(options);
+      console.log("stage2")
+      options = await eventHandler.inviteUser(options)
+      console.log("stage3")
       callback(options)
       break
 
