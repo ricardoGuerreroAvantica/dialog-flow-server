@@ -1,11 +1,12 @@
 var axios = require('axios')
+var textResponses =require("./../constants/TextResponses")
+
 /**
  * This function is in charge of searching for the user and check if it exists in the (avantica) microsoft graph database
  * @param {JSON} options.parameters this value contains all the information from the user obtained from dialog flow.
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
 async function preSearchUser(options){
-  console.log("the options: "+JSON.stringify(options))
   let promise = new Promise((resolve, reject) => {
     try{
       var parameters = options.parameters
@@ -85,55 +86,25 @@ async function preSearchUser(options){
  */
 function helper(options, callback){
   if (options.parameters.helperId == "basic"){
-    options.message = "Can you tell me how I can help you?"
-                      +"\n▶ How to create an event?"
-                      +"\n▶ How to check if someone is available?"
-                      +"\n▶ How to check my events?"
-                      +"\n▶ How can I invite someone?"
-                      +"\n▶ How can I see my event information?"
-                      +"\n▶ How can I change my event information?"
+    options.message = textResponses.helperBasic
   }
   if (options.parameters.helperId == "event"){
-    options.message = "Here are some examples of how can you create a event:"
-                      +"\n▶ Create new event example today at 3:00pm for 40 minutes."
-                      +"\n▶ Create a new event."
-                      +"\n▶ Create new event testing on 4 sep at 14:00."
-                      +"\n____________________"
-                      +"\nTo complete the creation only say \"Done\""
+    options.message = textResponses.helperEvent
   }
   if (options.parameters.helperId == "available"){
-    options.message = "To check someone availability you can use their first name or their email:"
-                      +"\n▶ Is Ricardo Guerrrero Available today at now?"
-                      +"\n▶ Is Ricardo guerrero Available"
-                      +"\n▶ Is ricardo.guerero@avantica.net is available in 20 oct at 7am"   
+    options.message = textResponses.helperAvailable
   }
   if (options.parameters.helperId == "invite"){
-    options.message = "To invite or Uninvite someone to the event you can just write this:"
-                      +"\n▶ Add Ricardo Guerrero"  
-                      +"\n▶ remove Ricardo Guerrero"                
-                      +"\n▶ Invite ricardo.guerrero@avantica.net"
-                      +"\n▶ Uninvite ricardo.guerrero@avantica.net"  
+    options.message = textResponses.helperInvite
   }
   if (options.parameters.helperId == "myEvents"){
-    options.message = "You can see your events from a date or a period using this:"
-                      +"\n▶ My events"
-                      +"\n▶ Show me my events"
-                      +"\n▶ Show me my events from monday to friday"
-                      +"\n▶ Show any events called wellness program"  
+    options.message = textResponses.helperMyEvents
   }
   if (options.parameters.helperId == "eventInfo"){
-    options.message = "After you start the event creation you can see your event information using this:"
-                      +"\n▶ Show my event body"
-                      +"\n▶ Show Information"
-                      +"\n▶ How does my event look?"
-                      +"\n▶ My event information"  
+    options.message = textResponses.helperEventInfo
   }
   if (options.parameters.helperId == "updateEventInfo"){
-    options.message = "After you start the event creation, you can change your event information using this:"
-                      +"\n▶ Change the name to [new name]"
-                      +"\n▶ Change the date to [new date]"
-                      +"\n▶ Change the time to [new time]"
-                      +"\n▶ Change the duration to [new duration]"  
+    options.message = textResponses.helperUpdateEvent
   }
   callback(options)
 }

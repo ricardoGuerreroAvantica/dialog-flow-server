@@ -27,7 +27,7 @@ async function inviteUser(options){
             
           })
           if (isEqual){
-            options.message = options.speech = '-------------\n'+user.displayName + ' is already invited'
+            options.message = options.speech = user.displayName + ' is already invited'
           }
           else{
             options.message = options.speech += user.displayName +", email: "+ user.mail
