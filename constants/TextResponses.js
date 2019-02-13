@@ -9,4 +9,15 @@ const helperResponses = {
     helperUpdateEvent : "After you start the event creation, you can change your event information using this:\n▶ Change the name to [new name]\n▶ Change the date to [new date]\n▶ Change the time to [new time]\n▶ Change the duration to [new duration]"
 }
 
+const preSearchUserResponses ={
+    initialMessage :"There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n",
+    failureMessage : "Sorry I couldn't find any user with this description: "
+}
+
+const graphRequests ={
+    users : 'https://graph.microsoft.com/v1.0/users?$filter='
+}
+
 exports.helperResponses = helperResponses
+exports.graphRequests = graphRequests
+exports.preSearchUserResponses = preSearchUserResponses

@@ -23,7 +23,7 @@ async function preSearchUser(options){
                     ((parameters.secondLastname) ? (unescape(encodeURIComponent(" " +userData.secondLastname))) : "")).trim()
                     +"')"))
       filter= filter.replace("   "," ").replace("  "," ")
-      var url = 'https://graph.microsoft.com/v1.0/users?$filter='
+      var url = textResponses.graphRequests.users
       axios.get(url + filter, {
         headers : {
           'Content-Type': 
@@ -36,7 +36,7 @@ async function preSearchUser(options){
         console.log("response.data" + JSON.stringify(response.data))
         options.message = ""
         if (response.data.value.length > 1){
-          options.message = "There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
+          options.message = textResponses.preSearchUserResponses.initialMessage;
           
           for(i = 0; i < response.data.value.length; i++ ){
             if ( i!= response.data.value.length-1){
@@ -49,7 +49,7 @@ async function preSearchUser(options){
           resolve("Success")
         }
         if (response.data.value.length === 0){
-          options.message = ("Sorry I couldn't find any user with this description: ") + (userData.name ? (("\nName: ") + userData.name) : "") 
+          options.message = textResponses.preSearchUserResponses.failureMessage + (userData.name ? (("\nName: ") + userData.name) : "") 
           +(userData.secondName ? (" "+userData.secondName)  : "") + (userData.lastname ? (" "+userData.lastname)  : "")+(userData.secondLastname ? (" " + userData.secondLastname)  : "") + (userData.email ? (("\nEmail: ") + (userData.email)) : "")
           resolve("Success")
         }
@@ -84,11 +84,7 @@ async function preSearchUser(options){
  * the user is asking for.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function helper(options, callback){
-  console.log("start show event info")
-  console.log(JSON.stringify(textResponses.helperResponses))
-
-  console.log(textResponses.helperResponses)
+function helper(options){
   if (options.parameters.helperId == "basic"){
     options.message = textResponses.helperResponses.helperBasic
   }
