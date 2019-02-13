@@ -24,7 +24,7 @@ async function setTimeZone(token){
                 if (response.data.value.length != 0){
                     selectedTimeZone = timezones.timezones.find(function(element) {
                         return element.name == response.data.value
-                      });
+                      })
                     resolve(selectedTimeZone)
                 }
                 })

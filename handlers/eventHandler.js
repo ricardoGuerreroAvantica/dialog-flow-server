@@ -18,27 +18,29 @@ async function inviteUser(options){
       options.contexts.forEach((context) => {
         if (context.name === 'invites'){
           options.message = options.speech = 'Current invitation list:\n'
+          var isEqual
           context.parameters.invites.forEach((invite) => {
             let userEntry = new String(user.mail)
             let userStored = new String(invite.emailAddress.address)
             options.message = options.speech += invite.emailAddress.name+", email: "+invite.emailAddress.address+'\n'
-            var isEqual = JSON.stringify(userEntry) === JSON.stringify(userStored)
-
-            if (isEqual){
-              options.message = options.speech = user.displayName + ' is already invited'
-              resolve("Success")
-            }
+            isEqual = JSON.stringify(userEntry) === JSON.stringify(userStored)
+            
           })
-          options.message = options.speech += user.displayName +", email: "+ user.mail
-          context.parameters.invites.push(invite)
+          if (isEqual){
+            options.message = options.speech = '-------------\n'+user.displayName + ' is already invited'
+          }
+          else{
+            options.message = options.speech += user.displayName +", email: "+ user.mail
+            context.parameters.invites.push(invite)
+          }
           resolve("Success")
+          break;
         }
       })
       if (options.speech==''){
         options.message = options.speech = " Couldn't uninvite " + user.displayName
-        resolve("Success")
+        reject("Error no invite in the contexts")
       }
-
     }
     resolve("Success")
   })
