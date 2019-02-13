@@ -110,7 +110,7 @@ function helper(options, callback){
   if (options.parameters.helperId == "updateEventInfo"){
     options.message = textResponses.helperResponses.helperUpdateEvent
   }
-  callback(options)
+  return options
 }
 
 exports.preSearchUser = preSearchUser
