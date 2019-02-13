@@ -45,6 +45,7 @@ async function parseAction(req, res, callback){
     //Description: This case is trigger when the user ask for "Help" 
     case 'helper' :
       userHandler.helper(options, callback)
+      callback(options);
       break
 
     //Case: show_events
