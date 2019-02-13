@@ -9,5 +9,4 @@ const helperResponses = {
     helperUpdateEvent : "After you start the event creation, you can change your event information using this:\n▶ Change the name to [new name]\n▶ Change the date to [new date]\n▶ Change the time to [new time]\n▶ Change the duration to [new duration]"
 }
 
-
 exports.helperResponses = helperResponses

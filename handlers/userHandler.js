@@ -84,32 +84,33 @@ async function preSearchUser(options){
  * the user is asking for.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function helper(options){
+function helper(options, callback){
   console.log("start show event info")
-  console.log(JSON.stringify(textResponses))
+  console.log(JSON.stringify(textResponses.helperResponses))
+
+  console.log(textResponses.helperResponses)
   if (options.parameters.helperId == "basic"){
-    options.message = textResponses.helperBasic
+    options.message = textResponses.helperResponses.helperBasic
   }
   if (options.parameters.helperId == "event"){
-    options.message = textResponses.helperEvent
+    options.message = textResponses.helperResponses.helperEvent
   }
   if (options.parameters.helperId == "available"){
-    options.message = textResponses.helperAvailable
+    options.message = textResponses.helperResponses.helperAvailable
   }
   if (options.parameters.helperId == "invite"){
-    options.message = textResponses.helperInvite
+    options.message = textResponses.helperResponses.helperInvite
   }
   if (options.parameters.helperId == "myEvents"){
-    options.message = textResponses.helperMyEvents
+    options.message = textResponses.helperResponses.helperMyEvents
   }
   if (options.parameters.helperId == "eventInfo"){
-    options.message = textResponses.helperEventInfo
+    options.message = textResponses.helperResponses.helperEventInfo
   }
   if (options.parameters.helperId == "updateEventInfo"){
-    options.message = textResponses.helperUpdateEvent
+    options.message = textResponses.helperResponses.helperUpdateEvent
   }
-  console.log("sended the info")
-  return options;
+  callback(options)
 }
 
 exports.preSearchUser = preSearchUser
