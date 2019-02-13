@@ -34,7 +34,6 @@ async function inviteUser(options){
             context.parameters.invites.push(invite)
           }
           resolve("Success")
-          break;
         }
       })
       if (options.speech==''){
