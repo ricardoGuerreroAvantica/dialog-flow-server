@@ -8,12 +8,13 @@ const helperResponses = {
     helperEventInfo : "After you start the event creation you can see your event information using this:\n▶ Show my event body\n▶ Show Information\n▶ How does my event look?\n▶ My event information",
     helperUpdateEvent : "After you start the event creation, you can change your event information using this:\n▶ Change the name to [new name]\n▶ Change the date to [new date]\n▶ Change the time to [new time]\n▶ Change the duration to [new duration]"
 }
-
+//contains all the text constants used in preSearchUser Function
 const preSearchUserResponses ={
     initialMessage :"There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n",
     failureMessage : "Sorry I couldn't find any user with this description: "
 }
 
+//contains the constants for the microsoft graph requests
 const graphRequests ={
     users : 'https://graph.microsoft.com/v1.0/users?$filter='
 }
