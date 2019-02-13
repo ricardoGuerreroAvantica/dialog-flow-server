@@ -84,9 +84,9 @@ async function preSearchUser(options){
  * the user is asking for.
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
-function helper(options, callback){
+function helper(options){
   console.log("start show event info")
-  console.log(JSON.stringify(textResponses.helperBasic))
+  console.log(JSON.stringify(textResponses))
   if (options.parameters.helperId == "basic"){
     options.message = textResponses.helperBasic
   }
