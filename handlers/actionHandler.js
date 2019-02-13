@@ -44,7 +44,8 @@ async function parseAction(req, res, callback){
     //Case: helper
     //Description: This case is trigger when the user ask for "Help" 
     case 'helper' :
-      userHandler.helper(options, callback)
+      options = userHandler.helper(options)
+      console.log('check')
       callback(options);
       break
 
@@ -116,7 +117,6 @@ async function parseAction(req, res, callback){
       options = await userHandler.preSearchUser(options)
       if(options.user){
         options.message = "What is the date?"
-        callback(options)
       }
       callback(options)
       break

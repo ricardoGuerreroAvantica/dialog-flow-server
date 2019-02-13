@@ -86,7 +86,7 @@ async function preSearchUser(options){
  */
 function helper(options, callback){
   console.log("start show event info")
-  console.log(JSON.stringify(textResponses))
+  console.log(JSON.stringify(textResponses.helperBasic))
   if (options.parameters.helperId == "basic"){
     options.message = textResponses.helperBasic
   }
@@ -108,7 +108,8 @@ function helper(options, callback){
   if (options.parameters.helperId == "updateEventInfo"){
     options.message = textResponses.helperUpdateEvent
   }
-  callback(options)
+  console.log("sended the info")
+  return options;
 }
 
 exports.preSearchUser = preSearchUser
