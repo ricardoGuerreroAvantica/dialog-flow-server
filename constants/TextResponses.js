@@ -29,8 +29,10 @@ const showInvitesResponses = {
 const graphRequests = {
     graph : "graph.microsoft.com",
     events : "/v1.0/me/events",
+    fullEvents : "https://graph.microsoft.com/v1.0/me/events?",
     users : "https://graph.microsoft.com/v1.0/users?$filter=",
     timezone : "https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone",
+    calendarView : "https://graph.microsoft.com/v1.0/me/calendarview?",
     me : "https://graph.microsoft.com/v1.0/me",
     meetingTimes : "/beta/me/findMeetingTimes",
 }

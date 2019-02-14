@@ -101,7 +101,7 @@ async function scheduleMeeting(options){
         errorHandler.actionError(error)
         reject("Error in scheduleMeeting")
       }
-      options.message = options.speech = response.subject
+      options.message =  response.subject
       options.message += textResponses.scheduleMeetingResponses
       options.message += "Starts at: " + commons.parseDate(response.start.dateTime,options.userTimezone) + "\n" +
             "Ends at: " + commons.parseDate(response.end.dateTime,options.userTimezone) + "\n" +
@@ -162,7 +162,7 @@ async function PreFindMeetingTimes(options){
     var date = parameters.date
     var user = options.user
     var time = options.parameters.time
-    options.message += options.speech = textResponses.PreFindMeetingTimesResponses.initialMessage
+    options.message +=  textResponses.preFindMeetingTimesResponses.initialMessage
     
     time = options.parameters.time
     let isOrganizerInRequest = options.user.displayName != options.userName //Compares if the current user is asking for their availability
@@ -193,10 +193,10 @@ async function PreFindMeetingTimes(options){
         }else{
             //Didnt find any meeting time .
             if(response.emptySuggestionsReason == "Unknown"){
-              options.message = textResponses.PreFindMeetingTimesResponses.errorAccessA + options.user.displayName + textResponses.PreFindMeetingTimesResponses.errorAccessB
+              options.message = textResponses.preFindMeetingTimesResponses.errorAccessA + options.user.displayName + textResponses.preFindMeetingTimesResponses.errorAccessB
             }
             else{
-              options.message = textResponses.PreFindMeetingTimesResponses.noAvailableMessage+ options.user.displayName +"."
+              options.message = textResponses.preFindMeetingTimesResponses.noAvailableMessage+ options.user.displayName +"."
             }
             resolve("Success")
           }
@@ -223,7 +223,7 @@ async function showEventsOnDate(options){
     var endDate=moment((date+("T23:59:59.000")), "YYYY-MM-DDThh:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss")
     filter = "startdatetime=" + startDate+ "Z" +
               "&enddatetime=" + endDate+ "Z"
-    url = "https://graph.microsoft.com/v1.0/me/calendarview?"
+    url = textResponses.graphRequests.calendarView
     axios.get(url + filter, {
       headers : {
         "Content-Type":
@@ -234,13 +234,13 @@ async function showEventsOnDate(options){
     .then((response) => {
       var events = response.data.value
       if (events.length > 0){
-        options.message = options.speech = "Found these events:\n"
+        options.message =  textResponses.showEvents.initialMessage
         events.forEach((event) => {
           options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
         })
         resolve("Success")
       }else{
-        options.message = options.speech = "There is nothing on your agenda"
+        options.message =  textResponses.showEvents.emptyAgenda
         resolve("Success")      }
     })
     .catch((error) => {
@@ -262,50 +262,56 @@ async function showEvents(options){
   var period = parameters.period
   var filter = ""
   var url = ""
-  let promise = new Promise((resolve, reject) => {
-      if (name){
-        filter = "$filter=startswith(subject,'" + name + "')"
-        url = "https://graph.microsoft.com/v1.0/me/events?"
-      }else if (period){
-        period = period.split("/")
-        filter = "startdatetime=" + moment(period[0], "YYYY-MM-DDT00:00:00.000").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
-                "&enddatetime=" + moment(period[1], "YYYY-MM-DDT00:00:00.000").add((24+(-parseFloat(options.userTimezone.time))), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" // Here are added 30 hours to get end of the day 23:59 in UTC format
-        url = "https://graph.microsoft.com/v1.0/me/calendarview?"
-      }else{
-        
-        filter = "startdatetime=" + moment().startOf("day").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
-                "&enddatetime=" + moment().startOf("day").add(24+(-parseFloat(options.userTimezone.time)), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z"
-        url = "https://graph.microsoft.com/v1.0/me/calendarview?"
-      }
-      axios.get(url + filter, {
-        headers : {
-          "Content-Type":
-          "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + options.access_token }
-      })
-      .then((response) => {
-        var events = response.data.value
-        if (events.length > 0){
-          options.message = options.speech = "Found these events:\n"
-          events.forEach((event) => {
-            
-            options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
-          })
-          resolve("Success")
-        }else{
-          options.message = options.speech = "There is nothing on your agenda"
-          resolve("Success")
-        }
-      })
-      .catch((error) => {
-        reject("error")
-        errorHandler.actionError(error)      
-      })
-  })
-  await promise
+  if (name){
+    filter = "$filter=startswith(subject,'" + name + "')"
+    url = textResponses.graphRequests.fullEvents
+  }else if (period){
+    period = period.split("/")
+    filter = "startdatetime=" + moment(period[0], "YYYY-MM-DDT00:00:00.000").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
+            "&enddatetime=" + moment(period[1], "YYYY-MM-DDT00:00:00.000").add((24+(-parseFloat(options.userTimezone.time))), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" // Here are added 30 hours to get end of the day 23:59 in UTC format
+    url = textResponses.graphRequests.calendarView
+  }else{
+    
+    filter = "startdatetime=" + moment().startOf("day").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
+            "&enddatetime=" + moment().startOf("day").add(24+(-parseFloat(options.userTimezone.time)), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z"
+    url = textResponses.graphRequests.calendarView
+  }
+  options = await graphEventRequest(url + filter,options)
+  return options;
 }
 
+
+async function graphEventRequest(request,options){
+  let promise = new Promise((resolve, reject) => {
+    axios.get(request, {
+      headers : {
+        "Content-Type":
+        "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + options.access_token }
+    })
+    .then((response) => {
+      var events = response.data.value
+      if (events.length > 0){
+        options.message =  textResponses.showEvents.initialMessage
+        events.forEach((event) => {
+          
+          options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
+        })
+        resolve("Success")
+      }else{
+        options.message =  textResponses.showEvents.emptyAgenda
+        resolve("Success")
+      }
+    })
+    .catch((error) => {
+      reject("error")
+      errorHandler.actionError(error)      
+    })
+  })
+  await promise 
+  return options
+}
 function generateEventBody(subject,timeZone,start,end,organizer){
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
             result += "Date           : "  + moment(start).add(timeZone.time, "hours").format("DD-MM-YYYY")+"\n"
