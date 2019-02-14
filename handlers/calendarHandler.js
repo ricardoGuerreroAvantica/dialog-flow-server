@@ -214,7 +214,6 @@ async function PreFindMeetingTimes(options){
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
 async function showEventsOnDate(options){
-  let promise = new Promise((resolve, reject) => {
     var parameters = options.parameters
     var date = parameters.date
     var filter = ""
@@ -224,31 +223,8 @@ async function showEventsOnDate(options){
     filter = "startdatetime=" + startDate+ "Z" +
               "&enddatetime=" + endDate+ "Z"
     url = textResponses.graphRequests.calendarView
-    axios.get(url + filter, {
-      headers : {
-        "Content-Type":
-        "application/json",
-        Accept: "application/json",
-        Authorization: "Bearer " + options.access_token }
-    })
-    .then((response) => {
-      var events = response.data.value
-      if (events.length > 0){
-        options.message =  textResponses.showEvents.initialMessage
-        events.forEach((event) => {
-          options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
-        })
-        resolve("Success")
-      }else{
-        options.message =  textResponses.showEvents.emptyAgenda
-        resolve("Success")      }
-    })
-    .catch((error) => {
-      reject("showEvents.error : " + error)
-      errorHandler.actionError(error)
-    })
-  })
-  await promise
+    options = await graphEventRequest(url + filter,options)
+    return options;
 }
 
 /**
