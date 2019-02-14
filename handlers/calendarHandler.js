@@ -305,7 +305,7 @@ async function graphEventRequest(request,options){
           options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
         })
         resolve("Success")
-      }else{
+      }else{ 
         options.message =  textResponses.showEvents.emptyAgenda
         resolve("Success")
       }

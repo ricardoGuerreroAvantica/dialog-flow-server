@@ -37,11 +37,20 @@ const graphRequests = {
     meetingTimes : "/beta/me/findMeetingTimes",
 }
 
-const PreFindMeetingTimesResponses = {
+const preFindMeetingTimesResponses = {
     initialMessage : "I found some space at: \n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nFrom:\n",
     errorAccessA : "Couldn't access to ",
     errorAccessB : " shedule, the calendar of this employee may be restricted at this time.",
     noAvailableMessage : "Didn't find any available slot in the calendar of "
+}
+
+const showEventDetailsResponses={
+
+}
+
+const showEvents= {
+    initialMessage : "Found these events:\n",
+    emptyAgenda : "There is nothing on your agenda"
 }
 
 const scheduleMeetingResponses ={
@@ -54,8 +63,8 @@ const showEventDetailsResponses ={
     invitesMessage : "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nYour invites:\n",
     noInvitesMessage : "There are no invitations yet.",
 }
-
-exports.PreFindMeetingTimesResponses = PreFindMeetingTimesResponses
+exports.showEvents = showEvents
+exports.preFindMeetingTimesResponses = preFindMeetingTimesResponses
 exports.helperResponses = helperResponses
 exports.scheduleMeetingResponses = scheduleMeetingResponses
 exports.showEventDetailsResponses = showEventDetailsResponses
