@@ -257,27 +257,33 @@ async function showEventsOnDate(options){
  * @param {JSON} options.message this value contains the return message that will be send to dialog flow
  */
 async function showEvents(options){
-  var parameters = options.parameters
-  var name = parameters.name
-  var period = parameters.period
-  var filter = ""
-  var url = ""
-  if (name){
-    filter = "$filter=startswith(subject,'" + name + "')"
-    url = textResponses.graphRequests.fullEvents
-  }else if (period){
-    period = period.split("/")
-    filter = "startdatetime=" + moment(period[0], "YYYY-MM-DDT00:00:00.000").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
-            "&enddatetime=" + moment(period[1], "YYYY-MM-DDT00:00:00.000").add((24+(-parseFloat(options.userTimezone.time))), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" // Here are added 30 hours to get end of the day 23:59 in UTC format
-    url = textResponses.graphRequests.calendarView
-  }else{
-    
-    filter = "startdatetime=" + moment().startOf("day").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
-            "&enddatetime=" + moment().startOf("day").add(24+(-parseFloat(options.userTimezone.time)), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z"
-    url = textResponses.graphRequests.calendarView
+  try{
+    var parameters = options.parameters
+    var name = parameters.name
+    var period = parameters.period
+    var filter = ""
+    var url = ""
+    if (name){
+      filter = "$filter=startswith(subject,'" + name + "')"
+      url = textResponses.graphRequests.fullEvents
+    }else if (period){
+      period = period.split("/")
+      filter = "startdatetime=" + moment(period[0], "YYYY-MM-DDT00:00:00.000").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
+              "&enddatetime=" + moment(period[1], "YYYY-MM-DDT00:00:00.000").add((24+(-parseFloat(options.userTimezone.time))), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" // Here are added 30 hours to get end of the day 23:59 in UTC format
+      url = textResponses.graphRequests.calendarView
+    }else{
+      
+      filter = "startdatetime=" + moment().startOf("day").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z" +
+              "&enddatetime=" + moment().startOf("day").add(24+(-parseFloat(options.userTimezone.time)), "hours").format("YYYY-MM-DDTHH:mm:ss.000") + "Z"
+      url = textResponses.graphRequests.calendarView
+    }
+    options = await graphEventRequest(url + filter,options)
+    return options;
   }
-  options = await graphEventRequest(url + filter,options)
-  return options;
+  catch(err){
+    console.log(err)
+  }
+  
 }
 
 
@@ -306,7 +312,7 @@ async function graphEventRequest(request,options){
     })
     .catch((error) => {
       reject("error")
-      errorHandler.actionError(error)      
+      console.log(error)
     })
   })
   await promise 
