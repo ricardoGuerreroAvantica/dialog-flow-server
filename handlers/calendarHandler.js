@@ -219,17 +219,11 @@ async function showEventsOnDate(options){
     var date = parameters.date
     var filter = ""
     var url = ""
-
     var startDate=moment((date+("T00:00:00.000")), "YYYY-MM-DDThh:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss")
-    console.log(startDate)
-
     var endDate=moment((date+("T23:59:59.000")), "YYYY-MM-DDThh:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss")
-    console.log(endDate)
-
     filter = "startdatetime=" + startDate+ "Z" +
               "&enddatetime=" + endDate+ "Z"
     url = "https://graph.microsoft.com/v1.0/me/calendarview?"
-    console.log(url + filter)
     axios.get(url + filter, {
       headers : {
         "Content-Type":
@@ -242,13 +236,7 @@ async function showEventsOnDate(options){
       if (events.length > 0){
         options.message = options.speech = "Found these events:\n"
         events.forEach((event) => {
-          options.message += "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"
-          options.message += "Subject        : "    + event.subject +"\n"
-          options.message += "Date           : "  + moment((date+("T00:00:00.000")), "YYYY-MM-DDThh:mm:ss.SSS").add(options.userTimezone.time, "hours").format("DD-MM-YYYY")+"\n"
-          options.message += "Starts at      : "  + commons.parseDate(event.start.dateTime,options.userTimezone) +"\n"
-          options.message += "Ends at        : "    + commons.parseDate(event.end.dateTime,options.userTimezone) +"\n"
-          options.message += "Location       : "   + ((event.location.displayName) ? event.location.displayName : " to be announced") + "\n"
-          options.message += "Organizer      : "  + event.organizer.emailAddress.name
+          options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
         })
         resolve("Success")
       }else{
@@ -302,7 +290,7 @@ async function showEvents(options){
           options.message = options.speech = "Found these events:\n"
           events.forEach((event) => {
             
-            options.message += GenerateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
+            options.message += generateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
           })
           resolve("Success")
         }else{
@@ -318,31 +306,13 @@ async function showEvents(options){
   await promise
 }
 
-function GenerateEventBody(subject,userTimezone,date,start,end,organizer){
-            console.log("before Error")
-            console.log(subject)
-            console.log(date)
-            console.log(start)
-            console.log(end)
-            console.log(organizer)
+function generateEventBody(subject,timeZone,start,end,organizer){
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
-            console.log(result)
-            try{
-              result += "Date           : "  + moment(date).format("YYYY-MM-DD")+"\n"
-              console.log(result)
-              result += "Starts at      : "  + commons.parseDate(start,userTimezone) +"\n"
-              console.log(result)
-              result += "Ends at        : "    + commons.parseDate(end,timeZone) +"\n"
-              console.log(result)
-              result += "Location       :  to be announced \n" //locations are not supported
-              console.log(result)
-              result += "Organizer      : "  + organizer
-              console.log(result)
-            }
-            catch(err){
-              console.log(err)
-            }
-            
+            result += "Date           : "  + moment(start).add(timeZone.time, "hours").format("DD-MM-YYYY")+"\n"
+            result += "Starts at      : "  + commons.parseDate(start,timeZone) +"\n"
+            result += "Ends at        : "    + commons.parseDate(end,timeZone) +"\n"
+            result += "Location       :  to be announced \n" //locations are not supported
+            result += "Organizer      : "  + organizer
             return result
 }
 exports.showEventsOnDate = showEventsOnDate
