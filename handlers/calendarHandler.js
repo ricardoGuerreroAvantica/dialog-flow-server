@@ -101,22 +101,11 @@ async function scheduleMeeting(options){
         errorHandler.actionError(error)
         reject("Error in scheduleMeeting")
       }
-      options.message =  response.subject
-      options.message += textResponses.scheduleMeetingResponses
-      options.message += "Starts at: " + commons.parseDate(response.start.dateTime,options.userTimezone) + "\n" +
-            "Ends at: " + commons.parseDate(response.end.dateTime,options.userTimezone) + "\n" +
-            "Location: " +((response.location && response.location.displayName) ? (response.location.displayName) : "to be announced") + "\n" +
-            "Organizer: " + response.organizer.emailAddress.name + "\n"
-      if (response.attendees && response.attendees.length > 0){
-        options.message += textResponses.scheduleMeetingResponses.invites
-        response.attendees.forEach((attendee) => {
-          options.message += attendee.emailAddress.name + " Email: " + attendee.emailAddress.address + "\n"
-        })
-      }
-
+      generateEventBody(response.subject,options.userTimezone,response.start.date,response.end.dateTime,response.organizer.emailAddress.name)
       eventContext.lifespan = 0
-      if (invitesContext)
+      if (invitesContext){
         invitesContext.lifespan = 0
+      }
       resolve("Success")
     })
   })
