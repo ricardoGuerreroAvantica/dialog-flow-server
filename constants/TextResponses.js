@@ -44,9 +44,6 @@ const preFindMeetingTimesResponses = {
     noAvailableMessage : "Didn't find any available slot in the calendar of "
 }
 
-const showEventDetailsResponses={
-
-}
 
 const showEvents= {
     initialMessage : "Found these events:\n",
