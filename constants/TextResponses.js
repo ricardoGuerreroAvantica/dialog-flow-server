@@ -11,14 +11,53 @@ const helperResponses = {
 //contains all the text constants used in preSearchUser Function
 const preSearchUserResponses ={
     initialMessage :"There is more than one employee with this description, maybe you are searching for:\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n",
-    failureMessage : "Sorry I couldn't find any user with this description: "
+    failureMessage : "Sorry I couldn't find any user with this description: ",
+    successMessage : "What is the date?"
+}
+
+const inviteUserResponses= {
+    initialMessage : "Current invitation list:\n",
+    errorMessage : "Error no invite in the contexts"
+}
+
+const showInvitesResponses = {
+    initialMessage :"These are your current attendees:\n",
+    noInvitesMessage : "There are no invitations yet."
 }
 
 //contains the constants for the microsoft graph requests
-const graphRequests ={
-    users : 'https://graph.microsoft.com/v1.0/users?$filter='
+const graphRequests = {
+    graph : "graph.microsoft.com",
+    events : "/v1.0/me/events",
+    users : "https://graph.microsoft.com/v1.0/users?$filter=",
+    timezone : "https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone",
+    me : "https://graph.microsoft.com/v1.0/me",
+    meetingTimes : "/beta/me/findMeetingTimes",
 }
 
+const PreFindMeetingTimesResponses = {
+    initialMessage : "I found some space at: \n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nFrom:\n",
+    errorAccessA : "Couldn't access to ",
+    errorAccessB : " shedule, the calendar of this employee may be restricted at this time.",
+    noAvailableMessage : "Didn't find any available slot in the calendar of "
+}
+
+const scheduleMeetingResponses ={
+    initialMessage : "These are your current attendees:\n",
+    invites : "\nInvites: \n",
+    
+}
+const showEventDetailsResponses ={
+    initialMessage : "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nRemember You can:\n▶ Change the name, date, time or duration of the event.\n▶ Make some invites.\n\nIf you want to finish the creation, say \"Done\" or ask me for \"Help\" for more information.",
+    invitesMessage : "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nYour invites:\n",
+    noInvitesMessage : "There are no invitations yet.",
+}
+
+exports.PreFindMeetingTimesResponses = PreFindMeetingTimesResponses
 exports.helperResponses = helperResponses
+exports.scheduleMeetingResponses = scheduleMeetingResponses
+exports.showEventDetailsResponses = showEventDetailsResponses
+exports.showInvitesResponses = showInvitesResponses
+exports.inviteUserResponses = inviteUserResponses
 exports.graphRequests = graphRequests
 exports.preSearchUserResponses = preSearchUserResponses

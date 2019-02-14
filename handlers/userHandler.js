@@ -36,7 +36,7 @@ async function preSearchUser(options){
         console.log("response.data" + JSON.stringify(response.data))
         options.message = ""
         if (response.data.value.length > 1){
-          options.message = textResponses.preSearchUserResponses.initialMessage;
+          options.message = textResponses.preSearchUserResponses.initialMessage
           
           for(i = 0; i < response.data.value.length; i++ ){
             if ( i!= response.data.value.length-1){

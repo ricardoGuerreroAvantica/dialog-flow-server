@@ -1,4 +1,5 @@
 var timezones = require('./../constants/Timezones.js')
+var textResponses =require("./../constants/TextResponses")
 var axios = require('axios')
 
 
@@ -12,7 +13,7 @@ async function setTimeZone(token){
       var selectedTimeZone
       let timezonePromise = new Promise((resolve, reject) => {
             try {
-                axios.get("https://graph.microsoft.com/v1.0/me/mailboxSettings/timeZone", {
+                axios.get(textResponses.graphRequests.timezone, {
                 headers : {
                     'Content-Type': 
                     'application/json',
