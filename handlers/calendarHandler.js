@@ -301,12 +301,7 @@ async function showEvents(options){
         if (events.length > 0){
           options.message = options.speech = "Found these events:\n"
           events.forEach((event) => {
-            console.log("before Error")
-            console.log(event.subject)
-            console.log(JSON.stringify(options.userTimezone))
-            console.log(event.start.dateTime)
-            console.log(event.end.dateTime)
-            console.log(event.organizer.emailAddress.name)
+            
             options.message += GenerateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
           })
           resolve("Success")
@@ -324,6 +319,12 @@ async function showEvents(options){
 }
 
 function GenerateEventBody(subject,userTimezone,date,start,end,organizer){
+            console.log("before Error")
+            console.log(subject)
+            console.log(date)
+            console.log(start)
+            console.log(end)
+            console.log(organizer)
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
             result += "Date           : "  + moment(date).format("YYYY-MM-DD")+"\n"
             result += "Starts at      : "  + commons.parseDate(start,userTimezone) +"\n"
