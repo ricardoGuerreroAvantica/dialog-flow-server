@@ -327,17 +327,22 @@ function GenerateEventBody(subject,userTimezone,date,start,end,organizer){
             console.log(organizer)
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
             console.log(result)
-
-            result += "Date           : "  + moment(date).format("YYYY-MM-DD")+"\n"
-            console.log(result)
-            result += "Starts at      : "  + commons.parseDate(start,userTimezone) +"\n"
-            console.log(result)
-            result += "Ends at        : "    + commons.parseDate(end,timeZone) +"\n"
-            console.log(result)
-            result += "Location       :  to be announced \n" //locations are not supported
-            console.log(result)
-            result += "Organizer      : "  + organizer
-            console.log(result)
+            try{
+              result += "Date           : "  + moment(date).format("YYYY-MM-DD")+"\n"
+              console.log(result)
+              result += "Starts at      : "  + commons.parseDate(start,userTimezone) +"\n"
+              console.log(result)
+              result += "Ends at        : "    + commons.parseDate(end,timeZone) +"\n"
+              console.log(result)
+              result += "Location       :  to be announced \n" //locations are not supported
+              console.log(result)
+              result += "Organizer      : "  + organizer
+              console.log(result)
+            }
+            catch(err){
+              console.log(err)
+            }
+            
             return result
 }
 exports.showEventsOnDate = showEventsOnDate
