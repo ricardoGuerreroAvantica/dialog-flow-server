@@ -3,7 +3,7 @@ var moment = require("moment")
 var axios = require("axios")
 var commons = require("../utils/commons.js")
 var textResponses =require("./../constants/TextResponses")
-var timezoneHandler =require("./../handlers/timezoneHandler.js")
+var errorHandler = require("./errorHandler.js")
 
 /**
  * dialogflow replace " ' and '' with different values to represent them, this function return the message 
@@ -301,6 +301,12 @@ async function showEvents(options){
         if (events.length > 0){
           options.message = options.speech = "Found these events:\n"
           events.forEach((event) => {
+            console.log("before Error")
+            console.log(event.subject)
+            console.log(JSON.stringify(options.userTimezone))
+            console.log(event.start.dateTime)
+            console.log(event.end.dateTime)
+            console.log(event.organizer.emailAddress.name)
             options.message += GenerateEventBody(event.subject,options.userTimezone,event.start.dateTime,event.start.dateTime,event.end.dateTime,event.organizer.emailAddress.name)
           })
           resolve("Success")
@@ -317,13 +323,13 @@ async function showEvents(options){
   await promise
 }
 
-function GenerateEventBody(subject,userTimezone,date,start,end,organizer,location){
+function GenerateEventBody(subject,userTimezone,date,start,end,organizer){
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
             result += "Date           : "  + moment(date).format("YYYY-MM-DD")+"\n"
             result += "Starts at      : "  + commons.parseDate(start,userTimezone) +"\n"
             result += "Ends at        : "    + commons.parseDate(end,timeZone) +"\n"
-            result += "Location       : "   + ((event.location.displayName) ? event.location.displayName : " to be announced") + "\n"
-            result += "Organizer      : "  + event.organizer.emailAddress.name
+            result += "Location       :  to be announced \n" //locations are not supported
+            result += "Organizer      : "  + organizer
             return result
 }
 exports.showEventsOnDate = showEventsOnDate
