@@ -79,7 +79,7 @@ function showEventDetails(options,callback){
 async function scheduleMeeting(options){
   let promise = new Promise((resolve, reject) => {
     //Set all the basic variables for the event creation.
-    
+    console.log("enter the scheduleMeeting")
     var invitesContext = commons.getContext(options.contexts, "invites")
     var eventContext = commons.getContext(options.contexts, "createevent")
     var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || []
