@@ -84,6 +84,7 @@ async function parseAction(req, res, callback){
     case "create_event_finish" :
       options = await authenticate.promiseRefreshToken(options)
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
+      console.log("timezone :"+ options.userTimezone)
       options = await calendarHandler.scheduleMeeting(options)
       callback(options)
       break
