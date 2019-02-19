@@ -40,7 +40,7 @@ const graphRequests = {
 const preFindMeetingTimesResponses = {
     initialMessage : "I found some space at: \n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nFrom:\n",
     errorAccessA : "Couldn't access to ",
-    errorAccessB : " shedule, the calendar of this employee may be restricted at this time.",
+    errorAccessB : " schedule, the calendar of this employee may be restricted at this time.",
     noAvailableMessage : "Didn't find any available slot in the calendar of "
 }
 
@@ -51,6 +51,7 @@ const showEvents= {
 }
 
 const scheduleMeetingResponses ={
+    eventCreatedMessage : "These event was created successfully: \n",
     initialMessage : "These are your current attendees:\n",
     invites : "\nInvites: \n",
     
