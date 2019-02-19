@@ -77,44 +77,53 @@ function showEventDetails(options,callback){
  * @param {JSON} options.message contains the return message that will be send to dialog flow
  */
 async function scheduleMeeting(options){
-  let promise = new Promise((resolve, reject) => {
-    //Set all the basic variables for the event creation.
-    console.log("enter the scheduleMeeting")
-    var invitesContext = commons.getContext(options.contexts, "invites")
-    var eventContext = commons.getContext(options.contexts, "createevent")
-    var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || []
-    var name = replaceSpecialCharacters(eventContext.parameters.eventName)
-    var duration = eventContext.parameters.duration || {amount : 1, unit : "hours"}
-    var date = eventContext.parameters.date + " " + eventContext.parameters.time
-    var startDate = moment.utc(date, "YYYY-MM-DDTHH:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss")
-    var endDate = moment.utc(date, "YYYY-MM-DDTHH:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").add(duration.amount, duration.unit).format("YYYY-MM-DDTHH:mm:ss")
-    if (duration.unit === "h") duration.unit = "hours"
-    else if(duration.unit === "min") duration.unit = "minutes"
-    var body = {
-      "subject": name,
-      "attendees": invites,
-      "start": { "dateTime": startDate + ".000Z", "timeZone": "UTC" },
-      "end": { "dateTime": endDate + ".000Z", "timeZone": "UTC" }
+  
+    try{
+      let promise = new Promise((resolve, reject) => {
+        //Set all the basic variables for the event creation.
+        console.log("enter the scheduleMeeting")
+        var invitesContext = commons.getContext(options.contexts, "invites")
+        var eventContext = commons.getContext(options.contexts, "createevent")
+        var invites = (invitesContext && invitesContext.parameters && invitesContext.parameters.invites) || []
+        var name = replaceSpecialCharacters(eventContext.parameters.eventName)
+        var duration = eventContext.parameters.duration || {amount : 1, unit : "hours"}
+        var date = eventContext.parameters.date + " " + eventContext.parameters.time
+        var startDate = moment.utc(date, "YYYY-MM-DDTHH:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").format("YYYY-MM-DDTHH:mm:ss")
+        var endDate = moment.utc(date, "YYYY-MM-DDTHH:mm:ss.SSS").add(-parseFloat(options.userTimezone.time), "hours").add(duration.amount, duration.unit).format("YYYY-MM-DDTHH:mm:ss")
+        if (duration.unit === "h") duration.unit = "hours"
+        else if(duration.unit === "min") duration.unit = "minutes"
+        var body = {
+          "subject": name,
+          "attendees": invites,
+          "start": { "dateTime": startDate + ".000Z", "timeZone": "UTC" },
+          "end": { "dateTime": endDate + ".000Z", "timeZone": "UTC" }
+        }
+        request.postData(textResponses.graphRequests.graph,textResponses.graphRequests.events, options.access_token, JSON.stringify(body), (error, response) => {
+          if (error){
+            errorHandler.actionError(error)
+            reject("Error in scheduleMeeting")
+          }
+          try{
+            generateEventBody(response.subject,options.userTimezone,response.start.date,response.end.dateTime,response.organizer.emailAddress.name)
+          }
+          catch(err){
+            console.log("the error: " + err)
+          }
+          eventContext.lifespan = 0
+          if (invitesContext){
+            invitesContext.lifespan = 0
+          }
+          resolve("Success")
+        })
+      })
+      await promise
+      return options
     }
-    request.postData(textResponses.graphRequests.graph,textResponses.graphRequests.events, options.access_token, JSON.stringify(body), (error, response) => {
-      if (error){
-        errorHandler.actionError(error)
-        reject("Error in scheduleMeeting")
-      }
-      try{
-        generateEventBody(response.subject,options.userTimezone,response.start.date,response.end.dateTime,response.organizer.emailAddress.name)
-      }
-      catch(err){
-        console.log("the error: " + err)
-      }
-      eventContext.lifespan = 0
-      if (invitesContext){
-        invitesContext.lifespan = 0
-      }
-      resolve("Success")
-    })
-  })
-  await promise
+    catch(err){
+      console.log(err)
+    }
+    
+  
 }
 
 /**
