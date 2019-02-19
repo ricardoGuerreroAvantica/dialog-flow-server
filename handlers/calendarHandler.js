@@ -102,10 +102,10 @@ async function scheduleMeeting(options){
         reject("Error in scheduleMeeting")
       }
       try{
-
+        generateEventBody(response.subject,options.userTimezone,response.start.date,response.end.dateTime,response.organizer.emailAddress.name)
       }
       catch(err){
-        generateEventBody(response.subject,options.userTimezone,response.start.date,response.end.dateTime,response.organizer.emailAddress.name)
+        console.log("the error: " + err)
       }
       eventContext.lifespan = 0
       if (invitesContext){
