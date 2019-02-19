@@ -105,7 +105,7 @@ async function scheduleMeeting(options){
           }
           try{
             console.log("response"+JSON.stringify(response))
-            generateEventBody(response.subject,options.userTimezone,response.start.dateTime,response.end.dateTime,response.organizer.emailAddress.name)
+            options.message += generateEventBody(response.subject,options.userTimezone,response.start.dateTime,response.end.dateTime,response.organizer.emailAddress.name)
           }
           catch(err){
             console.log("the error: " + err)
