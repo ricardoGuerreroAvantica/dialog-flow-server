@@ -74,9 +74,11 @@ function filter(jsonObject) {
  * {Key: options.sessionId, Value: Token}.
  */
 function validUser(next, req, res, callback){
-  console.log(JSON.stringify(this.options))
+  console.log("validUser.options"=JSON.stringify(this.options))
   var sessionId = this.options.sessionId
   this.options.sessionTokens = tokens[sessionId]
+  console.log("validUser.options.tokens"=JSON.stringify(this.options.sessionTokens))
+
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
       return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" })
