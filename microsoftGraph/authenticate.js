@@ -74,6 +74,7 @@ function filter(jsonObject) {
  * {Key: options.sessionId, Value: Token}.
  */
 function validUser(next, req, res, callback){
+  console.log(JSON.stringify(this.options))
   var sessionId = this.options.sessionId
   this.options.sessionTokens = tokens[sessionId]
   if (!this.options.sessionTokens){
