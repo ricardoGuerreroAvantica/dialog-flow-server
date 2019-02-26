@@ -1,6 +1,6 @@
-var timezones = require('./../constants/Timezones.js')
+var timezones = require("./../constants/Timezones.js")
 var textResponses =require("./../constants/TextResponses")
-var axios = require('axios')
+var axios = require("axios")
 
 
 
@@ -15,10 +15,10 @@ async function setTimeZone(token){
             try {
                 axios.get(textResponses.graphRequests.timezone, {
                 headers : {
-                    'Content-Type': 
-                    'application/json',
-                    Accept: 'application/json',
-                    Authorization: 'Bearer ' + token
+                    "Content-Type": 
+                    "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + token
                 }
                 })
                 .then((response) => {
@@ -36,7 +36,7 @@ async function setTimeZone(token){
                 }
             })
     let result = await timezonePromise
-    console.log('setTimeZone: '+result)
+    console.log("setTimeZone: "+result)
     return result
   }
 

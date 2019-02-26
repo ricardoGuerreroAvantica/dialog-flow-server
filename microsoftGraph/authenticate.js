@@ -1,19 +1,19 @@
-var OAuth = require('oauth')
+var OAuth = require("oauth")
 
 var credentials = {
-  authority: 'https://login.microsoftonline.com/common',
-  authorize_endpoint: '/oauth2/authorize',
-  token_endpoint: '/oauth2/token',
-  logout_endpoint: '/oauth2/logout',
-  client_id: 'f9c030a5-9a75-4ae7-add2-55330dc196c4',
-  client_secret: 'ckgoMKCP65ilpGDY960[;?@',
-  scope : 'Calendars.ReadWrite.Shared'+
-          '%20Calendars.ReadWrite'+
-          '%20User.ReadBasicAll'+
-          '%20MailboxSettings.ReadWrite'+
-          '%20User.ReadWrite',
-  redirect_uri: 'https://sjo-calendar-bot.azurewebsites.net/signIn',
-  resouce: 'https://graph.microsoft.com/'
+  authority: "https://login.microsoftonline.com/common",
+  authorize_endpoint: "/oauth2/authorize",
+  token_endpoint: "/oauth2/token",
+  logout_endpoint: "/oauth2/logout",
+  client_id: "f9c030a5-9a75-4ae7-add2-55330dc196c4",
+  client_secret: "ckgoMKCP65ilpGDY960[;?@",
+  scope : "Calendars.ReadWrite.Shared"+
+          "%20Calendars.ReadWrite"+
+          "%20User.ReadBasicAll"+
+          "%20MailboxSettings.ReadWrite"+
+          "%20User.ReadWrite",
+  redirect_uri: "https://sjo-calendar-bot.azurewebsites.net/signIn",
+  resouce: "https://graph.microsoft.com/"
 }
 var tokens = {}
 
@@ -27,7 +27,7 @@ var tokens = {}
 function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
   this.options = {}  
-  if (req.body.originalRequest && req.body.originalRequest.source === 'skype'){
+  if (req.body.originalRequest && req.body.originalRequest.source === "skype"){
     //LOGIN SKYPE
     if(reqJSONBody.originalRequest.data.user){
       this.options.sessionId = reqJSONBody.originalRequest.data.user.id
@@ -36,7 +36,7 @@ function validSession(next, req, res, callback){
       this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id
     }
     
-    this.options.source = 'skype'
+    this.options.source = "skype"
 
   }else {
     //LOGIN MOBILE
@@ -46,7 +46,7 @@ function validSession(next, req, res, callback){
     var IOSName=IOSFiltered[0].name
     if (IOSName && IOSName != "session"){
     this.options.sessionId = IOSName
-    this.options.source = 'ios'
+    this.options.source = "ios"
 
     }
   }
@@ -81,10 +81,10 @@ function validUser(next, req, res, callback){
 
   if (!this.options.sessionTokens){
     if(this.options.source == "ios"){
-      return res.json({ speech: 'Your access token is invalid, please go back and re-enter the chat', displayText: 'Confirmation', source: "dialog-server-flow" })
+      return res.json({ speech: "Your access token is invalid, please go back and re-enter the chat", displayText: "Confirmation", source: "dialog-server-flow" })
     }
     else{
-      return res.json({ speech: 'Please login ' + getAuthUrl(sessionId), displayText: 'Please login', source: "dialog-server-flow" })
+      return res.json({ speech: "Please login " + getAuthUrl(sessionId), displayText: "Please login", source: "dialog-server-flow" })
     }
     
   }
@@ -116,7 +116,7 @@ function refreshToken(next, options, callback) {
     oauth2.getOAuthAccessToken(
       options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
       {
-        grant_type: 'refresh_token',
+        grant_type: "refresh_token",
         redirect_uri: credentials.redirect_uri,
         resource: credentials.resouce
       },
@@ -159,7 +159,7 @@ async function promiseRefreshToken(options) {
         oauth2.getOAuthAccessToken(
           options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
           {
-            grant_type: 'refresh_token',
+            grant_type: "refresh_token",
             redirect_uri: credentials.redirect_uri,
             resource: credentials.resouce
           },
@@ -176,7 +176,7 @@ async function promiseRefreshToken(options) {
     })
   let result = await refreshTokenPromise
 
-  console.log('refreshTokenPromise: '+result)
+  console.log("refreshTokenPromise: "+result)
   return options
 
 }
@@ -208,17 +208,17 @@ function signIn(req, res){
       return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } })
     }
     if (!state) {
-      return res.json({ error : { name : 'State error', description : "Can't find a unique key for the user" } })
+      return res.json({ error : { name : "State error", description : "Can't find a unique key for the user" } })
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
         tokens[state] = {ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token}
 
 
-        return res.sendFile(__dirname + '/signIn.html')
+        return res.sendFile(__dirname + "/signIn.html")
       }else{
         res.status(500)
-        return res.json({ error : { name : 'State error', description : error.data } })
+        return res.json({ error : { name : "State error", description : error.data } })
       }
     })
   }
@@ -241,7 +241,7 @@ function getTokenFromCode(code, callback) {
   oauth2.getOAuthAccessToken(
     code,
     {
-      grant_type: 'authorization_code',
+      grant_type: "authorization_code",
       redirect_uri: credentials.redirect_uri,
       resource: credentials.resouce
     },
@@ -259,11 +259,11 @@ function getTokenFromCode(code, callback) {
  */
 function getAuthUrl(state) {
   return credentials.authority + credentials.authorize_endpoint +
-    '?client_id=' + credentials.client_id +
-    '&response_type=code' +
-    '&scope=' + credentials.scope +
-    '&redirect_uri=' + credentials.redirect_uri +
-    '&state=' + state
+    "?client_id=" + credentials.client_id +
+    "&response_type=code" +
+    "&scope=" + credentials.scope +
+    "&redirect_uri=" + credentials.redirect_uri +
+    "&state=" + state
 }
 
 

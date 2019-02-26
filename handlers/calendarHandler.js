@@ -291,14 +291,6 @@ async function graphEventRequest(request,options){
   return options
 }
 function generateEventBody(subject,timeZone,start,end,organizer){
-  console.log("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯")
-  console.log(subject)
-  console.log(timeZone)
-  console.log(start)
-  console.log(end)
-  console.log(organizer)
-  console.log("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯")
-
             var result = "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\nSubject        : "    + subject +"\n"
             result += "Date           : "  + moment(start).add(timeZone.time, "hours").format("DD-MM-YYYY")+"\n"
             result += "Starts at      : "  + commons.parseDate(start,timeZone) +"\n"

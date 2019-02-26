@@ -1,4 +1,4 @@
-var axios = require('axios')
+var axios = require("axios")
 var textResponses =require("./../constants/TextResponses")
 
 /**
@@ -26,10 +26,10 @@ async function preSearchUser(options){
       var url = textResponses.graphRequests.users
       axios.get(url + filter, {
         headers : {
-          'Content-Type': 
-          'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + options.access_token
+          "Content-Type": 
+          "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + options.access_token
         }
       })
       .then((response) => {
@@ -40,10 +40,10 @@ async function preSearchUser(options){
           
           for(i = 0; i < response.data.value.length; i++ ){
             if ( i!= response.data.value.length-1){
-              options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.\n\n'
+              options.message += response.data.value[i].displayName + ".\n"+"Email:"+response.data.value[i].mail+ ".\n\n"
             }
             else{
-              options.message += response.data.value[i].displayName + '.\n'+'Email:'+response.data.value[i].mail+ '.'
+              options.message += response.data.value[i].displayName + ".\n"+"Email:"+response.data.value[i].mail+ "."
             }
           }
           resolve("Success")
