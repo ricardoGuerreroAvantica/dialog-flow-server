@@ -15,10 +15,10 @@ router.post("/request", (req, res) => {
 
   Action.prototype.parseAction = actionHandler.parseAction
 
-  Action.pre('parseAction', authenticate.validSession, (error) => {
-    errorHandler.raiseError(res, 'VALID_SESSION_ERROR')
-  }).pre('parseAction', authenticate.validUser, (error) => {
-    errorHandler.raiseError(res, 'VALID_USER_ERROR')
+  Action.pre("parseAction", authenticate.validSession, (error) => {
+    errorHandler.raiseError(res, "VALID_SESSION_ERROR")
+  }).pre("parseAction", authenticate.validUser, (error) => {
+    errorHandler.raiseError(res, "VALID_USER_ERROR")
   })
 
   var action = new Action()
@@ -27,7 +27,7 @@ router.post("/request", (req, res) => {
     var contexts  = result.contexts
     var message   = result.speech
     var speech    = result.message
-    console.log('request.options : ' + JSON.stringify(result, null, 2))
+    console.log("request.options : " + JSON.stringify(result, null, 2))
 
     return res.json({
       speech: speech,
@@ -43,20 +43,20 @@ router.post("/signIn", (req, res) => {
   authenticate.signIn(req, res)
 })
 
-router.get('/signIn', function (req, res) {
+router.get("/signIn", function (req, res) {
   authenticate.signIn(req, res)
 })
 
 
-router.get('/privacy', (req, res) => {
+router.get("/privacy", (req, res) => {
 
-  res.json({info : 'soon'})
+  res.json({info : "soon"})
 })
 
 
-router.get('/terms', (req, res) => {
+router.get("/terms", (req, res) => {
 
-  res.json({info : 'soon'})
+  res.json({info : "soon"})
 })
 
 

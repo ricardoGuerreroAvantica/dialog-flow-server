@@ -1,4 +1,4 @@
-var moment = require('moment')
+var moment = require("moment")
 
 function getContext(contexts, name){
   for (var i in contexts){
@@ -12,7 +12,7 @@ function getContext(contexts, name){
 
 function getChangeLine(source){
   if (source == "ios"){
-    return '\n'
+    return "\n"
   }
   else{
     return "\n\n"
@@ -41,13 +41,13 @@ function getAttendees(invites){
 function getDate(date, time, extraTime,isSubstraction,timezoneTime){
   try {
     
-      var format = 'YYYY-MM-DDTHH:mm:ss.SSS'
+      var format = "YYYY-MM-DDTHH:mm:ss.SSS"
       if (isSubstraction){
-        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format)
+        newDate = moment(date+" "+time).utcOffset(-parseInt(timezoneTime)-extraTime).format(format)
         return newDate
       }
       else{
-        newDate = moment(date+' '+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format)
+        newDate = moment(date+" "+time).utcOffset(-parseInt(timezoneTime)+extraTime).format(format)
         return newDate
       }
   }
@@ -81,8 +81,8 @@ function getTimeConstraint(date, time, startTimeMargin, endTimeMargin,timezone){
 
 function parseDate(date,timezone){
   var time = timezone.time
-  var newDate = moment(date, 'YYYY-MM-DDThh:mm:ss.SSS').add(parseFloat(time), 'hours')
-  return moment(newDate, 'YYYY-MM-DDThh:mm:ss.SSS').format('LT')
+  var newDate = moment(date, "YYYY-MM-DDThh:mm:ss.SSS").add(parseFloat(time), "hours")
+  return moment(newDate, "YYYY-MM-DDThh:mm:ss.SSS").format("LT")
 }
 
 
