@@ -39,25 +39,20 @@ async function parseAction(req, res, callback){
       if(options.user){
         options = await calendarHandler.PreFindMeetingTimes(options)
       }
-      callback(options)
       break
 
     //Case: helper
     //Description: This case is trigger when the user ask for "Help" 
     case "helper" :
       options = await userHandler.helper(options)
-      console.log("check")
-      callback(options)
       break
 
     //Case: show_events
     //Description: This case is trigger when the user ask for "Show my events" 
     case "show_events" :
       options = await authenticate.promiseRefreshToken(options)
-      console.log(JSON.stringify(options))
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
       await calendarHandler.showEvents(options)
-      callback(options)
       break
 
     //Case: show_events_on_date
@@ -66,7 +61,6 @@ async function parseAction(req, res, callback){
       options = await authenticate.promiseRefreshToken(options)
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
       await calendarHandler.showEventsOnDate(options)
-      callback(options)
       break
 
     //Case: show_locations
@@ -85,7 +79,6 @@ async function parseAction(req, res, callback){
       options = await authenticate.promiseRefreshToken(options)
       options.userTimezone = await timezoneHandler.setTimeZone(options.access_token)
       options = await calendarHandler.scheduleMeeting(options)
-      callback(options)
       break
     
     //Case: create_event_invite
@@ -94,7 +87,6 @@ async function parseAction(req, res, callback){
       options = await authenticate.promiseRefreshToken(options)
       options = await userHandler.preSearchUser(options)
       options = await eventHandler.inviteUser(options)
-      callback(options)
       break
 
     //Case: create_event_uninvite
@@ -119,7 +111,6 @@ async function parseAction(req, res, callback){
       if(options.user){
         options.message = textResponses.preSearchUserResponses.successMessage
       }
-      callback(options)
       break
 
       
@@ -149,7 +140,7 @@ async function parseAction(req, res, callback){
       this.options.message = "Could you repeat that?"
       callback(this.options)
   }
-
+  callback(options)
 }
 
 exports.parseAction = parseAction
