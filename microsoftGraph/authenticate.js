@@ -190,6 +190,7 @@ async function promiseRefreshToken(options) {
 function signIn(req, res){
   var state = req.query.state
   var code = req.query.code
+  console.log("Check: "+JSON.stringify(req.body))
   try{
     var reqJSONBody = JSON.parse(JSON.stringify(req.body))
   }
