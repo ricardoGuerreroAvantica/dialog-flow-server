@@ -200,14 +200,17 @@ function signIn(req, res){
   if (reqJSONBody.state=="IOS"){
     tokens[reqJSONBody.session_state] = {ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body
                                         , REFRESH_TOKEN_CACHE_KEY : ""}
-
+    console.log("!! Successful log in")
     return res.json({ response : { description : "Login Successful in ios mobile" } })
   }
   else{
+    console.log("!! Failed log in")
     if (!code) {
+      console.log("!! Code error")
       return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } })
     }
     if (!state) {
+      console.log("!! State error")
       return res.json({ error : { name : "State error", description : "Can't find a unique key for the user" } })
     }
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
