@@ -39,12 +39,6 @@ function validSession(next, req, res, callback){
     
     this.options.source = "skype"
 
-  }if (req.body.originalRequest && req.body.originalRequest.source === "slack_testbot"){
-    //LOGIN SLACK
-    if(reqJSONBody.originalRequest.data.user){
-      this.options.sessionId = reqJSONBody.originalRequest.data.client_msg_id
-    }
-    this.options.source = "slack_testbot"
   }else {
     //LOGIN MOBILE
     var IOSId = reqJSONBody.result.contexts
@@ -197,7 +191,6 @@ async function promiseRefreshToken(options) {
 function signIn(req, res){
   var state = req.query.state
   var code = req.query.code
-  console.log("req.query"+JSON.stringify(req.query))
   console.log("Check: "+JSON.stringify(req.body))
   try{
     var reqJSONBody = JSON.parse(JSON.stringify(req.body))
