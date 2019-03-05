@@ -27,7 +27,7 @@ var tokens = {}
 function validSession(next, req, res, callback){
   console.log(JSON.stringify(req.body))
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
-  this.options = {}  
+  this.options = {}
   if (req.body.originalRequest && req.body.originalRequest.source === "skype"){
     //LOGIN SKYPE
     if(reqJSONBody.originalRequest.data.user){
@@ -39,7 +39,8 @@ function validSession(next, req, res, callback){
     
     this.options.source = "skype"
 
-  }else {
+  }
+  else{
     //LOGIN MOBILE
     var IOSId = reqJSONBody.result.contexts
 
@@ -47,7 +48,7 @@ function validSession(next, req, res, callback){
     var IOSName=IOSFiltered[0].name
     if (IOSName && IOSName != "session"){
     this.options.sessionId = IOSName
-    this.options.source = "ios"
+    this.options.source = "mobile"
 
     }
   }
@@ -80,7 +81,7 @@ function validUser(next, req, res, callback){
   console.log("validUser.options.tokens"+JSON.stringify(this.options.sessionTokens))
 
   if (!this.options.sessionTokens){
-    if(this.options.source == "ios"){
+    if(this.options.source == "mobile"){
       return res.json({ speech: "Your access token is invalid, please go back and re-enter the chat", displayText: "Confirmation", source: "dialog-server-flow" })
     }
     else{
@@ -198,7 +199,7 @@ function signIn(req, res){
   catch(error){
     console.log("Error" + error)
   }
-  if (reqJSONBody.state=="IOS"){
+  if (reqJSONBody.state=="mobile"){
     tokens[reqJSONBody.session_state] = {ACCESS_TOKEN_CACHE_KEY : reqJSONBody.token_body
                                         , REFRESH_TOKEN_CACHE_KEY : ""}
     console.log("!! Successful log in")
