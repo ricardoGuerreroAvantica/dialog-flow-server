@@ -25,6 +25,7 @@ var tokens = {}
  * source of the request (skype or mobile) and the Id to identify the device
  */
 function validSession(next, req, res, callback){
+  console.log(JSON.stringify(req.body))
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
   this.options = {}  
   if (req.body.originalRequest && req.body.originalRequest.source === "skype"){
