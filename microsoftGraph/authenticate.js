@@ -29,29 +29,36 @@ function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
   this.options = {}
   console.log("REQJSONBODY:"+JSON.stringify(reqJSONBody))
-  if (req.body.originalRequest && req.body.originalRequest.source === "skype"){
-    //LOGIN SKYPE
-    if(reqJSONBody.originalRequest.data.user){
-      this.options.sessionId = reqJSONBody.originalRequest.data.user.id
-    }
-    else{
-      this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id
-    }
-    
-    this.options.source = "skype"
 
-  }
-  else{
-    //LOGIN MOBILE
-    var IOSId = reqJSONBody.result.contexts
+  switch(req.body.originalRequest.source){
+    case "skype":
+      //LOGIN SKYPE
+      if(reqJSONBody.originalRequest.data.user){
+        this.options.sessionId = reqJSONBody.originalRequest.data.user.id
+      }
+      else{
+        this.options.sessionId = reqJSONBody.originalRequest.data.data.user.id
+      }
+      this.options.source = "skype"
+      break
 
-    IOSFiltered = IOSId.filter(filter)
-    var IOSName=IOSFiltered[0].name
-    if (IOSName && IOSName != "session"){
-    this.options.sessionId = IOSName
-    this.options.source = "mobile"
+    case "slack_testbot":
+      //LOGIN SLACK
+      this.options.sessionId = reqJSONBody.originalRequest.data.user
+      this.options.source = "slack"
+      break
 
-    }
+    default:
+      //LOGIN MOBILE
+      var IOSId = reqJSONBody.result.contexts
+
+      IOSFiltered = IOSId.filter(filter)
+      var IOSName=IOSFiltered[0].name
+      if (IOSName && IOSName != "session"){
+      this.options.sessionId = IOSName
+      this.options.source = "mobile"
+
+    break
   }
   next(req, res, callback)
 }
