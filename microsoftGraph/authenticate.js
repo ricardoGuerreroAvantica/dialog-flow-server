@@ -57,7 +57,7 @@ function validSession(next, req, res, callback){
       if (IOSName && IOSName != "session"){
       this.options.sessionId = IOSName
       this.options.source = "mobile"
-
+      }
     break
   }
   next(req, res, callback)
