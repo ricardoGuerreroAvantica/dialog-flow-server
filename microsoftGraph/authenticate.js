@@ -28,6 +28,7 @@ function validSession(next, req, res, callback){
   console.log(JSON.stringify(req.body))
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
   this.options = {}
+  console.log("REQJSONBODY:"+JSON.stringify(reqJSONBody))
   if (req.body.originalRequest && req.body.originalRequest.source === "skype"){
     //LOGIN SKYPE
     if(reqJSONBody.originalRequest.data.user){
@@ -157,6 +158,7 @@ async function promiseRefreshToken(options) {
           credentials.authorize_endpoint,
           credentials.token_endpoint
         )
+
         oauth2.getOAuthAccessToken(
           options.sessionTokens.REFRESH_TOKEN_CACHE_KEY,
           {
@@ -179,7 +181,6 @@ async function promiseRefreshToken(options) {
 
   console.log("refreshTokenPromise: "+result)
   return options
-
 }
 
 
@@ -206,7 +207,6 @@ function signIn(req, res){
     return res.json({ response : { description : "Login Successful in ios mobile" } })
   }
   else{
-    console.log("!! Failed log in")
     if (!code) {
       console.log("!! Code error")
       return res.json({ error : { name : "Code error", description : "An error ocurred login to Microsoft Graph" } })
@@ -218,7 +218,8 @@ function signIn(req, res){
     getTokenFromCode(code, (error, access_token, refresh_token, sessionId) => {
       if (!error) {
         tokens[state] = {ACCESS_TOKEN_CACHE_KEY : access_token, REFRESH_TOKEN_CACHE_KEY : refresh_token}
-
+        console.log(state)
+        console.log("State error"+JSON.stringify(tokens))
 
         return res.sendFile(__dirname + "/signIn.html")
       }else{
