@@ -29,8 +29,14 @@ function validSession(next, req, res, callback){
   var reqJSONBody= JSON.parse(JSON.stringify(req.body))
   this.options = {}
   console.log("REQJSONBODY:"+JSON.stringify(reqJSONBody))
-
-  switch(req.body.originalRequest.source){
+  let source;
+  try{
+    source=req.body.originalRequest.source;
+  }
+  catch{
+    source ="mobile"
+  }
+  switch(source){
     case "skype":
       //LOGIN SKYPE
       if(reqJSONBody.originalRequest.data.user){
@@ -48,7 +54,7 @@ function validSession(next, req, res, callback){
       this.options.source = "slack"
       break
 
-    default:
+    case "mobile":
       //LOGIN MOBILE
       var IOSId = reqJSONBody.result.contexts
 
@@ -58,6 +64,10 @@ function validSession(next, req, res, callback){
       this.options.sessionId = IOSName
       this.options.source = "mobile"
       }
+      break
+
+    default:
+      
     break
   }
   next(req, res, callback)
