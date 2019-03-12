@@ -33,7 +33,7 @@ function validSession(next, req, res, callback){
   try{
     source=req.body.originalRequest.source;
   }
-  catch{
+  catch(error){
     source ="mobile"
   }
   switch(source){
